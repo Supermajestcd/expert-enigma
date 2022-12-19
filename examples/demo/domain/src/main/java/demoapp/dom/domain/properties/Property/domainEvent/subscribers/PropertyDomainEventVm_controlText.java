@@ -20,11 +20,12 @@ package demoapp.dom.domain.properties.Property.domainEvent.subscribers;
 
 import javax.inject.Inject;
 
-import org.apache.causeway.applib.annotation.Property;
-import org.apache.causeway.applib.annotation.PropertyLayout;
+import org.apache.isis.applib.annotation.Property;
+import org.apache.isis.applib.annotation.PropertyLayout;
+
+import lombok.RequiredArgsConstructor;
 
 import demoapp.dom.domain.properties.Property.domainEvent.PropertyDomainEventVm;
-import lombok.RequiredArgsConstructor;
 
 
 //tag::class[]

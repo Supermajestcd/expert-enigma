@@ -1,13 +1,11 @@
 [[mml]]
-= Metamodel
+= MetaModel
 
 :Notice: Licensed to the Apache Software Foundation (ASF) under one or more contributor license agreements. See the NOTICE file distributed with this work for additional information regarding copyright ownership. The ASF licenses this file to you under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at. http://www.apache.org/licenses/LICENSE-2.0 . Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR  CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
 :page-partial:
 
 
 The metamodel ("mml") schema defines the serialized form of the metamodel, used by the framework to render and interact with the application's domain objects.
-
-image::schema/metamodel-hierarchy.png[]
 
 The top-level metamodel consists of a set of domain classes, which in turn contain members (actions, properties and collections).
 Actions also have action parameters.
@@ -21,9 +19,9 @@ The `metamodelDto` root element is defined as:
 
 [source,xml]
 ----
-<xs:schema targetNamespace="http://causeway.apache.org/schema/metamodel"        <!--.-->
+<xs:schema targetNamespace="http://isis.apache.org/schema/metamodel"        <!--.-->
            elementFormDefault="qualified"
-           xmlns="http://causeway.apache.org/schema/metamodel"
+           xmlns="http://isis.apache.org/schema/metamodel"
            xmlns:xs="http://www.w3.org/2001/XMLSchema">
 
     <xs:element name="metamodelDto">                                        <!--.-->
@@ -37,7 +35,7 @@ The `metamodelDto` root element is defined as:
     ...
 </xs:schema>
 ----
-<.> the metamodel schema has a namespace URI of "http://causeway.apache.org/schema/mml".
+<.> the metamodel schema has a namespace URI of "http://isis.apache.org/schema/mml".
 Although URIs are not the same as URLs, you will find that the schemas are also downloadable from this location.
 <.> definition of the `metamodelDto` root element.
 The corresponding XML will use this as its top-level element.
@@ -51,7 +49,7 @@ The `domainClassDto` element describes the behaviour and structure of a single d
 
 [source,xml]
 ----
-<xs:schema targetNamespace="http://causeway.apache.org/schema/mml" ... >
+<xs:schema targetNamespace="http://isis.apache.org/schema/mml" ... >
     ...
     <xs:element name="domainClassDto">                                          <!--.-->
         <xs:complexType>
@@ -122,7 +120,7 @@ The `member` (abstract) complex type is the supertype for properties, collection
 
 [source,xml]
 ----
-<xs:schema targetNamespace="http://causeway.apache.org/schema/mml" ... >
+<xs:schema targetNamespace="http://isis.apache.org/schema/mml" ... >
     ...
     <xs:complexType name="member">
         <xs:complexContent>
@@ -149,7 +147,7 @@ The `property` complex type represent a scalar association returning a single va
 
 [source,xml]
 ----
-<xs:schema targetNamespace="http://causeway.apache.org/schema/mml" ... >
+<xs:schema targetNamespace="http://isis.apache.org/schema/mml" ... >
     ...
     <xs:complexType name="property">
         <xs:complexContent>
@@ -176,7 +174,7 @@ Like `property` (above), the `collection` complex types represent an association
 
 [source,xml]
 ----
-<xs:schema targetNamespace="http://causeway.apache.org/schema/mml" ... >
+<xs:schema targetNamespace="http://isis.apache.org/schema/mml" ... >
     ...
     <xs:complexType name="collection">
         <xs:complexContent>
@@ -203,7 +201,7 @@ The `action` complex type represents a behaviour of the domain object.
 
 [source,xml]
 ----
-<xs:schema targetNamespace="http://causeway.apache.org/schema/mml" ... >
+<xs:schema targetNamespace="http://isis.apache.org/schema/mml" ... >
     ...
     <xs:complexType name="action">
         <xs:complexContent>
@@ -241,7 +239,7 @@ The concrete implementations are either `scalarParam` or `vectorParam`.
 
 [source,xml]
 ----
-<xs:schema targetNamespace="http://causeway.apache.org/schema/mml" ... >
+<xs:schema targetNamespace="http://isis.apache.org/schema/mml" ... >
     ...
     <xs:complexType name="param">                                   <!--.-->
         <xs:complexContent>
@@ -294,7 +292,7 @@ The meaning of the attributes depends on the facet implementation.
 
 [source,xml]
 ----
-<xs:schema targetNamespace="http://causeway.apache.org/schema/mml" ... >
+<xs:schema targetNamespace="http://isis.apache.org/schema/mml" ... >
     ...
     <xs:complexType name="facetHolder">                         <!--.-->
         <xs:sequence>

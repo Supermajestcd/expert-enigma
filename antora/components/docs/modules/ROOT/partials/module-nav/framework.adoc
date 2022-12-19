@@ -10,17 +10,15 @@
 *** xref:tooling:ROOT:about.adoc[Tooling]
 
 ** Automated Analysis
-*** link:https://sonarcloud.io/dashboard?id=apache_causeway[SonarCloud.io]
-*** link:https://fisheye.apache.org/browse/~br=master/causeway-git/[ASF Fisheye]
+*** link:https://sonarcloud.io/dashboard?id=apache_isis[SonarCloud.io]
+*** link:https://fisheye.apache.org/browse/~br=master/isis-git/[ASF Fisheye]
 
+**  xref:incubator:ROOT:about.adoc[Incubator]
 
-** Development
+** Other
 
-*** xref:core:ROOT:about.adoc[]
-*** xref:regressiontests:ROOT:about.adoc[]
-*** xref:incubator:ROOT:about.adoc[]
+*** xref:core:_overview:about.adoc[System Overview] (generated)
+*** xref:core:ROOT:about.adoc[Design Docs] (out of date)
 
-** Thanks
-
-*** xref:more-thanks/more-thanks.adoc[Acknowledgements]
+** xref:more-thanks/more-thanks.adoc[Acknowledgements]
 

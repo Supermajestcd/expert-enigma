@@ -33,9 +33,6 @@ gradlew.*
 #Asciidoctor Plugins
 .asciidoctorconfig.adoc
 
-#Draw.io
-.$*
-
 #Lombok (don't accept config alterations, might lead to a maintenance hell)
 lombok.config
 

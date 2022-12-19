@@ -1,2 +1,2 @@
 
-* xref:security:spring:about.adoc[Spring (Authenticator only)]
+* xref:security:spring:about.adoc[Spring Implementation]

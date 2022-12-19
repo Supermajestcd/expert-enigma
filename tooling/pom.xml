@@ -15,18 +15,18 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<parent>
-		<groupId>org.apache.causeway</groupId>
-		<artifactId>causeway-bom</artifactId>
+		<groupId>org.apache.isis</groupId>
+		<artifactId>isis-bom</artifactId>
 		<version>2.0.0-SNAPSHOT</version>
 		<relativePath>../bom/pom.xml</relativePath>
 	</parent>
 
-	<groupId>org.apache.causeway.tooling</groupId>
-	<artifactId>causeway-tooling</artifactId>
+	<groupId>org.apache.isis.tooling</groupId>
+	<artifactId>isis-tooling</artifactId>
 
-	<name>Apache Causeway - Tooling</name>
+	<name>Apache Isis - Tooling</name>
 	<description>
-        Libraries and tools not depending on the _Apache Causeway Core_ ecosystem,
+        Libraries and tools not depending on the _Apache Isis Core_ ecosystem,
         eg. code mining, automated documentation.
         (Targeted for JVM 11+)
     </description>
@@ -37,13 +37,12 @@
 
 		<maven.compiler.release>11</maven.compiler.release>
 
-		<jar-plugin.automaticModuleName>org.apache.causeway.tooling</jar-plugin.automaticModuleName>
-		<git-plugin.propertiesDir>org/apache/causeway/tooling</git-plugin.propertiesDir>
+		<jar-plugin.automaticModuleName>org.apache.isis.tooling</jar-plugin.automaticModuleName>
+		<git-plugin.propertiesDir>org/apache/isis/tooling</git-plugin.propertiesDir>
 		<gradle-tooling.version>7.1.1</gradle-tooling.version>
 		<maven-model-builder.version>3.8.6</maven-model-builder.version>
-		<picocli.version>4.7.0</picocli.version>
-		<structurizr.version>1.16.1</structurizr.version>
-		<structurizr-plantuml.version>1.6.3</structurizr-plantuml.version>
+		<picocli.version>4.6.3</picocli.version>
+		<structurizr.version>1.6.2</structurizr.version>
 
 	</properties>
 
@@ -87,7 +86,7 @@
 				<groupId>org.apache.rat</groupId>
 				<artifactId>apache-rat-plugin</artifactId>
 
-				<!-- APACHE CAUSEWAY customisation 4/7: start -->
+				<!-- APACHE ISIS customisation 4/7: start -->
 				<configuration>
 					<addDefaultLicenseMatchers>true</addDefaultLicenseMatchers>
 					<excludeSubProjects>true</excludeSubProjects>
@@ -128,8 +127,8 @@
 
 						<exclude>**/intellij/launch/*.xml</exclude>
 
-						<exclude>**/org/apache/causeway/tooling/adocmodel/test/attributed-table.adoc</exclude>
-						<exclude>**/org/apache/causeway/tooling/adocmodel/test/simple-table.adoc</exclude>
+						<exclude>**/org/apache/isis/tooling/adocmodel/test/attributed-table.adoc</exclude>
+						<exclude>**/org/apache/isis/tooling/adocmodel/test/simple-table.adoc</exclude>
 
 						<exclude>**/META-INF/services/**</exclude>
 					</excludes>
@@ -163,38 +162,38 @@
 			<!-- INTERNAL -->
 
 			<dependency>
-				<groupId>org.apache.causeway.commons</groupId>
-				<artifactId>causeway-commons</artifactId>
+				<groupId>org.apache.isis.commons</groupId>
+				<artifactId>isis-commons</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 
 			<dependency>
-				<groupId>org.apache.causeway.tooling</groupId>
-				<artifactId>causeway-tooling-c4modeling</artifactId>
+				<groupId>org.apache.isis.tooling</groupId>
+				<artifactId>isis-tooling-c4modeling</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 
 			<dependency>
-				<groupId>org.apache.causeway.tooling</groupId>
-				<artifactId>causeway-tooling-model4adoc</artifactId>
+				<groupId>org.apache.isis.tooling</groupId>
+				<artifactId>isis-tooling-model4adoc</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 
 			<dependency>
-				<groupId>org.apache.causeway.tooling</groupId>
-				<artifactId>causeway-tooling-projectmodel</artifactId>
+				<groupId>org.apache.isis.tooling</groupId>
+				<artifactId>isis-tooling-projectmodel</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 
 			<dependency>
-				<groupId>org.apache.causeway.tooling</groupId>
-				<artifactId>causeway-tooling-javamodel</artifactId>
+				<groupId>org.apache.isis.tooling</groupId>
+				<artifactId>isis-tooling-javamodel</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 
 			<dependency>
-				<groupId>org.apache.causeway.tooling</groupId>
-				<artifactId>causeway-tooling-java2adoc</artifactId>
+				<groupId>org.apache.isis.tooling</groupId>
+				<artifactId>isis-tooling-java2adoc</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 
@@ -245,7 +244,7 @@
 			<dependency>
 				<groupId>com.structurizr</groupId>
 				<artifactId>structurizr-plantuml</artifactId>
-				<version>${structurizr-plantuml.version}</version>
+				<version>${structurizr.version}</version>
 			</dependency>
 
 		</dependencies>
@@ -265,14 +264,14 @@
 		<dependency>
 			<groupId>org.mapstruct</groupId>
 			<artifactId>mapstruct-processor</artifactId>
-			<version>1.5.3.Final</version>
+			<version>1.5.2.Final</version>
 		</dependency>
 
 		<!-- @Nullable -->
         <dependency>
 		    <groupId>org.checkerframework</groupId>
 		    <artifactId>checker-qual</artifactId>
-		    <version>3.27.0</version>
+		    <version>3.24.0</version>
 		</dependency>
 
 		<!-- LOGGING -->
@@ -299,10 +298,21 @@
 		<!-- TESTING -->
 
 		<dependency>
-			<groupId>org.apache.causeway.core</groupId>
-			<artifactId>causeway-core-internaltestsupport</artifactId>
+			<groupId>org.junit.jupiter</groupId>
+			<artifactId>junit-jupiter-api</artifactId>
 			<scope>test</scope>
-			<version>${project.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.junit.jupiter</groupId>
+			<artifactId>junit-jupiter-engine</artifactId>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.junit.vintage</groupId>
+			<artifactId>junit-vintage-engine</artifactId>
+			<scope>test</scope>
 		</dependency>
 
 	</dependencies>

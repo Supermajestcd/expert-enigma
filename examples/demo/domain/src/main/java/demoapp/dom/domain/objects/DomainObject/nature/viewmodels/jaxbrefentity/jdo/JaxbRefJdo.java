@@ -27,12 +27,13 @@ import javax.jdo.annotations.PersistenceCapable;
 
 import org.springframework.context.annotation.Profile;
 
-import org.apache.causeway.applib.annotation.Bounding;
-import org.apache.causeway.applib.annotation.DomainObject;
+import org.apache.isis.applib.annotation.Bounding;
+import org.apache.isis.applib.annotation.DomainObject;
 
-import demoapp.dom.domain.objects.DomainObject.nature.viewmodels.jaxbrefentity.JaxbRefEntity;
 import lombok.Getter;
 import lombok.Setter;
+
+import demoapp.dom.domain.objects.DomainObject.nature.viewmodels.jaxbrefentity.JaxbRefEntity;
 
 @Profile("demo-jdo")
 //tag::class[]

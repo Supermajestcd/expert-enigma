@@ -1,5 +1,5 @@
 
 
 
-* xref:security:bypass:about.adoc[Bypass (Authenticator & Authorizor)]
+* xref:security:bypass:about.adoc[Bypass Implementation]
 
