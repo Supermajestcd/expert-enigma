@@ -22,7 +22,8 @@ import java.math.BigDecimal;
 
 import javax.jdo.annotations.Column;
 
-class SimpleObjectWithBigDecimalColumnAnnotations {
+
+public class SimpleObjectWithBigDecimalColumnAnnotations {
 
     private BigDecimal bigDecimalPropertyWithColumnAnnotation;
 

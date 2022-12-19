@@ -25,7 +25,6 @@ import java.lang.annotation.Target;
 import java.util.List;
 import java.util.SortedSet;
 
-import javax.inject.Inject;
 import javax.inject.Named;
 
 import org.apache.causeway.applib.CausewayModuleApplib;
@@ -60,7 +59,6 @@ public class ApplicationType extends ApplicationFeatureViewModel {
     public ApplicationType(final ApplicationFeatureId featureId) {
         super(featureId);
     }
-    @Inject
     public ApplicationType(final String memento) {
         super(memento);
     }

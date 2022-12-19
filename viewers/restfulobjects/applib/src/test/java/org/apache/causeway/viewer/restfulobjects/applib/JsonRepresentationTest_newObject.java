@@ -20,12 +20,12 @@ package org.apache.causeway.viewer.restfulobjects.applib;
 
 import java.io.IOException;
 
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 
-class JsonRepresentationTest_newObject {
+public class JsonRepresentationTest_newObject {
 
     @Test
     public void happyCase() throws IOException {

@@ -18,7 +18,10 @@
  */
 package org.apache.causeway.core.runtimeservices.command;
 
+import java.sql.Timestamp;
+import java.util.List;
 import java.util.Optional;
+import java.util.function.Consumer;
 import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
@@ -30,6 +33,7 @@ import org.apache.causeway.commons.functional.Try;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
+import org.apache.causeway.applib.Identifier;
 import org.apache.causeway.applib.annotation.PriorityPrecedence;
 import org.apache.causeway.applib.services.bookmark.Bookmark;
 import org.apache.causeway.applib.services.bookmark.BookmarkService;
@@ -37,6 +41,7 @@ import org.apache.causeway.applib.services.clock.ClockService;
 import org.apache.causeway.applib.services.command.Command;
 import org.apache.causeway.applib.services.command.CommandExecutorService;
 import org.apache.causeway.applib.services.command.CommandOutcomeHandler;
+import org.apache.causeway.applib.services.iactn.Execution;
 import org.apache.causeway.applib.services.iactnlayer.InteractionLayerTracker;
 import org.apache.causeway.applib.services.iactnlayer.InteractionService;
 import org.apache.causeway.applib.services.sudo.SudoService;
@@ -47,6 +52,7 @@ import org.apache.causeway.commons.functional.IndexedFunction;
 import org.apache.causeway.commons.internal.base._NullSafe;
 import org.apache.causeway.commons.internal.exceptions._Exceptions;
 import org.apache.causeway.core.metamodel.consent.InteractionInitiatedBy;
+import org.apache.causeway.core.metamodel.interactions.InteractionHead;
 import org.apache.causeway.core.metamodel.object.ManagedObject;
 import org.apache.causeway.core.metamodel.object.ManagedObjects;
 import org.apache.causeway.core.metamodel.services.schema.SchemaValueMarshaller;
@@ -58,10 +64,14 @@ import org.apache.causeway.core.metamodel.specloader.SpecificationLoader;
 import org.apache.causeway.core.runtimeservices.CausewayModuleCoreRuntimeServices;
 import org.apache.causeway.schema.cmd.v2.ActionDto;
 import org.apache.causeway.schema.cmd.v2.CommandDto;
+import org.apache.causeway.schema.cmd.v2.MemberDto;
 import org.apache.causeway.schema.cmd.v2.ParamDto;
 import org.apache.causeway.schema.cmd.v2.ParamsDto;
 import org.apache.causeway.schema.cmd.v2.PropertyDto;
 import org.apache.causeway.schema.common.v2.InteractionType;
+import org.apache.causeway.schema.common.v2.OidDto;
+import org.apache.causeway.schema.common.v2.OidsDto;
+
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.val;

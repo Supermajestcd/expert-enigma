@@ -116,7 +116,6 @@ public class UserPermissionViewModel implements ViewModel {
 
     // -- VIEWMODEL CONTRACT
 
-    @Inject
     public UserPermissionViewModel(final String memento) {
         val payload = _Serializables.read(String[].class,
                 _Bytes.ofUrlBase64.apply(memento.getBytes(StandardCharsets.US_ASCII)));

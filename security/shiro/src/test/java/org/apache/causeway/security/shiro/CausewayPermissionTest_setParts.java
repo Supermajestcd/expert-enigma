@@ -18,36 +18,36 @@
  */
 package org.apache.causeway.security.shiro;
 
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 import org.apache.causeway.security.shiro.authorization.CausewayPermission;
 
-class CausewayPermissionTest_setParts {
+public class CausewayPermissionTest_setParts {
 
     @Test
-    void noVeto() throws Exception {
+    public void noVeto() throws Exception {
         CausewayPermission ip = new CausewayPermission("com.mycompany.myapp:Customer:changeAddress:r");
         assertThat(ip.toString(), is("com.mycompany.myapp:customer:changeaddress:r"));
     }
 
     @Test
-    void withVetoableDomain() throws Exception {
+    public void withVetoableDomain() throws Exception {
         CausewayPermission ip = new CausewayPermission("foo/com.mycompany.myapp:Customer:changeAddress:r");
         assertThat(ip.toString(), is("foo/com.mycompany.myapp:customer:changeaddress:r"));
     }
 
     @Test
-    void withVetoAndVetoableDomain() throws Exception {
+    public void withVetoAndVetoableDomain() throws Exception {
         CausewayPermission ip = new CausewayPermission("!foo/com.mycompany.myapp:Customer:changeAddress:r");
         assertThat(ip.toString(), is("!foo/com.mycompany.myapp:customer:changeaddress:r"));
     }
 
 
     @Test
-    void xxx() throws Exception {
+    public void xxx() throws Exception {
         CausewayPermission ip = new CausewayPermission("schwartz/com.mycompany.myapp:Order:submit:*");
         CausewayPermission ip2 = new CausewayPermission("com.mycompany.myapp:Customer:remove:r");
 

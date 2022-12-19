@@ -20,43 +20,38 @@ package org.apache.causeway.viewer.restfulobjects.applib;
 
 import java.io.IOException;
 
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.Before;
+import org.junit.Test;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import static org.apache.causeway.viewer.restfulobjects.applib.JsonFixture.readJson;
 
-class JsonRepresentationTest_arrayGet_arraySetElementAt {
+public class JsonRepresentationTest_arrayGet_arraySetElementAt {
 
     private JsonRepresentation jsonRepresentation;
     private JsonRepresentation arrayRepr;
     private JsonRepresentation objectRepr;
 
-    @BeforeEach
+    @Before
     public void setUp() throws Exception {
         arrayRepr = JsonRepresentation.newArray();
         objectRepr = JsonRepresentation.newMap();
     }
 
-    @Test
+    @Test(expected = IndexOutOfBoundsException.class)
     public void arrayGet_outOfBounds() throws IOException {
-        assertThrows(IndexOutOfBoundsException.class, ()->{
-            jsonRepresentation = new JsonRepresentation(readJson("emptyList.json"));
-            jsonRepresentation.arrayGet(0);
-        });
+        jsonRepresentation = new JsonRepresentation(readJson("emptyList.json"));
+        jsonRepresentation.arrayGet(0);
     }
 
-    @Test
+    @Test(expected = IndexOutOfBoundsException.class)
     public void arraySetElementAt_outOfBounds() throws IOException {
-        assertThrows(IndexOutOfBoundsException.class, ()->{
-            jsonRepresentation = new JsonRepresentation(readJson("emptyList.json"));
-            jsonRepresentation.arraySetElementAt(0, objectRepr);
-        });
+        jsonRepresentation = new JsonRepresentation(readJson("emptyList.json"));
+        jsonRepresentation.arraySetElementAt(0, objectRepr);
     }
 
     @Test
@@ -71,29 +66,23 @@ class JsonRepresentationTest_arrayGet_arraySetElementAt {
         jsonRepresentation.arraySetElementAt(0, objectRepr);
     }
 
-    @Test
+    @Test(expected = IllegalArgumentException.class)
     public void arraySetElementAt_forAttemptingToSetElementToArray() throws IOException {
-        assertThrows(IllegalArgumentException.class, ()->{
-            jsonRepresentation = new JsonRepresentation(readJson("list.json"));
-            jsonRepresentation.arraySetElementAt(0, arrayRepr);
-        });
+        jsonRepresentation = new JsonRepresentation(readJson("list.json"));
+        jsonRepresentation.arraySetElementAt(0, arrayRepr);
     }
 
-    @Test
+    @Test(expected = IllegalStateException.class)
     public void arrayGet_forMap() throws IOException {
-        assertThrows(IllegalStateException.class, ()->{
-            jsonRepresentation = new JsonRepresentation(readJson("emptyMap.json"));
-            jsonRepresentation.arrayGet(0);
-        });
+        jsonRepresentation = new JsonRepresentation(readJson("emptyMap.json"));
+        jsonRepresentation.arrayGet(0);
     }
 
-    @Test
+    @Test(expected = IllegalStateException.class)
     public void arrayGet_forValue() throws IOException {
-        assertThrows(IllegalStateException.class, ()->{
-            jsonRepresentation = new JsonRepresentation(readJson("map.json"));
-            final JsonRepresentation valueRepresentation = jsonRepresentation.getRepresentation("anInt");
-            valueRepresentation.arrayGet(0);
-        });
+        jsonRepresentation = new JsonRepresentation(readJson("map.json"));
+        final JsonRepresentation valueRepresentation = jsonRepresentation.getRepresentation("anInt");
+        valueRepresentation.arrayGet(0);
     }
 
 }

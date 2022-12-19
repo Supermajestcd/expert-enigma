@@ -53,7 +53,7 @@ import org.apache.causeway.viewer.wicket.viewer.CausewayModuleViewerWicketViewer
 
     // UI (Wicket Viewer)
     CausewayModuleViewerWicketViewer.class,
-    //CausewayModuleViewerRestfulObjectsJaxrsResteasy.class,
+    //CausewayModuleViewerRestfulObjectsJaxrsResteasy4.class,
 
     //XrayEnable.class // for debugging only
 })

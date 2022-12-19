@@ -156,7 +156,7 @@ public class SwaggerServiceMenu {
     // -- HELPER
     @Programmatic String disableReasonWhenRequiresROViewer() {
         final Optional<?> moduleIfAny = serviceRegistry
-                .lookupBeanById("causeway.viewer.ro.WebModuleJaxrsRestEasy");
+                .lookupBeanById("causeway.viewer.ro.WebModuleJaxrsRestEasy4");
         return moduleIfAny.isPresent()
                 ? null
                 : "RestfulObjects viewer is not configured";

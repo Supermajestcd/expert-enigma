@@ -48,7 +48,7 @@ public class WhereInTheWorldPanelFactory extends EntityComponentFactoryAbstract 
     }
 
     @Override
-    protected ApplicationAdvice doAppliesTo(final UiObjectWkt entityModel) {    // <.>
+    protected ApplicationAdvice doAppliesTo(UiObjectWkt entityModel) {    // <.>
         final ManagedObject managedObject = entityModel.getObject();      // <.>
         final Object domainObject = managedObject.getPojo();              // <.>
         return ApplicationAdvice.appliesIf(

@@ -20,8 +20,8 @@ package org.apache.causeway.viewer.restfulobjects.applib.client;
 
 import java.util.List;
 
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.Before;
+import org.junit.Test;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -30,13 +30,13 @@ import org.apache.causeway.viewer.restfulobjects.applib.JsonRepresentation;
 import org.apache.causeway.viewer.restfulobjects.applib.RestfulRequest;
 import org.apache.causeway.viewer.restfulobjects.applib.RestfulRequest.RequestParameter;
 
-class RestfulRequest_RequestParameterTest_valueOf_xrofollowlinks {
+public class RestfulRequest_RequestParameterTest_valueOf_xrofollowlinks {
 
     private final RequestParameter<List<List<String>>> requestParameter = RestfulRequest.RequestParameter.FOLLOW_LINKS;
 
     private JsonRepresentation repr;
 
-    @BeforeEach
+    @Before
     public void setUp() throws Exception {
         repr = JsonRepresentation.newMap();
     }

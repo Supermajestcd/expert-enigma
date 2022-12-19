@@ -18,6 +18,8 @@
  */
 package org.apache.causeway.core.runtimeservices.userreg;
 
+import java.io.IOException;
+import java.net.URL;
 import java.util.Collections;
 import java.util.List;
 import java.util.regex.Pattern;
@@ -39,7 +41,6 @@ import org.apache.causeway.applib.services.userreg.EmailNotificationService;
 import org.apache.causeway.applib.services.userreg.events.EmailEventAbstract;
 import org.apache.causeway.applib.services.userreg.events.EmailRegistrationEvent;
 import org.apache.causeway.applib.services.userreg.events.PasswordResetEvent;
-import org.apache.causeway.commons.internal.exceptions._Exceptions;
 import org.apache.causeway.commons.internal.resources._Resources;
 import org.apache.causeway.core.runtimeservices.CausewayModuleCoreRuntimeServices;
 
@@ -86,10 +87,9 @@ public class EmailNotificationServiceDefault implements EmailNotificationService
     protected String loadResource(final String resourceName) {
         try {
             return _Resources.loadAsStringUtf8(EmailNotificationServiceDefault.class, resourceName);
-        } catch (Exception e) {
-            throw _Exceptions.illegalState(e, "Unable to read resource '%s' relative to %s",
-                    resourceName,
-                    EmailNotificationServiceDefault.class.getName());
+        } catch (IOException e) {
+            final URL templateUrl = _Resources.getResourceUrl(EmailNotificationServiceDefault.class, resourceName);
+            throw new IllegalStateException(String.format("Unable to read resource URL '%s'", templateUrl));
         }
     }
 

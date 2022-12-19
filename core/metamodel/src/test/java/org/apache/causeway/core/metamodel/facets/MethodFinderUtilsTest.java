@@ -18,14 +18,19 @@
  */
 package org.apache.causeway.core.metamodel.facets;
 
+import java.lang.reflect.Method;
+import java.util.Optional;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.not;
+import static org.hamcrest.CoreMatchers.nullValue;
+import static org.hamcrest.MatcherAssert.assertThat;
 
-import org.apache.causeway.commons.internal.reflection._ClassCache;
 import org.apache.causeway.core.metamodel._testing._TestDummies;
+import org.apache.causeway.core.metamodel.methods.MethodByClassMap;
 
 import lombok.val;
 
@@ -35,22 +40,38 @@ class MethodFinderUtilsTest {
         public void thisDoesNotHaveAnyAnnotation(){}
     }
 
+    private HasPostConstructMethodCache hasPostConstructMethodCache;
+
     @BeforeEach
     public void setup() {
+        val methodByClassMap = new MethodByClassMap();
+        this.hasPostConstructMethodCache = () -> methodByClassMap;
     }
 
     @Test
     public void whenExists() throws Exception {
-        val methodIfAny = _ClassCache.getInstance().streamPostConstructMethods(_TestDummies.WithPostConstruct.class)
-                .findFirst();
-        assertTrue(methodIfAny.isPresent());
+
+        val cache = hasPostConstructMethodCache.getPostConstructMethodsCache();
+        val method = hasPostConstructMethodCache.postConstructMethodFor(_TestDummies.WithPostConstruct.class);
+
+        assertThat(method, is(not(nullValue())));
+        final Optional<Method> actual = cache.get(_TestDummies.WithPostConstruct.class);
+        assertThat(actual, is(not(nullValue())));
+        assertThat(actual.isPresent(), is(true));
+        assertThat(actual.orElse(null), is(method));
     }
 
     @Test
     public void whenDoesNotExist() throws Exception {
-        val methodIfAny = _ClassCache.getInstance().streamPostConstructMethods(NoPostConstruct.class)
-                .findFirst();
-        assertFalse(methodIfAny.isPresent());
+
+        val cache = hasPostConstructMethodCache.getPostConstructMethodsCache();
+        val method = hasPostConstructMethodCache.postConstructMethodFor(NoPostConstruct.class);
+
+        assertThat(method, is(nullValue()));
+        final Optional<Method> actual = cache.get(NoPostConstruct.class);
+        assertThat(actual, is(not(nullValue())));
+        assertThat(actual.isPresent(), is(false));
+        assertThat(actual.orElse(null), is(nullValue()));
     }
 
 }

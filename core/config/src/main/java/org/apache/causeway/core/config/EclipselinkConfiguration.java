@@ -34,7 +34,7 @@ import lombok.Data;
 public class EclipselinkConfiguration {
 
     /**
-     * @see <a href="https://www.eclipse.org/eclipselink/documentation/2.7/jpa/extensions/persistenceproperties_ref.htm#weaving">eclipse.weaving</a>
+     * @see <a href="https://www.eclipse.org/eclipselink/documentation/2.7/jpa/extensions/persistenceproperties_ref.htm#weaving">eclipse.weaving</a> docs
      */
     private boolean weaving = false;
 
@@ -44,33 +44,33 @@ public class EclipselinkConfiguration {
     public static class Weaving {
 
         /**
-         * @see <a href="https://www.eclipse.org/eclipselink/documentation/2.7/jpa/extensions/persistenceproperties_ref.htm#CHDCEEFC">eclipse.weaving.changetracking</a>
+         * @see <a href="https://www.eclipse.org/eclipselink/documentation/2.7/jpa/extensions/persistenceproperties_ref.htm#CHDCEEFC">eclipse.weaving.changetracking</a> docs
          */
         private boolean changetracking = true;
 
         /**
-         * @see <a href="https://www.eclipse.org/eclipselink/documentation/2.7/jpa/extensions/persistenceproperties_ref.htm#BABGGCGC">eclipse.weaving.eager</a>
+         * @see <a href="https://www.eclipse.org/eclipselink/documentation/2.7/jpa/extensions/persistenceproperties_ref.htm#BABGGCGC">eclipse.weaving.eager</a> docs
          */
         private boolean eager = false;
 
         /**
-         * @see <a href="https://www.eclipse.org/eclipselink/documentation/2.7/jpa/extensions/persistenceproperties_ref.htm#CHDDIFGE">eclipse.weaving.fetchgroups</a>
+         * @see <a href="https://www.eclipse.org/eclipselink/documentation/2.7/jpa/extensions/persistenceproperties_ref.htm#CHDDIFGE">eclipse.weaving.fetchgroups</a> docs
          */
         private boolean fetchgroups = true;
 
         /**
-         * @see <a href="https://www.eclipse.org/eclipselink/documentation/2.7/jpa/extensions/persistenceproperties_ref.htm#BABJICDJ">eclipse.weaving.internal</a>
+         * @see <a href="https://www.eclipse.org/eclipselink/documentation/2.7/jpa/extensions/persistenceproperties_ref.htm#BABJICDJ">eclipse.weaving.internal</a> docs
          */
         private boolean internal = true;
 
         /**
-         * @see <a href="https://www.eclipse.org/eclipselink/documentation/2.7/jpa/extensions/persistenceproperties_ref.htm#BABDBIFE">eclipse.weaving.lazy</a>
+         * @see <a href="https://www.eclipse.org/eclipselink/documentation/2.7/jpa/extensions/persistenceproperties_ref.htm#BABDBIFE">eclipse.weaving.lazy</a> docs
          */
         private boolean lazy = true;
     }
 
     /**
-     * @see <a href="https://www.eclipse.org/eclipselink/documentation/2.7/jpa/extensions/persistenceproperties_ref.htm#delayonstartup">eclipselink.deploy-on-startup</a>
+     * @see <a href="https://www.eclipse.org/eclipselink/documentation/2.7/jpa/extensions/persistenceproperties_ref.htm#delayonstartup">eclipselink.deploy-on-startup</a> docs
      */
     private boolean deployOnStartup = false;
 
@@ -78,7 +78,7 @@ public class EclipselinkConfiguration {
     @Data
     public static class Descriptor {
         /**
-         * @see <a href="https://www.eclipse.org/eclipselink/documentation/2.7/jpa/extensions/persistenceproperties_ref.htm#CCHIEAIA">eclipselink.descriptor.customizer</a>
+         * @see <a href="https://www.eclipse.org/eclipselink/documentation/2.7/jpa/extensions/persistenceproperties_ref.htm#CCHIEAIA">eclipselink.descriptor.customizer</a> docs
          */
         @CausewayConfiguration.AssignableFrom("org.eclipse.persistence.descriptors.ClassDescriptor")
         Class<?> customizer = null;
@@ -89,7 +89,7 @@ public class EclipselinkConfiguration {
     public static class Session {
 
         /**
-         * @see <a href="https://www.eclipse.org/eclipselink/documentation/2.7/jpa/extensions/persistenceproperties_ref.htm#session.customizer">eclipselink.session.customizer</a>
+         * @see <a href="https://www.eclipse.org/eclipselink/documentation/2.7/jpa/extensions/persistenceproperties_ref.htm#session.customizer">eclipselink.session.customizer</a> docs
          */
         @CausewayConfiguration.AssignableFrom("org.eclipse.persistence.config.SessionCustomizer")
         Class<?> customizer = null;
@@ -102,7 +102,7 @@ public class EclipselinkConfiguration {
             public static class Descriptor {
 
                 /**
-                 * @see <a href="https://www.eclipse.org/eclipselink/documentation/2.7/jpa/extensions/persistenceproperties_ref.htm#CHDFDJJD">eclipselink.session.include.descriptor.queries</a>
+                 * @see <a href="https://www.eclipse.org/eclipselink/documentation/2.7/jpa/extensions/persistenceproperties_ref.htm#CHDFDJJD">eclipselink.session.include.descriptor.queries</a> docs
                  */
                 private boolean queries = false;
             }
@@ -110,7 +110,7 @@ public class EclipselinkConfiguration {
     }
 
     /**
-     * @see <a href="https://www.eclipse.org/eclipselink/documentation/2.7/jpa/extensions/persistenceproperties_ref.htm#session-event-listener">eclipselink.session-event-listener</a>
+     * @see <a href="https://www.eclipse.org/eclipselink/documentation/2.7/jpa/extensions/persistenceproperties_ref.htm#session-event-listener">eclipselink.session-event-listener</a> docs
      */
     @CausewayConfiguration.AssignableFrom("org.eclipse.persistence.sessions.SessionEventListener")
     Class<?> sessionEventListener = null;
@@ -121,17 +121,17 @@ public class EclipselinkConfiguration {
     public static class Logging {
 
         /**
-         * @see <a href="https://www.eclipse.org/eclipselink/documentation/2.7/jpa/extensions/persistenceproperties_ref.htm#CHDJCBIF">eclipselink.logging.connection</a>
+         * @see <a href="https://www.eclipse.org/eclipselink/documentation/2.7/jpa/extensions/persistenceproperties_ref.htm#CHDJCBIF">eclipselink.logging.connection</a> docs
          */
         private boolean connection = true;
 
         /**
-         * @see <a href="https://www.eclipse.org/eclipselink/documentation/2.7/jpa/extensions/persistenceproperties_ref.htm#BEIFJBIE">eclipselink.logging.exceptions</a>
+         * @see <a href="https://www.eclipse.org/eclipselink/documentation/2.7/jpa/extensions/persistenceproperties_ref.htm#BEIFJBIE">eclipselink.logging.exceptions</a> docs
          */
         private boolean exceptions = true;
 
         /**
-         * @see <a href="https://www.eclipse.org/eclipselink/documentation/2.7/jpa/extensions/persistenceproperties_ref.htm#BEIHGBBC">eclipselink.logging.file</a>
+         * @see <a href="https://www.eclipse.org/eclipselink/documentation/2.7/jpa/extensions/persistenceproperties_ref.htm#BEIHGBBC">eclipselink.logging.file</a> docs
          */
         private String file = null;
 
@@ -147,7 +147,7 @@ public class EclipselinkConfiguration {
             ALL
         }
         /**
-         * @see <a href="https://www.eclipse.org/eclipselink/documentation/2.7/jpa/extensions/persistenceproperties_ref.htm#CHDGFDDH">eclipselink.logging.level</a>
+         * @see <a href="https://www.eclipse.org/eclipselink/documentation/2.7/jpa/extensions/persistenceproperties_ref.htm#CHDGFDDH">eclipselink.logging.level</a> docs
          */
         private LoggingLevel level = LoggingLevel.INFO;
 
@@ -172,18 +172,18 @@ public class EclipselinkConfiguration {
     public static class Cache {
 
         /**
-         * @see <a href="https://www.eclipse.org/eclipselink/documentation/2.7/jpa/extensions/persistenceproperties_ref.htm#CCHEEFGA">eclipselink.cache.database-event-listener</a>
+         * @see <a href="https://www.eclipse.org/eclipselink/documentation/2.7/jpa/extensions/persistenceproperties_ref.htm#CCHEEFGA">eclipselink.cache.database-event-listener</a> docs
          */
         @CausewayConfiguration.AssignableFrom("org.eclipse.persistence.platform.database.events.DatabaseEventListener")
         Class<?> databaseEventListener;
 
         /**
-         * @see <a href="https://www.eclipse.org/eclipselink/documentation/2.7/jpa/extensions/persistenceproperties_ref.htm#CHDEJCJJ">eclipselink.cache.shared</a>
+         * @see <a href="https://www.eclipse.org/eclipselink/documentation/2.7/jpa/extensions/persistenceproperties_ref.htm#CHDEJCJJ">eclipselink.cache.shared</a> docs
          */
         boolean shared = true;
 
         /**
-         * @see <a href="https://www.eclipse.org/eclipselink/documentation/2.7/jpa/extensions/persistenceproperties_ref.htm#CHDIGIEC">eclipselink.cache.size</a>
+         * @see <a href="https://www.eclipse.org/eclipselink/documentation/2.7/jpa/extensions/persistenceproperties_ref.htm#CHDIGIEC">eclipselink.cache.size</a> docs
          */
         int size = 100; // bytes
 
@@ -248,7 +248,7 @@ public class EclipselinkConfiguration {
         }
 
         /**
-         * @see <a href="https://www.eclipse.org/eclipselink/documentation/2.7/jpa/extensions/persistenceproperties_ref.htm#CHDGDIEI">eclipselink.cache.type</a>
+         * @see <a href="https://www.eclipse.org/eclipselink/documentation/2.7/jpa/extensions/persistenceproperties_ref.htm#CHDGDIEI">eclipselink.cache.type</a> docs
          */
         CacheType type = CacheType.SoftWeak;
     }
@@ -300,19 +300,19 @@ public class EclipselinkConfiguration {
         }
 
         /**
-         * @see <a href="https://www.eclipse.org/eclipselink/documentation/2.7/jpa/extensions/persistenceproperties_ref.htm#CDEJGBEI">eclipselink.flush-clear.cache</a>
+         * @see <a href="https://www.eclipse.org/eclipselink/documentation/2.7/jpa/extensions/persistenceproperties_ref.htm#CDEJGBEI">eclipselink.flush-clear.cache</a> docs
          */
         FlushClearCache cache = FlushClearCache.DropInvalidate;
     }
 
 
     /**
-     * @see <a href="https://www.eclipse.org/eclipselink/documentation/2.7/jpa/extensions/persistenceproperties_ref.htm#createddljdbcfilename">eclipselink.create-ddl-jdbc-file-name</a>
+     * @see <a href="https://www.eclipse.org/eclipselink/documentation/2.7/jpa/extensions/persistenceproperties_ref.htm#createddljdbcfilename">eclipselink.create-ddl-jdbc-file-name</a> docs
      */
     String createDdlJdbcFileName = null;
 
     /**
-     * @see <a href="https://www.eclipse.org/eclipselink/documentation/2.7/jpa/extensions/persistenceproperties_ref.htm#BABFEBCG">eclipselink.drop-ddl-jdbc-file-name</a>
+     * @see <a href="https://www.eclipse.org/eclipselink/documentation/2.7/jpa/extensions/persistenceproperties_ref.htm#BABFEBCG">eclipselink.drop-ddl-jdbc-file-name</a> docs
      */
     String dropDdlJdbcFileName = null;
 
@@ -321,13 +321,13 @@ public class EclipselinkConfiguration {
     public static class Ddl {
 
         /**
-         * @see <a href="https://www.eclipse.org/eclipselink/documentation/2.7/jpa/extensions/persistenceproperties_ref.htm#BEHBIEJG">eclipselink.ddl.table-creation-suffix</a>
+         * @see <a href="https://www.eclipse.org/eclipselink/documentation/2.7/jpa/extensions/persistenceproperties_ref.htm#BEHBIEJG">eclipselink.ddl.table-creation-suffix</a> docs
          */
         String tableCreationSuffix = null;
     }
 
     /**
-     * @see <a href="https://www.eclipse.org/eclipselink/documentation/2.7/jpa/extensions/persistenceproperties_ref.htm#BABHEJJI">eclipselink.ddl-generation</a>
+     * @see <a href="https://www.eclipse.org/eclipselink/documentation/2.7/jpa/extensions/persistenceproperties_ref.htm#BABHEJJI">eclipselink.ddl-generation</a> docs
      */
     @CausewayConfiguration.OneOf(value={"create-tables", "create-or-extend-tables", "drop-and-create-tables", "none"})
     String ddlGeneration = "none";
@@ -338,7 +338,7 @@ public class EclipselinkConfiguration {
     public static class DdlGeneration {
 
         /**
-         * @see <a href="https://www.eclipse.org/eclipselink/documentation/2.7/jpa/extensions/persistenceproperties_ref.htm#BABCDHBB">eclipselink.ddl-generation.output-mode</a>
+         * @see <a href="https://www.eclipse.org/eclipselink/documentation/2.7/jpa/extensions/persistenceproperties_ref.htm#BABCDHBB">eclipselink.ddl-generation.output-mode</a> docs
          */
         @CausewayConfiguration.OneOf(value={"both", "database", "sql-script"})
         String outputMode = "database";
@@ -347,7 +347,7 @@ public class EclipselinkConfiguration {
 
 
     /**
-     * @see <a href="https://www.eclipse.org/eclipselink/documentation/2.7/jpa/extensions/persistenceproperties_ref.htm#CCHCJCDJ">eclipselink.exception-handler</a>
+     * @see <a href="https://www.eclipse.org/eclipselink/documentation/2.7/jpa/extensions/persistenceproperties_ref.htm#CCHCJCDJ">eclipselink.exception-handler</a> docs
      */
     @CausewayConfiguration.AssignableFrom("org.eclipse.persistence.exceptions.ExceptionHandler")
     Class<?> exceptionHandler = null;
@@ -366,7 +366,7 @@ public class EclipselinkConfiguration {
      * <li>the fully qualified name for a class that implements {@link org.eclipse.persistence.sessions.SessionProfiler} interface
      * </ul>
      *
-     * @see <a href="https://www.eclipse.org/eclipselink/documentation/2.7/jpa/extensions/persistenceproperties_ref.htm#profiler">eclipselink.profiler</a>
+     * @see <a href="https://www.eclipse.org/eclipselink/documentation/2.7/jpa/extensions/persistenceproperties_ref.htm#profiler">eclipselink.profiler</a> docs
      */
     private String profiler = "NoProfiler";
 
@@ -375,12 +375,12 @@ public class EclipselinkConfiguration {
     public static class Jdbc {
 
         /**
-         * @see <a href="https://www.eclipse.org/eclipselink/documentation/2.7/jpa/extensions/persistenceproperties_ref.htm#CIHHJBFB">eclipselink.jdbc.allow-native-sql-queries</a>
+         * @see <a href="https://www.eclipse.org/eclipselink/documentation/2.7/jpa/extensions/persistenceproperties_ref.htm#CIHHJBFB">eclipselink.jdbc.allow-native-sql-queries</a> docs
          */
         private boolean allowNativeSqlQueries = true;
 
         /**
-         * @see <a href="https://www.eclipse.org/eclipselink/documentation/2.7/jpa/extensions/persistenceproperties_ref.htm#CIHIAGAF">eclipselink.jdbc.batch-writing</a>
+         * @see <a href="https://www.eclipse.org/eclipselink/documentation/2.7/jpa/extensions/persistenceproperties_ref.htm#CIHIAGAF">eclipselink.jdbc.batch-writing</a> docs
          */
         @CausewayConfiguration.OneOf(value={"jdbc", "buffered", "oracle-jdbc", "none"})
         String batchWriting = "none";
@@ -391,13 +391,13 @@ public class EclipselinkConfiguration {
         public static class BatchWriting {
 
             /**
-             * @see <a href="https://www.eclipse.org/eclipselink/documentation/2.7/jpa/extensions/persistenceproperties_ref.htm#CIHJADHF">eclipse.jdbc.batchwriting.size</a>
+             * @see <a href="https://www.eclipse.org/eclipselink/documentation/2.7/jpa/extensions/persistenceproperties_ref.htm#CIHJADHF">eclipse.jdbc.batchwriting.size</a> docs
              */
             private int size;
         }
 
         /**
-         * @see <a href="https://www.eclipse.org/eclipselink/documentation/2.7/jpa/extensions/persistenceproperties_ref.htm#CHDHAFAA">eclipselink.jdbc.cache-statements</a>
+         * @see <a href="https://www.eclipse.org/eclipselink/documentation/2.7/jpa/extensions/persistenceproperties_ref.htm#CHDHAFAA">eclipselink.jdbc.cache-statements</a> docs
          */
         private boolean cacheStatements = true;
 
@@ -407,13 +407,13 @@ public class EclipselinkConfiguration {
         public static class CacheStatements {
 
             /**
-             * @see <a href="https://www.eclipse.org/eclipselink/documentation/2.7/jpa/extensions/persistenceproperties_ref.htm#CACBICGG">eclipse.jdbc.cache-statements.size</a>
+             * @see <a href="https://www.eclipse.org/eclipselink/documentation/2.7/jpa/extensions/persistenceproperties_ref.htm#CACBICGG">eclipse.jdbc.cache-statements.size</a> docs
              */
             private int size;
         }
 
         /**
-         * @see <a href="https://www.eclipse.org/eclipselink/documentation/2.7/jpa/extensions/persistenceproperties_ref.htm">eclipselink.jdbc.native-sql</a>
+         * @see <a href="https://www.eclipse.org/eclipselink/documentation/2.7/jpa/extensions/persistenceproperties_ref.htm">eclipselink.jdbc.native-sql</a> docs
          */
         private boolean nativeSql = true;
 
@@ -428,22 +428,22 @@ public class EclipselinkConfiguration {
         public static class Manager {
 
             /**
-             * @see <a href="https://www.eclipse.org/eclipselink/documentation/2.7/jpa/extensions/persistenceproperties_ref.htm#concurrency.manager.waittime">eclipselink.concurrency.manager.waittime</a>
+             * @see <a href="https://www.eclipse.org/eclipselink/documentation/2.7/jpa/extensions/persistenceproperties_ref.htm#concurrency.manager.waittime">eclipselink.concurrency.manager.waittime</a> docs
              */
             private long waittime = 0; // ms
 
             /**
-             * @see <a href="https://www.eclipse.org/eclipselink/documentation/2.7/jpa/extensions/persistenceproperties_ref.htm#concurrency.manager.maxsleeptime">eclipselink.concurrency.manager.maxsleeptime</a>
+             * @see <a href="https://www.eclipse.org/eclipselink/documentation/2.7/jpa/extensions/persistenceproperties_ref.htm#concurrency.manager.maxsleeptime">eclipselink.concurrency.manager.maxsleeptime</a> docs
              */
             private long maxsleeptime = 40000; // ms
 
             /**
-             * @see <a href="https://www.eclipse.org/eclipselink/documentation/2.7/jpa/extensions/persistenceproperties_ref.htm#concurrency.manager.maxfrequencytodumptinymessage">eclipselink.concurrency.manager.maxfrequencytodumptinymessage</a>
+             * @see <a href="https://www.eclipse.org/eclipselink/documentation/2.7/jpa/extensions/persistenceproperties_ref.htm#concurrency.manager.maxfrequencytodumptinymessage">eclipselink.concurrency.manager.maxfrequencytodumptinymessage</a> docs
              */
             private long maxfrequencytodumptinymessage = 40000; // ms
 
             /**
-             * @see <a href="https://www.eclipse.org/eclipselink/documentation/2.7/jpa/extensions/persistenceproperties_ref.htm#concurrency.manager.maxfrequencytodumptinymessage">eclipselink.concurrency.manager.maxfrequencytodumpmassivemessage</a>
+             * @see <a href="https://www.eclipse.org/eclipselink/documentation/2.7/jpa/extensions/persistenceproperties_ref.htm#concurrency.manager.maxfrequencytodumptinymessage">eclipselink.concurrency.manager.maxfrequencytodumpmassivemessage</a> docs
              */
             private long maxfrequencytodumpmassivemessage = 60000; // ms
 
@@ -452,17 +452,17 @@ public class EclipselinkConfiguration {
             public static class Allow {
 
                 /**
-                 * @see <a href="https://www.eclipse.org/eclipselink/documentation/2.7/jpa/extensions/persistenceproperties_ref.htm#concurrency.manager.allow.interruptedexception">eclipselink.concurrency.manager.allow.interruptedexception</a>
+                 * @see <a href="https://www.eclipse.org/eclipselink/documentation/2.7/jpa/extensions/persistenceproperties_ref.htm#concurrency.manager.allow.interruptedexception">eclipselink.concurrency.manager.allow.interruptedexception</a> docs
                  */
                 private boolean interruptedexception = true;
 
                 /**
-                 * @see <a href="https://www.eclipse.org/eclipselink/documentation/2.7/jpa/extensions/persistenceproperties_ref.htm#concurrency.manager.allow.concurrencyexception">eclipselink.concurrency.manager.allow.concurrencyexception</a>
+                 * @see <a href="https://www.eclipse.org/eclipselink/documentation/2.7/jpa/extensions/persistenceproperties_ref.htm#concurrency.manager.allow.concurrencyexception">eclipselink.concurrency.manager.allow.concurrencyexception</a> docs
                  */
                 private boolean concurrencyexception = true;
 
                 /**
-                 * @see <a href="https://www.eclipse.org/eclipselink/documentation/2.7/jpa/extensions/persistenceproperties_ref.htm#concurrency.manager.allow.readlockstacktrace">eclipselink.concurrency.manager.allow.readlockstacktrace</a>
+                 * @see <a href="https://www.eclipse.org/eclipselink/documentation/2.7/jpa/extensions/persistenceproperties_ref.htm#concurrency.manager.allow.readlockstacktrace">eclipselink.concurrency.manager.allow.readlockstacktrace</a> docs
                  */
                 private boolean readlockstacktrace = true;
             }
@@ -489,7 +489,7 @@ public class EclipselinkConfiguration {
     }
 
     /**
-     * @see <a href="https://www.eclipse.org/eclipselink/documentation/2.7/jpa/extensions/persistenceproperties_ref.htm#CACEEGCC">eclipselink.id-validation</a>
+     * @see <a href="https://www.eclipse.org/eclipselink/documentation/2.7/jpa/extensions/persistenceproperties_ref.htm#CACEEGCC">eclipselink.id-validation</a> docs
      */
     private IdValidation idValidation = IdValidation.None;
 
@@ -499,7 +499,7 @@ public class EclipselinkConfiguration {
         /**
          * Specify JPA processing to uppercase all column name definitions (simulating case insensitivity).
          *
-         * @see <a href="https://www.eclipse.org/eclipselink/documentation/2.7/jpa/extensions/persistenceproperties_ref.htm#CHDJGCBD">eclipselink.jpa.uppercase-column-names</a>
+         * @see <a href="https://www.eclipse.org/eclipselink/documentation/2.7/jpa/extensions/persistenceproperties_ref.htm#CHDJGCBD">eclipselink.jpa.uppercase-column-names</a> docs
          */
         private boolean upperCaseColumnNames = false;
     }
@@ -513,17 +513,17 @@ public class EclipselinkConfiguration {
     }
 
     /**
-     * @see <a href="https://www.eclipse.org/eclipselink/documentation/2.7/jpa/extensions/persistenceproperties_ref.htm#CHDHBGIE">eclipselink.tenant-id</a>
+     * @see <a href="https://www.eclipse.org/eclipselink/documentation/2.7/jpa/extensions/persistenceproperties_ref.htm#CHDHBGIE">eclipselink.tenant-id</a> docs
      */
     private String tenantId;
 
     /**
-     * @see <a href="https://www.eclipse.org/eclipselink/documentation/2.7/jpa/extensions/persistenceproperties_ref.htm#validate-existence">eclipselink.validate-existence</a>
+     * @see <a href="https://www.eclipse.org/eclipselink/documentation/2.7/jpa/extensions/persistenceproperties_ref.htm#validate-existence">eclipselink.validate-existence</a> docs
      */
     private boolean validateExistence = false;
 
     /**
-     * @see <a href="https://www.eclipse.org/eclipselink/documentation/2.7/jpa/extensions/persistenceproperties_ref.htm#validation-only">eclipselink.validation-only</a>
+     * @see <a href="https://www.eclipse.org/eclipselink/documentation/2.7/jpa/extensions/persistenceproperties_ref.htm#validation-only">eclipselink.validation-only</a> docs
      */
     private boolean validationOnly = false;
 

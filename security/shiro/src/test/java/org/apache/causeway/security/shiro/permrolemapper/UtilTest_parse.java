@@ -21,17 +21,17 @@ package org.apache.causeway.security.shiro.permrolemapper;
 import java.util.Map;
 import java.util.Set;
 
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
 
-class UtilTest_parse {
+public class UtilTest_parse {
 
     @Test
-    void testParse() {
+    public void testParse() {
         Map<String, Set<String>> perms = Util.parse("user_role = *:ToDoItemsJdo:*:*,*:ToDoItem:*:*;self-install_role = *:ToDoItemsFixturesService:install:*;admin_role = *");
         assertThat(perms, is(not(nullValue())));
         Set<String> set = perms.get("user_role");

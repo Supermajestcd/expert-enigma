@@ -24,6 +24,7 @@ import org.springframework.stereotype.Component;
 
 import org.apache.causeway.incubator.viewer.javafx.model.util._fx;
 import org.apache.causeway.viewer.commons.model.decorators.PrototypingDecorator;
+import org.apache.causeway.viewer.commons.model.decorators.PrototypingDecorator.PrototypingDecorationModel;
 
 import javafx.scene.Node;
 import javafx.scene.control.Label;

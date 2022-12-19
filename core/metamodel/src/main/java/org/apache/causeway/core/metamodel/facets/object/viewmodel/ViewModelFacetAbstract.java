@@ -18,18 +18,17 @@
  */
 package org.apache.causeway.core.metamodel.facets.object.viewmodel;
 
+import java.lang.reflect.Method;
 import java.util.Optional;
-
-import org.springframework.lang.Nullable;
 
 import org.apache.causeway.applib.services.bookmark.Bookmark;
 import org.apache.causeway.commons.internal.base._Strings;
-import org.apache.causeway.commons.internal.reflection._ClassCache;
 import org.apache.causeway.core.metamodel.commons.CanonicalInvoker;
 import org.apache.causeway.core.metamodel.commons.ClassExtensions;
 import org.apache.causeway.core.metamodel.facetapi.Facet;
 import org.apache.causeway.core.metamodel.facetapi.FacetAbstract;
 import org.apache.causeway.core.metamodel.facetapi.FacetHolder;
+import org.apache.causeway.core.metamodel.facets.HasPostConstructMethodCache;
 import org.apache.causeway.core.metamodel.object.ManagedObject;
 import org.apache.causeway.core.metamodel.spec.ObjectSpecification;
 
@@ -40,19 +39,25 @@ public abstract class ViewModelFacetAbstract
 extends FacetAbstract
 implements ViewModelFacet {
 
+    private final HasPostConstructMethodCache postConstructMethodCache;
+
     private static final Class<? extends Facet> type() {
         return ViewModelFacet.class;
     }
 
     protected ViewModelFacetAbstract(
-            final FacetHolder holder) {
+            final FacetHolder holder,
+            final HasPostConstructMethodCache postConstructMethodCache) {
         super(type(), holder);
+        this.postConstructMethodCache = postConstructMethodCache;
     }
 
     protected ViewModelFacetAbstract(
             final FacetHolder holder,
+            final HasPostConstructMethodCache postConstructMethodCache,
             final Facet.Precedence precedence) {
         super(type(), holder, precedence);
+        this.postConstructMethodCache = postConstructMethodCache;
     }
 
     @Override
@@ -69,15 +74,9 @@ implements ViewModelFacet {
                 ? createViewmodel(spec)
                 : createViewmodel(spec, bookmark);
 
-        initialize(viewModel.getPojo());
+        getServiceInjector().injectServicesInto(viewModel.getPojo());
+        invokePostConstructMethod(viewModel.getPojo());
         return viewModel;
-    }
-
-    @Override
-    public final void initialize(final @Nullable Object pojo) {
-        if(pojo==null) return;
-        getServiceInjector().injectServicesInto(pojo);
-        invokePostConstructMethod(pojo);
     }
 
     /**
@@ -96,9 +95,10 @@ implements ViewModelFacet {
             @NonNull Bookmark bookmark);
 
     private void invokePostConstructMethod(final Object viewModel) {
-        _ClassCache.getInstance().streamPostConstructMethods(viewModel.getClass())
-        .forEach(postConstructMethod->
-            CanonicalInvoker.invoke(postConstructMethod, viewModel));
+        final Method postConstructMethod = postConstructMethodCache.postConstructMethodFor(viewModel.getClass());
+        if (postConstructMethod != null) {
+            CanonicalInvoker.invoke(postConstructMethod, viewModel);
+        }
     }
 
     @Override

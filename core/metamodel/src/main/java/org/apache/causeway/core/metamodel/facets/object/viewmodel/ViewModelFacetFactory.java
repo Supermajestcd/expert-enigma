@@ -29,20 +29,27 @@ import org.apache.causeway.core.metamodel.facetapi.FacetUtil;
 import org.apache.causeway.core.metamodel.facetapi.FeatureType;
 import org.apache.causeway.core.metamodel.facetapi.MetaModelRefiner;
 import org.apache.causeway.core.metamodel.facets.FacetFactoryAbstract;
+import org.apache.causeway.core.metamodel.facets.HasPostConstructMethodCache;
+import org.apache.causeway.core.metamodel.methods.MethodByClassMap;
 import org.apache.causeway.core.metamodel.progmodel.ProgrammingModel;
 import org.apache.causeway.core.metamodel.specloader.validator.ValidationFailure;
 
+import lombok.Getter;
+import lombok.NonNull;
 import lombok.val;
 
 public class ViewModelFacetFactory
 extends FacetFactoryAbstract
 implements
-    MetaModelRefiner {
+    MetaModelRefiner,
+    HasPostConstructMethodCache {
 
     @Inject
     public ViewModelFacetFactory(
-            final MetaModelContext mmc) {
+            final MetaModelContext mmc,
+            final MethodByClassMap postConstructMethodsCache) {
         super(mmc, FeatureType.OBJECTS_ONLY);
+        this.postConstructMethodsCache = postConstructMethodsCache;
     }
 
     /**
@@ -56,21 +63,22 @@ implements
 
         val facetHolder = processClassContext.getFacetHolder();
         val type = processClassContext.getCls();
+        val postConstructMethodCache = this;
 
         // XmlRootElement annotation (with default precedence)
         val xmlRootElementIfAny = processClassContext.synthesizeOnType(XmlRootElement.class);
         FacetUtil
         .addFacetIfPresent(
                 ViewModelFacetForXmlRootElementAnnotation
-                .create(xmlRootElementIfAny, facetHolder));
+                .create(xmlRootElementIfAny, facetHolder, postConstructMethodCache));
 
         // (with high precedence)
         FacetUtil
         .addFacetIfPresent(
             // either ViewModel interface (highest precedence)
-            ViewModelFacetForViewModelInterface.create(type, facetHolder)
+            ViewModelFacetForViewModelInterface.create(type, facetHolder, postConstructMethodCache)
             // or Serializable interface (if any)
-            .or(()->ViewModelFacetForSerializableInterface.create(type, facetHolder)));
+            .or(()->ViewModelFacetForSerializableInterface.create(type, facetHolder, postConstructMethodCache)));
 
         // DomainObject(nature=VIEW_MODEL) is managed by the DomainObjectAnnotationFacetFactory as a fallback strategy
     }
@@ -107,5 +115,10 @@ implements
             });
         });
     }
+
+    // //////////////////////////////////////
+
+    @Getter(onMethod_ = {@Override})
+    private final @NonNull MethodByClassMap postConstructMethodsCache;
 
 }

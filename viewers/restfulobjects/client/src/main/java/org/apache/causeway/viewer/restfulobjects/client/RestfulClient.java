@@ -18,18 +18,18 @@
  */
 package org.apache.causeway.viewer.restfulobjects.client;
 
-import java.net.URI;
+import java.util.EnumSet;
 import java.util.List;
 import java.util.Objects;
-import java.util.function.UnaryOperator;
+import java.util.stream.Collectors;
 
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Invocation.Builder;
 import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.Response;
-import javax.ws.rs.core.UriBuilder;
 
+import org.apache.causeway.applib.client.SuppressionType;
 import org.apache.causeway.commons.collections.Can;
 import org.apache.causeway.commons.functional.Try;
 import org.apache.causeway.commons.internal.base._Strings;
@@ -38,7 +38,9 @@ import org.apache.causeway.viewer.restfulobjects.client.auth.BasicAuthFilter;
 import org.apache.causeway.viewer.restfulobjects.client.auth.BasicAuthFilter.Credentials;
 import org.apache.causeway.viewer.restfulobjects.client.log.ClientConversationLogger;
 
-import lombok.NonNull;
+import static org.apache.causeway.commons.internal.base._NullSafe.stream;
+
+import lombok.val;
 import lombok.extern.log4j.Log4j2;
 
 /**
@@ -49,15 +51,14 @@ import lombok.extern.log4j.Log4j2;
  * </p>
  *
  * <blockquote><pre>
-RestfulClientConfig clientConfig = RestfulClientConfig.builder();
-.restfulBase("http://localhost:8080/helloworld/restful/")
+RestfulClientConfig clientConfig = new RestfulClientConfig();
+clientConfig.setRestfulBase("http://localhost:8080/helloworld/restful/");
 // setup basic-auth
-.useBasicAuth(true) // default = false
-.restfulAuthUser("sven")
-.restfulAuthPassword("pass")
+clientConfig.setUseBasicAuth(true); // default = false
+clientConfig.setRestfulAuthUser("sven");
+clientConfig.setRestfulAuthPassword("pass");
 // setup request/response debug logging
-.useRequestDebugLogging(true) // default = false
-.build();
+clientConfig.setUseRequestDebugLogging(true); // default = false
 
 RestfulClient client = RestfulClient.ofConfig(clientConfig);
  * </pre></blockquote>
@@ -65,8 +66,9 @@ RestfulClient client = RestfulClient.ofConfig(clientConfig);
  * Make a Request and then digest the Response:
  * <blockquote><pre>{@code
 
-Builder request = client.request("services/myService/actions/lookupMyObjectById/invoke")
-    .accept(RestfulClientMediaType.SIMPLE_JSON.mediaTypeFor(MyObject.class, EnumSet.of(SuppressionType.RO)));
+Builder request = client.request(
+                "services/myService/actions/lookupMyObjectById/invoke",
+                SuppressionType.RO);
 
 Entity<String> args = client.arguments()
         .addActionParameter("id", "12345")
@@ -84,32 +86,34 @@ if(digest.isSuccess()) {
 }
  * </pre></blockquote>
  *
+ * Maven Setup:
+ * <blockquote><pre>{@code
+<dependency>
+    <groupId>org.glassfish.jersey.ext</groupId>
+    <artifactId>jersey-spring5</artifactId>
+    <version>2.35</version>
+</dependency>
+ * }</pre></blockquote>
+ *
  * @since 2.0 {@index}
  */
 @Log4j2
-public class RestfulClient implements AutoCloseable {
+public class RestfulClient {
+
+    private static final String DEFAULT_RESPONSE_CONTENT_TYPE = "application/json;profile=\"urn:org.apache.causeway/v2\"";
 
     private RestfulClientConfig clientConfig;
     private Client client;
 
-    public static RestfulClient ofConfig(
-            final RestfulClientConfig clientConfig) {
-        return new RestfulClient(clientConfig, UnaryOperator.identity());
+    public static RestfulClient ofConfig(final RestfulClientConfig clientConfig) {
+        RestfulClient restClient = new RestfulClient();
+        restClient.init(clientConfig);
+        return restClient;
     }
 
-    public static RestfulClient ofConfig(
-            final RestfulClientConfig clientConfig,
-            final UnaryOperator<ClientBuilder> configRefiner) {
-        return new RestfulClient(clientConfig, configRefiner);
-    }
-
-    private RestfulClient(
-            final @NonNull RestfulClientConfig clientConfig,
-            final @NonNull UnaryOperator<ClientBuilder> configRefiner) {
+    public void init(final RestfulClientConfig clientConfig) {
         this.clientConfig = clientConfig;
-
-        final ClientBuilder clientBuilder = configRefiner.apply(ClientBuilder.newBuilder());
-        this.client = clientBuilder.build();
+        client = ClientBuilder.newClient();
 
         registerDefaultJsonProvider();
         registerBasicAuthFilter();
@@ -124,24 +128,17 @@ public class RestfulClient implements AutoCloseable {
         return client;
     }
 
-    @Override
-    public void close() {
-        if (client == null) {
-            return;
-        }
-        try {
-            client.close();
-        } catch (Throwable ex) {
-            // just ignore
-        }
-    }
-
     // -- REQUEST BUILDER
 
-    public Builder request(final String path) {
-        return client
-                .target(relativePathToUri(path))
-                .request();
+    public Builder request(final String path, final SuppressionType ... suppressionTypes) {
+        return request(path, SuppressionType.setOf(suppressionTypes));
+    }
+
+    public Builder request(final String path, final EnumSet<SuppressionType> suppressionTypes) {
+        final String responseContentType = DEFAULT_RESPONSE_CONTENT_TYPE
+                + toSuppressionLiteral(suppressionTypes);
+
+        return client.target(relativePathToUri(path)).request(responseContentType);
     }
 
     // -- ARGUMENT BUILDER
@@ -153,7 +150,7 @@ public class RestfulClient implements AutoCloseable {
     // -- RESPONSE PROCESSING
 
     public <T> Try<T> digest(final Response response, final Class<T> entityType) {
-        final var digest = ResponseDigest.wrap(response, entityType);
+        val digest = ResponseDigest.wrap(response, entityType);
         if(digest.isSuccess()) {
             return Try.success(digest.getEntity().orElse(null));
         }
@@ -161,24 +158,14 @@ public class RestfulClient implements AutoCloseable {
     }
 
     public <T> Try<Can<T>> digestList(final Response response, final Class<T> entityType, final GenericType<List<T>> genericType) {
-        final var listDigest = ResponseDigest.wrapList(response, entityType, genericType);
+        val listDigest = ResponseDigest.wrapList(response, entityType, genericType);
         if(listDigest.isSuccess()) {
             return Try.success(listDigest.getEntities());
         }
         return Try.failure(listDigest.getFailureCause());
     }
 
-    // -- UTILITY
-
-    /**
-     * Returns an {@link URI} constructed from this client's base path plus given relative {@code path}.
-     * @param path relative to this client's base
-     */
-    public URI uri(final String path) {
-        return relativePathToUri(path).build();
-    }
-
-    // -- HELPER FILTER
+    // -- FILTER
 
     private void registerDefaultJsonProvider() {
         try {
@@ -209,14 +196,27 @@ public class RestfulClient implements AutoCloseable {
         .forEach(client::register);
     }
 
-    // -- HELPER OTHER
+    // -- HELPER
 
-    private UriBuilder relativePathToUri(String path) {
+    private String relativePathToUri(String path) {
         final String baseUri = _Strings.suffix(clientConfig.getRestfulBase(), "/");
         while(path.startsWith("/")) {
             path = path.substring(1);
         }
-        return UriBuilder.fromUri(baseUri + path);
+        return baseUri + path;
     }
+
+    private String toSuppressionLiteral(final EnumSet<SuppressionType> suppressionTypes) {
+        final String suppressionSetLiteral = stream(suppressionTypes)
+                .map(SuppressionType::name)
+                .collect(Collectors.joining(","));
+
+        if(_Strings.isNotEmpty(suppressionSetLiteral)) {
+            return ";suppress=" + suppressionSetLiteral;
+        }
+
+        return "";
+    }
+
 
 }

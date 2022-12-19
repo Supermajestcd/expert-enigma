@@ -25,15 +25,19 @@ import static java.util.Collections.emptyList;
 import static java.util.Collections.singletonList;
 
 import org.apache.wicket.request.Request;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
+import org.jmock.Expectations;
+import org.jmock.auto.Mock;
+import org.junit.Before;
+import org.junit.Rule;
+import org.junit.Test;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 
 import org.apache.causeway.applib.services.iactnlayer.InteractionService;
 import org.apache.causeway.applib.services.registry.ServiceRegistry;
+import org.apache.causeway.commons.functional.ThrowingRunnable;
+import org.apache.causeway.core.internaltestsupport.jmocking.JUnitRuleMockery2;
 import org.apache.causeway.core.metamodel._testing.MetaModelContext_forTesting;
 import org.apache.causeway.core.metamodel.context.MetaModelContext;
 import org.apache.causeway.core.security._testing.InteractionService_forTesting;
@@ -44,20 +48,24 @@ import org.apache.causeway.core.security.authentication.InteractionContextFactor
 import org.apache.causeway.core.security.authentication.manager.AuthenticationManager;
 import org.apache.causeway.core.security.authentication.standard.RandomCodeGeneratorDefault;
 
-class AuthenticatedWebSessionForCauseway_SignIn {
+public class AuthenticatedWebSessionForCauseway_SignIn {
+
+    @Rule
+    public final JUnitRuleMockery2 context =
+            JUnitRuleMockery2.createFor(JUnitRuleMockery2.Mode.INTERFACES_AND_CLASSES);
 
     private AuthenticationManager authMgr;
 
-    protected Request mockRequest = Mockito.mock(Request.class);
-    protected Authenticator mockAuthenticator = Mockito.mock(Authenticator.class);
-    protected InteractionService mockInteractionService = Mockito.mock(InteractionService.class);
-    protected ServiceRegistry mockServiceRegistry = Mockito.mock(ServiceRegistry.class);
+    @Mock protected Request mockRequest;
+    @Mock protected Authenticator mockAuthenticator;
+    @Mock protected InteractionService mockInteractionService;
+    @Mock protected ServiceRegistry mockServiceRegistry;
 
     protected AuthenticatedWebSessionForCauseway webSession;
     private MetaModelContext mmc;
 
-    @BeforeEach
-    void setUp() throws Exception {
+    @Before
+    public void setUp() throws Exception {
         mmc = MetaModelContext_forTesting.builder()
                 .singleton(mockInteractionService)
                 .build();
@@ -71,22 +79,32 @@ class AuthenticatedWebSessionForCauseway_SignIn {
     }
 
     @Test
-    void signInJustDelegatesToAuthenticateAndSavesState() {
+    public void signInJustDelegatesToAuthenticateAndSavesState() {
+        context.checking(new Expectations() {
+            {
 
-        Mockito
-        // must provide explicit expectation, since Locale is final.
-        .when(mockRequest.getLocale())
-        .thenReturn(Locale.getDefault());
+                allowing(mockInteractionService)
+                .run(with(InteractionContextFactory.testing()), with(any(ThrowingRunnable.class)));
 
-        Mockito
-        .when(mockAuthenticator.canAuthenticate(AuthenticationRequestPassword.class))
-        .thenReturn(true);
+                allowing(mockInteractionService)
+                .runAnonymous(with(any(ThrowingRunnable.class)));
 
-        Mockito
-        .when(mockAuthenticator.authenticate(
-                Mockito.any(AuthenticationRequest.class),
-                Mockito.any(String.class)))
-        .thenReturn(InteractionContextFactory.testing());
+                // ignore
+
+                // must provide explicit expectation, since Locale is final.
+                allowing(mockRequest).getLocale();
+                will(returnValue(Locale.getDefault()));
+
+                // stub everything else out
+                ignoring(mockRequest);
+
+                oneOf(mockAuthenticator).canAuthenticate(AuthenticationRequestPassword.class);
+                will(returnValue(true));
+
+                oneOf(mockAuthenticator).authenticate(with(any(AuthenticationRequest.class)), with(any(String.class)));
+                will(returnValue(InteractionContextFactory.testing()));
+            }
+        });
 
         webSession = new AuthenticatedWebSessionForCauseway(mockRequest) {
             private static final long serialVersionUID = 1L;

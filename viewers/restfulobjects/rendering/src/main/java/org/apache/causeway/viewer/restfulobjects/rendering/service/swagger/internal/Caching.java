@@ -18,10 +18,8 @@
  */
 package org.apache.causeway.viewer.restfulobjects.rendering.service.swagger.internal;
 
-import java.util.Optional;
-
-import io.swagger.v3.oas.models.headers.Header;
-import io.swagger.v3.oas.models.media.IntegerSchema;
+import io.swagger.models.Response;
+import io.swagger.models.properties.IntegerProperty;
 
 /*
  *  Licensed to the Apache Software Foundation (ASF) under one
@@ -42,30 +40,27 @@ import io.swagger.v3.oas.models.media.IntegerSchema;
  *  under the License.
  */
 enum Caching {
-    /**
-     * No cache header.
-     */
     TRANSACTIONAL {
-        @Override
-        Optional<Header> header() {
-            return Optional.empty();
+        @Override public void withHeaders(final Response response) {
+
         }
     },
     USER_INFO {
-        @Override
-        Optional<Header> header() {
-            return Optional.of(new Header()
-                    .schema(new IntegerSchema()._default(3600)));
+        @Override public void withHeaders(final Response response) {
+            response
+            .header("Cache-Control",
+                    new IntegerProperty()
+                    ._default(3600));
         }
     },
     NON_EXPIRING {
-        @Override
-        Optional<Header> header() {
-            return Optional.of(new Header()
-                    .description(RoSpec.CACHE_CONTROL.fqSection())
-                    .schema(new IntegerSchema()._default(86400)));
+        @Override public void withHeaders(final Response response) {
+            response
+            .header("Cache-Control",
+                    new IntegerProperty()
+                    ._default(86400).description(_Util.roSpec("2.13")));
         }
     };
 
-    abstract Optional<Header> header();
+    public abstract void withHeaders(final Response response);
 }

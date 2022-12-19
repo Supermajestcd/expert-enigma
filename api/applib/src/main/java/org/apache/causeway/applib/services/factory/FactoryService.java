@@ -36,11 +36,13 @@ import lombok.NonNull;
 public interface FactoryService {
 
     /**
-     * Gets or creates an instance of {@code requiredType}, with injection points resolved and any
-     * life-cycle callback processed.
+     * General purpose factory method, to automatically get or create an instance of
+     * {@code requiredType}.
+     *
      * <p>
      * Maps onto one of the specialized factory methods {@link #get(Class)} or {@link #create(Class)}
      * based on the type's meta-data.
+     * </p>
      *
      * @param <T>
      * @param requiredType
@@ -48,19 +50,25 @@ public interface FactoryService {
      * @throws UnrecoverableException if instance creation failed
      * @throws IllegalArgumentException if requiredType is not recognized by the meta-model
      *
-     * @see #get(Class)
-     * @see #create(Class)
-     *
      * @since 2.0
      *
+     */
+
+    /**
+     * Gets an instance (possibly shared or independent) of the specified type, with injection points resolved and any
+     * life-cycle callback processed.
+     * @param requiredType
+     * @param <T>
      */
     <T> T getOrCreate(@NonNull Class<T> requiredType);
 
     /**
-     * Gets a <i>Spring</i> managed bean of {@code requiredType}.
+     * Gets an instance (possibly shared or independent) of the specified {@code requiredType},
+     * with injection points resolved
+     * and any life-cycle callback processed.
      *
      * @param <T>
-     * @param requiredType - must be a <i>Spring</i> managed type
+     * @param requiredType - only applicable to IoC container managed types
      * @return (non-null), an instance of {@code requiredType}, if available and unique
      * (i.e. not multiple candidates found with none marked as primary)
      *
@@ -75,11 +83,13 @@ public interface FactoryService {
     /**
      * Creates a new detached entity instance, with injection points resolved
      * and defaults applied.
+     *
      * <p>
-     * The entity will not yet be persisted, in other words: its not yet known to the persistence layer.
+     *     The entity will be detacted, in other words not yet persisted.
+     * </p>
      *
      * @param <T>
-     * @param domainClass - must be an entity type
+     * @param domainClass - only applicable to entity types
      * @throws IllegalArgumentException if domainClass is not an entity type
      * @apiNote forces the domainClass to be added to the meta-model if not already
      * @since 2.0
@@ -88,8 +98,6 @@ public interface FactoryService {
 
     /**
      * Creates a new detached entity instance, with injection points resolved.
-     * <p>
-     * The entity will not yet be persisted, in other words: its not yet known to the persistence layer.
      *
      * @param <T>
      * @param entity - most likely just new-ed up, without injection points resolved
@@ -111,10 +119,8 @@ public interface FactoryService {
     <T> T mixin(@NonNull Class<T> mixinClass, @NonNull Object mixedIn);
 
     /**
-     * Creates a new ViewModel instance,
-     * initialized with given {@code bookmark} (if any)
-     * then resolves any injection points
-     * and calls post-construct (if any).
+     * Creates a new ViewModel instance, with injection points resolved,
+     * and initialized according to the given {@code bookmark}
      *
      * @param viewModelClass
      * @param bookmark - ignored if {@code null}
@@ -126,8 +132,7 @@ public interface FactoryService {
 
     /**
      * Creates a new ViewModel instance,
-     * with injection points resolved,
-     * post-construct called
+     * with injection points resolved
      * and defaults applied.
      * @param viewModelClass
      * @throws IllegalArgumentException if viewModelClass is not a viewmodel type
@@ -135,13 +140,11 @@ public interface FactoryService {
      * @since 2.0
      */
     default <T> T viewModel(@NonNull final Class<T> viewModelClass) {
-        return viewModel(viewModelClass, (Bookmark)null);
+        return viewModel(viewModelClass, /*bookmark*/null);
     }
 
     /**
-     * Resolves injection points for
-     * and calls post-construct on
-     * given view-model instance.
+     * Resolves injection points for given ViewModel instance.
      * @param viewModel - most likely just new-ed up, without injection points resolved
      * @throws IllegalArgumentException if viewModelClass is not a viewmodel type
      * @apiNote forces the viewModel's class to be added to the meta-model if not already
@@ -151,11 +154,10 @@ public interface FactoryService {
 
     /**
      * Creates a new instance of the specified class,
-     * with injection points resolved,
-     * post-construct called
+     * with injection points resolved
      * and defaults applied.
-     * @param domainClass - must NOT be a <i>Spring</i> managed type
-     * @throws IllegalArgumentException if domainClass is a <i>Spring</i> managed type,
+     * @param domainClass - not applicable to IoC container managed types
+     * @throws IllegalArgumentException if domainClass is an IoC container managed type,
      *      or not recognized by the meta-model
      * @apiNote forces the domainClass to be added to the meta-model if not already
      * @since 2.0

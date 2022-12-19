@@ -26,10 +26,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
-import java.util.function.Consumer;
-import java.util.function.Predicate;
 
-import org.springframework.lang.Nullable;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.authority.mapping.GrantedAuthoritiesMapper;
@@ -45,11 +42,8 @@ import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.oauth2.jwt.JwtException;
 import org.springframework.util.CollectionUtils;
 
-import org.apache.causeway.commons.internal.base._Casts;
-import org.apache.causeway.commons.internal.base._NullSafe;
 import org.apache.causeway.core.config.CausewayConfiguration;
 
-import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.val;
 
@@ -71,7 +65,7 @@ public class KeycloakOauth2UserService extends OidcUserService {
      * {@link OidcUserRequest}.
      */
     @Override
-    public OidcUser loadUser(final OidcUserRequest userRequest) throws OAuth2AuthenticationException {
+    public OidcUser loadUser(OidcUserRequest userRequest) throws OAuth2AuthenticationException {
 
         OidcUser user = super.loadUser(userRequest);
 
@@ -89,45 +83,75 @@ public class KeycloakOauth2UserService extends OidcUserService {
      * @param userRequest
      * @return
      */
-    private Collection<? extends GrantedAuthority> extractKeycloakAuthorities(final OidcUserRequest userRequest) {
+    private Collection<? extends GrantedAuthority> extractKeycloakAuthorities(OidcUserRequest userRequest) {
 
         Jwt token = parseJwt(userRequest.getAccessToken().getTokenValue());
 
-        final List<String> combinedRoles = new ArrayList<>();
+        List<String> combinedRoles = new ArrayList<>();
 
         if(causewayConfiguration.getSecurity().getKeycloak().isExtractClientRoles()) {
+
             // attempt to parse out 'resource_access.${client_id}.roles'
-            val rolePrefix = Optional.ofNullable(causewayConfiguration.getSecurity().getKeycloak().getClientRolePrefix()).orElse("");
-            asNonEmptyMap(token.getClaims().get("resource_access"))
-            .ifPresent(resourceMap->{
-                final String clientId = userRequest.getClientRegistration().getClientId();
-                asNonEmptyMap(resourceMap.get(clientId))
-                .flatMap(clientResource->asNonEmptyCollection(clientResource.get("roles")))
-                .ifPresent(clientRoles->
-                    forEachNonNullIn(clientRoles, clientRole -> combinedRoles.add(rolePrefix + clientRole))
-                );
-            });
+
+            val resourceObj = token.getClaims().get("resource_access");
+            if (resourceObj instanceof Map) {
+                @SuppressWarnings("rawtypes")
+                val resourceMap = (Map) resourceObj;
+
+                val clientId = userRequest.getClientRegistration().getClientId();
+                val clientResourceObj = resourceMap.get(clientId);
+                if(clientResourceObj instanceof Map) {
+                    @SuppressWarnings("rawtypes")
+                    val clientResource = (Map) clientResourceObj;
+                    if (!CollectionUtils.isEmpty(clientResource)) {
+                        val clientRolesObj = clientResource.get("roles");
+                        if (clientResourceObj instanceof List) {
+                            @SuppressWarnings("unchecked")
+                            val clientRoles = (List<Object>) clientRolesObj;
+                            if (!CollectionUtils.isEmpty(clientRoles)) {
+                                val prefix = Optional.ofNullable(causewayConfiguration.getSecurity().getKeycloak().getClientRolePrefix()).orElse("");
+                                clientRoles.stream()
+                                        .filter(Objects::nonNull)
+                                        .map(clientRole -> prefix + clientRole)
+                                        .forEach(combinedRoles::add);
+                            }
+                        }
+                    }
+                }
+            }
         }
 
         if (causewayConfiguration.getSecurity().getKeycloak().isExtractRealmRoles()) {
             // attempt to parse out 'realm_access.roles'
-            val rolePrefix = Optional.ofNullable(causewayConfiguration.getSecurity().getKeycloak().getRealmRolePrefix()).orElse("");
-            asNonEmptyMap(token.getClaims().get("realm_access"))
-            .ifPresent(realmAccessMap->{
-                asNonEmptyCollection(realmAccessMap.get("roles"))
-                .ifPresent(realmRoles->{
-                    forEachNonNullIn(realmRoles, realmRole -> combinedRoles.add(rolePrefix + realmRole));
-                });
-            });
+            val realmAccessObj = token.getClaims().get("realm_access");
+            if (realmAccessObj instanceof Map) {
+                @SuppressWarnings("rawtypes")
+                val realmAccessMap = (Map)realmAccessObj;
+                Object realmRolesObj = realmAccessMap.get("roles");
+                if (realmRolesObj instanceof List) {
+                    @SuppressWarnings("unchecked")
+                    val realmRoles = (List<Object>) realmRolesObj;
+                    val prefix = Optional.ofNullable(causewayConfiguration.getSecurity().getKeycloak().getRealmRolePrefix()).orElse("");
+                    realmRoles.stream()
+                            .filter(Objects::nonNull)
+                            .map(realmRole -> prefix + realmRole)
+                            .forEach(combinedRoles::add);
+                }
+            }
         }
 
         if (causewayConfiguration.getSecurity().getKeycloak().isExtractRoles()) {
             // attempt to parse out 'roles'
-            val rolePrefix = Optional.ofNullable(causewayConfiguration.getSecurity().getKeycloak().getRolePrefix()).orElse("");
-            asNonEmptyCollection(token.getClaims().get("roles"))
-            .ifPresent(roles->{
-                forEachNonNullIn(roles, role -> combinedRoles.add(rolePrefix + role));
-            });
+            val rolesObj = token.getClaims().get("roles");
+            if (rolesObj instanceof List) {
+                @SuppressWarnings("unchecked")
+                val roles = (List<Object>) rolesObj;
+                val prefix = Optional.ofNullable(causewayConfiguration.getSecurity().getKeycloak().getRolePrefix()).orElse("");
+                roles.stream()
+                        .filter(Objects::nonNull)
+                        .map(role -> prefix + role)
+                        .forEach(combinedRoles::add);
+            }
         }
 
         Collection<? extends GrantedAuthority> authorities = AuthorityUtils.createAuthorityList(combinedRoles.toArray(new String[]{}));
@@ -137,29 +161,7 @@ public class KeycloakOauth2UserService extends OidcUserService {
 
     }
 
-    // -- HELPER
-
-    @SuppressWarnings("rawtypes")
-    private Optional<Map> asNonEmptyMap(final @Nullable Object x){
-        return _Casts.castTo(Map.class, x)
-                .filter(Predicate.not(_NullSafe::isEmpty));
-    }
-
-    @SuppressWarnings({ "rawtypes", "unchecked" })
-    private void forEachNonNullIn(final @NonNull Collection x, final @NonNull Consumer<Object> _do){
-        x.stream()
-                .filter(Objects::nonNull)
-                .forEach(_do);
-    }
-
-    @SuppressWarnings("rawtypes")
-    private Optional<Collection> asNonEmptyCollection(final @Nullable Object x){
-        return _Casts.castTo(Collection.class, x)
-                .filter(Predicate.not(_NullSafe::isEmpty));
-    }
-
-
-    private Jwt parseJwt(final String accessTokenValue) {
+    private Jwt parseJwt(String accessTokenValue) {
         try {
             // Token is already verified by spring security infrastructure
             return jwtDecoder.decode(accessTokenValue);

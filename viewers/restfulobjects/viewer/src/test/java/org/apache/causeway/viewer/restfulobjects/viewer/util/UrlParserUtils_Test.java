@@ -18,16 +18,16 @@
  */
 package org.apache.causeway.viewer.restfulobjects.viewer.util;
 
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.Assert.assertEquals;
 
 import org.apache.causeway.viewer.restfulobjects.applib.JsonRepresentation;
 
-class UrlParserUtils_Test {
+public class UrlParserUtils_Test {
 
     @Test
-    void domainTypeFromLink() throws Exception {
+    public void domainTypeFromLink() throws Exception {
         final JsonRepresentation link = JsonRepresentation.newMap();
         link.mapPutString("href", "http://localhost/domain-types/com.mycompany.myapp.Customer");
         final String oidFromHref = UrlParserUtils.domainTypeFrom(link);
@@ -35,7 +35,7 @@ class UrlParserUtils_Test {
     }
 
     @Test
-    void domainTypeFromLinkTrailingSlash() throws Exception {
+    public void domainTypeFromLinkTrailingSlash() throws Exception {
         final JsonRepresentation link = JsonRepresentation.newMap();
         link.mapPutString("href", "http://localhost/domain-types/com.mycompany.myapp.Customer/");
         final String oidFromHref = UrlParserUtils.domainTypeFrom(link);
@@ -43,7 +43,7 @@ class UrlParserUtils_Test {
     }
 
     @Test
-    void domainTypeFromLinkFollowingStuff() throws Exception {
+    public void domainTypeFromLinkFollowingStuff() throws Exception {
         final JsonRepresentation link = JsonRepresentation.newMap();
         link.mapPutString("href", "http://localhost/domain-types/com.mycompany.myapp.Customer/otherStuffHere");
         final String oidFromHref = UrlParserUtils.domainTypeFrom(link);

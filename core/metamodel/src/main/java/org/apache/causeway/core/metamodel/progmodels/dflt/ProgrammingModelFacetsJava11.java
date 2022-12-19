@@ -83,6 +83,7 @@ import org.apache.causeway.core.metamodel.facets.properties.validating.dflt.Prop
 import org.apache.causeway.core.metamodel.facets.properties.validating.method.PropertyValidateFacetViaMethodFactory;
 import org.apache.causeway.core.metamodel.facets.value.semantics.ValueSemanticsAnnotationFacetFactory;
 import org.apache.causeway.core.metamodel.methods.DomainIncludeAnnotationEnforcesMetamodelContributionValidator;
+import org.apache.causeway.core.metamodel.methods.MethodByClassMap;
 import org.apache.causeway.core.metamodel.postprocessors.all.DescribedAsFromTypePostProcessor;
 import org.apache.causeway.core.metamodel.postprocessors.all.i18n.SynthesizeObjectNamingPostProcessor;
 import org.apache.causeway.core.metamodel.postprocessors.all.i18n.TranslationPostProcessor;
@@ -181,11 +182,13 @@ extends ProgrammingModelAbstract {
         // must come after CssClassFacetOnMemberFactory
         addFactory(FacetProcessingOrder.E1_MEMBER_MODELLING, new CssClassFacetOnActionFromConfiguredRegexFactory(mmc));
 
-        addFactory(FacetProcessingOrder.E1_MEMBER_MODELLING, new ViewModelFacetFactory(mmc));
+        val postConstructMethodsCache = new MethodByClassMap();
+
+        addFactory(FacetProcessingOrder.E1_MEMBER_MODELLING, new ViewModelFacetFactory(mmc, postConstructMethodsCache));
         addFactory(FacetProcessingOrder.E1_MEMBER_MODELLING, new JaxbFacetFactory(mmc));
 
         // must come after RecreatableObjectFacetFactory
-        addFactory(FacetProcessingOrder.E1_MEMBER_MODELLING, new DomainObjectAnnotationFacetFactory(mmc));
+        addFactory(FacetProcessingOrder.E1_MEMBER_MODELLING, new DomainObjectAnnotationFacetFactory(mmc, postConstructMethodsCache));
 
         // must come after the property/collection accessor+mutator facet factories
         addFactory(FacetProcessingOrder.E1_MEMBER_MODELLING, new ActionAnnotationFacetFactory(mmc));

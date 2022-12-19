@@ -35,26 +35,101 @@
     </description>
 
 	<properties>
-	
+
+		<causeway.skipTests>false</causeway.skipTests>
+		<maven.test.skip>${causeway.skipTests}</maven.test.skip>
+
 		<coreBaseDir>${project.build.directory}/..</coreBaseDir>
-		
+
+		<jar-plugin.automaticModuleName>org.apache.causeway.core</jar-plugin.automaticModuleName>
 		<git-plugin.propertiesDir>org/apache/causeway/core</git-plugin.propertiesDir>
 		<git-plugin.gitDir>${coreBaseDir}/../.git</git-plugin.gitDir>
 
 		<dependency.locations.enabled>false</dependency.locations.enabled>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
 		<testsToExclude>**/*IntegrationTest.java</testsToExclude>
 
 		<checkstyle.configLocation>${coreBaseDir}/codequality/checkstyle.xml</checkstyle.configLocation>
 		<pmd.ruleset>${coreBaseDir}/codequality/pmd.xml</pmd.ruleset>
 
+		<license.additional-notes>In addition, Apache Causeway uses some
+			JavaScript libraries:
+
+			* Twitter Bootstrap, licensed under MIT [1]
+			*
+			Bootstrap-Growl (JQuery plugin), licensed under MIT license [2]
+			*
+			LiveQuery (JQuery plugin), licensed under MIT license [3]
+			* Wicket
+			Bootstrap, licenced under ASL 2 [4]
+			* Bootstrap Datetimepicker,
+			licensed under MIT licence [5]
+			* Moment.js, licenced under MIT licence
+			[6]
+
+			[1] https://github.com/twbs/bootstrap/blob/master/LICENSE
+			[2]
+			https://github.com/mouse0270/bootstrap-growl/blob/master/LICENSE
+			[3]
+			https://github.com/brandonaaron/livequery#license
+			[4]
+			https://github.com/l0rdn1kk0n/wicket-bootstrap
+			[5]
+			https://github.com/Eonasdan/bootstrap-datetimepicker/blob/master/LICENSE
+			[6] https://github.com/moment/moment/blob/develop/LICENSE</license.additional-notes>
+
 	</properties>
 
 	<pluginRepositories>
+		<pluginRepository>
+			<id>DataNucleus_2</id>
+			<url>https://www.datanucleus.org/downloads/maven2/</url>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</pluginRepository>
 	</pluginRepositories>
 
 	<repositories>
+		<repository>
+			<id>central</id>
+			<name>Central Repository</name>
+			<url>https://repo.maven.apache.org/maven2</url>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</repository>
+		<repository>
+			<id>Apache Repository</id>
+			<url>https://repository.apache.org/</url>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</repository>
+		<!-- <repository> <id>Spring Milestones</id> <url>https://repo.spring.io/milestone/</url>
+			<snapshots> <enabled>false</enabled> </snapshots> </repository> -->
+
+		<!-- required for RestEasy -->
+		<repository>
+			<id>JBoss Public Release</id>
+			<url>https://repository.jboss.org/nexus/content/groups/public-jboss/</url>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</repository>
+
+		<repository>
+			<id>sonatype-snapshots</id>
+			<url>https://oss.sonatype.org/content/repositories/snapshots</url>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+		</repository>
+
 	</repositories>
+
 
 	<build>
 		<outputDirectory>${project.build.directory}/classes</outputDirectory>
@@ -62,6 +137,75 @@
 
 		<pluginManagement>
 			<plugins>
+
+				<!-- IDE support for Eclipse (if not using m2e). (NetBeans 6.7+ and IDEA
+					7.0+ also have built-in support -->
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-eclipse-plugin</artifactId>
+					<version>${maven-eclipse-plugin.version}</version>
+					<configuration>
+						<downloadSources>true</downloadSources>
+						<downloadJavadocs>true</downloadJavadocs>
+						<projectNameTemplate>[groupId].[artifactId]</projectNameTemplate>
+					</configuration>
+					<!-- use mvn eclipse:eclipse (no goals bound to phases) -->
+				</plugin>
+
+				<!-- Compile -->
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-compiler-plugin</artifactId>
+					<version>${maven-compiler-plugin.version}</version>
+					<configuration>
+						<showDeprecation>false</showDeprecation>
+						<showWarnings>false</showWarnings>
+						<!-- Java compliance level, to be overridden with option maven.compiler.release -->
+						<annotationProcessorPaths>
+							<path>
+								<groupId>org.projectlombok</groupId>
+								<artifactId>lombok</artifactId>
+								<version>${lombok.version}</version>
+							</path>
+						</annotationProcessorPaths>
+					</configuration>
+					<!-- goal:compile binds to phase:compile -->
+					<!-- goal:testCompile binds to phase:test-compile -->
+				</plugin>
+
+				<!-- Test Reporting -->
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-surefire-report-plugin</artifactId>
+					<version>${maven-surefire-plugin.version}</version>
+					<!-- goal:report is a report so is configured in the reporting section;
+						invokes phase:test before running itself -->
+				</plugin>
+
+
+				<!-- Packaging: source jars of main and test code -->
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-source-plugin</artifactId>
+					<version>${maven-source-plugin.version}</version>
+					<configuration>
+						<includePom>true</includePom>
+					</configuration>
+					<!-- goal:aggregate (for aggregator modules) binds to phase:package -->
+					<!-- goal:jar and goal:test-jar are meant to bind to phase:package,
+						but doesn't seem to so bound explicitly -->
+					<executions>
+						<execution>
+							<id>package-jars</id>
+							<phase>package</phase>
+							<goals>
+								<goal>jar</goal>
+								<goal>test-jar</goal>
+							</goals>
+						</execution>
+					</executions>
+				</plugin>
+
 
 				<plugin>
 					<groupId>pl.project13.maven</groupId>
@@ -95,8 +239,132 @@
 
 				</plugin>
 
+
+				<!-- Packaging: jar -->
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-jar-plugin</artifactId>
+					<version>${maven-jar-plugin.version}</version>
+					<!-- goal:jar binds to phase:package -->
+					<!-- goal:test-jar supposedly binds to phase:package, but seems to need
+						this explicit binding. -->
+					<executions>
+						<execution>
+							<id>package-test-jar</id>
+							<phase>package</phase>
+							<goals>
+								<goal>test-jar</goal>
+							</goals>
+							<configuration>
+								<archive>
+									<manifest>
+										<addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
+										<addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+									</manifest>
+								</archive>
+							</configuration>
+						</execution>
+					</executions>
+					<configuration>
+						<archive>
+							<manifest>
+								<addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
+								<addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+							</manifest>
+							<manifestEntries>
+								<Automatic-Module-Name>${jar-plugin.automaticModuleName}</Automatic-Module-Name>
+								<Implementation-Vendor-Id>org.apache.causeway</Implementation-Vendor-Id>
+								<Implementation-Vendor>Apache Causeway™ Project</Implementation-Vendor>
+								<Bundle-SymbolicName>${jar-plugin.automaticModuleName}</Bundle-SymbolicName>
+								<SCM-Revision>${git.commit.id.abbrev}</SCM-Revision>
+								<!-- required for DN plugin.xml loading -->
+								<Bundle-SymbolicName>${jar-plugin.automaticModuleName}</Bundle-SymbolicName>
+								<!-- no requirement as of yet. <Bundle-ManifestVersion>2</Bundle-ManifestVersion>
+									<Bundle-Name>${jar-plugin.automaticModuleName}</Bundle-Name> <Bundle-Version>2.0.0-SNAPSHOT</Bundle-Version>
+									<Bundle-Vendor>Apache Causeway™ Project</Bundle-Vendor> -->
+							</manifestEntries>
+						</archive>
+					</configuration>
+				</plugin>
+
+
+				<!-- Packaging: WAR -->
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-war-plugin</artifactId>
+					<version>${maven-war-plugin.version}</version>
+					<configuration>
+						<warSourceExcludes>
+							WEB-INF/lib/*.jar
+						</warSourceExcludes>
+						<archive>
+							<manifest>
+								<addClasspath>true</addClasspath>
+								<classpathPrefix>lib/</classpathPrefix>
+							</manifest>
+						</archive>
+					</configuration>
+					<!-- goal:war binds to phase:package -->
+				</plugin>
+
+
+				<!-- release (is also configured in descendant modules) -->
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-release-plugin</artifactId>
+					<version>${maven-release-plugin.version}</version>
+					<configuration>
+						<!-- overriddes the default ('clean verify') as workaround -->
+						<preparationGoals>clean install</preparationGoals>
+						<autoVersionSubmodules>true</autoVersionSubmodules>
+						<localCheckout>true</localCheckout>
+						<pushChanges>false</pushChanges>
+						<waitBeforeTagging>1</waitBeforeTagging>
+					</configuration>
+					<!-- goal:clean (for aggregator modules) has no bindings; cleans up
+						release.properties and any backup POM files -->
+					<!-- goal:prepare (for aggregator modules) has no bindings; prepares
+						for release in SCM (modifying x.x-SNAPSHOT to x.x) -->
+					<!-- goal:update-versions (for aggregator modules) has no bindings;
+						updates versions eg to SNAPSHOT -->
+					<!-- etc; none of the goals has a binding. -->
+				</plugin>
+
+				<plugin>
+					<groupId>net.alchim31.maven</groupId>
+					<artifactId>yuicompressor-maven-plugin</artifactId>
+					<version>1.5.1</version>
+					<configuration>
+						<statistics>true</statistics>
+						<jswarn>false</jswarn>
+						<suffix>.min</suffix>
+						<excludes>
+							<!-- -->
+							<exclude>**/jquery.causeway.wicket.viewer.js</exclude>
+							<!-- select 2 -->
+							<exclude>**/i18n/*.js</exclude>
+							<exclude>**/select2*.js</exclude>
+							<!-- datetime picker -->
+							<exclude>**/moment-with-locales.js</exclude>
+							<exclude>**/moment-with-locales.min.js</exclude>
+							<exclude>**/tempusdominus-bootstrap-4.js</exclude>
+							<exclude>**/tempusdominus-bootstrap-4.min.js</exclude>
+							<!-- boostrap growl -->
+							<exclude>**/bootstrap-growl.js</exclude>
+							<exclude>**/bootstrap-growl.min.js</exclude>
+						</excludes>
+					</configuration>
+					<executions>
+						<execution>
+							<goals>
+								<goal>compress</goal>
+							</goals>
+						</execution>
+					</executions>
+				</plugin>
 			</plugins>
 		</pluginManagement>
+
 
 		<!-- build plugins; apply to all inheriting modules. Note that some plugins
 			also come from the "super-POM" for the default bindings. For example, in
@@ -104,16 +372,39 @@
 			and deploy plugins are automatically included because they provide the default
 			bindings. For the 'site' lifecycle, the site plugin is automatically included. -->
 		<plugins>
+
 			<!-- run using: mvn org.apache.rat:apache-rat-plugin:check -->
 			<plugin>
 				<groupId>org.apache.rat</groupId>
 				<artifactId>apache-rat-plugin</artifactId>
-				<inherited>true</inherited>
 			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-eclipse-plugin</artifactId>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+			</plugin>
+
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-release-plugin</artifactId>
-				<inherited>true</inherited>
+				<configuration>
+					<!-- overrides the default ('clean verify') -->
+					<preparationGoals>clean install</preparationGoals>
+					<autoVersionSubmodules>true</autoVersionSubmodules>
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-deploy-plugin</artifactId>
+				<configuration>
+					<skip>false</skip>
+				</configuration>
 			</plugin>
 		</plugins>
 	</build>
@@ -171,6 +462,11 @@
 			<dependency>
 				<groupId>org.apache.causeway.core</groupId>
 				<artifactId>causeway-core-internaltestsupport</artifactId>
+				<version>2.0.0-SNAPSHOT</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.causeway.core</groupId>
+				<artifactId>causeway-core-internaltestvintage</artifactId>
 				<version>2.0.0-SNAPSHOT</version>
 			</dependency>
 			<dependency>
@@ -327,7 +623,7 @@
 			</dependency>
 			<dependency>
 				<groupId>org.apache.causeway.viewer</groupId>
-				<artifactId>causeway-viewer-restfulobjects-jaxrsresteasy</artifactId>
+				<artifactId>causeway-viewer-restfulobjects-jaxrsresteasy4</artifactId>
 				<version>2.0.0-SNAPSHOT</version>
 			</dependency>
 			<dependency>
@@ -560,8 +856,8 @@
 			</dependency>
 
 			<dependency>
-			    <groupId>io.swagger.core.v3</groupId>
-			    <artifactId>swagger-core</artifactId>
+				<groupId>io.swagger</groupId>
+				<artifactId>swagger-core</artifactId>
 				<version>${swagger-core.version}</version>
 			</dependency>
 
@@ -1005,7 +1301,7 @@
 			</dependency>
 
 			<dependency>
-				<groupId>org.webjars.npm</groupId>
+				<groupId>org.webjars.bower</groupId>
 				<artifactId>summernote</artifactId>
 				<version>${summernote.version}</version>
 			</dependency>
@@ -1062,6 +1358,80 @@
 			<artifactId>lombok</artifactId>
 			<scope>provided</scope>
 		</dependency>
+		<dependency>
+			<groupId>de.agilecoders.wicket</groupId>
+			<artifactId>wicket-bootstrap-extensions</artifactId>
+			<exclusions>
+				<exclusion>
+					<groupId>org.apache.wicket</groupId>
+					<artifactId>wicket-util</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.apache.wicket</groupId>
+					<artifactId>wicket-request</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.apache.wicket</groupId>
+					<artifactId>wicket-core</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.apache.wicket</groupId>
+					<artifactId>wicket-extensions</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.webjars</groupId>
+					<artifactId>bootstrap</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.webjars</groupId>
+					<artifactId>font-awesome</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.webjars</groupId>
+					<artifactId>jquery</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.webjars</groupId>
+					<artifactId>jquerypp</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.webjars</groupId>
+					<artifactId>jquery-ui</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.webjars</groupId>
+					<artifactId>typeaheadjs</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.webjars</groupId>
+					<artifactId>x-editable-bootstrap</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.webjars</groupId>
+					<artifactId>spin-js</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>com.google.javascript</groupId>
+					<artifactId>closure-compiler</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>com.google.javascript</groupId>
+					<artifactId>closure-compiler-unshaded</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.webjars.bower</groupId>
+					<artifactId>summernote</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>com.google.guava</groupId>
+					<artifactId>guava</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.webjars.bower</groupId>
+					<artifactId>momentjs</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
 	</dependencies>
 
 	<profiles>
@@ -1094,6 +1464,38 @@
 		</profile>
 
 		<profile>
+			<id>jdk11</id>
+			<activation>
+				<jdk>[11,)</jdk>
+			</activation>
+
+			<build>
+				<plugins>
+					<!-- Compile -->
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-compiler-plugin</artifactId>
+						<configuration>
+							<showDeprecation>true</showDeprecation>
+							<showWarnings>true</showWarnings>
+							<!-- Java compliance level, to be overridden with option maven.compiler.release -->
+						</configuration>
+					</plugin>
+
+					<plugin>
+						<groupId>org.jvnet.jaxb2.maven2</groupId>
+						<artifactId>maven-jaxb2-plugin</artifactId>
+						<version>0.15.1</version>
+						<configuration>
+							<removeOldOutput>true</removeOldOutput>
+							<episode>true</episode>
+						</configuration>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+
+		<profile>
 			<id>owasp</id>
 			<activation>
 				<property>
@@ -1105,7 +1507,7 @@
 					<plugin>
 						<groupId>org.owasp</groupId>
 						<artifactId>dependency-check-maven</artifactId>
-						<version>7.3.2</version>
+						<version>7.3.0</version>
 						<executions>
 							<execution>
 								<id>owasp-aggregate</id>
@@ -1194,12 +1596,58 @@
 				<!-- <file> <exists>${basedir}/logging-dn-enhance.properties</exists>
 					</file> -->
 			</activation>
+			<properties>
+				<datanucleus-maven-plugin.log4jConfiguration>${basedir}/logging-dn-enhance.properties</datanucleus-maven-plugin.log4jConfiguration>
+				<datanucleus-maven-plugin.verbose>true</datanucleus-maven-plugin.verbose>
+				<datanucleus-maven-plugin.fork>false</datanucleus-maven-plugin.fork>
+			</properties>
 			<build>
 				<plugins>
 					<plugin>
 						<groupId>org.datanucleus</groupId>
 						<artifactId>datanucleus-maven-plugin</artifactId>
-						<inherited>true</inherited>
+						<version>${datanucleus-maven-plugin.version}</version>
+						<configuration>
+							<fork>${datanucleus-maven-plugin.fork}</fork>
+							<log4jConfiguration>${datanucleus-maven-plugin.log4jConfiguration}</log4jConfiguration>
+							<verbose>${datanucleus-maven-plugin.verbose}</verbose>
+						</configuration>
+						<executions>
+							<execution>
+								<id>process-classes</id>
+								<phase>process-classes</phase>
+								<goals>
+									<goal>enhance</goal>
+								</goals>
+							</execution>
+							<execution>
+								<id>process-test-classes</id>
+								<phase>process-test-classes</phase>
+								<goals>
+									<goal>test-enhance</goal>
+								</goals>
+								<configuration>
+									<metadataDirectory>${project.build.testOutputDirectory}</metadataDirectory>
+								</configuration>
+							</execution>
+						</executions>
+						<dependencies>
+							<dependency>
+								<groupId>org.datanucleus</groupId>
+								<artifactId>datanucleus-core</artifactId>
+								<version>${datanucleus-core.version}</version>
+							</dependency>
+							<dependency>
+								<groupId>org.datanucleus</groupId>
+								<artifactId>datanucleus-api-jdo</artifactId>
+								<version>${datanucleus-api-jdo.version}</version>
+							</dependency>
+							<dependency>
+								<groupId>org.datanucleus</groupId>
+								<artifactId>datanucleus-jodatime</artifactId>
+								<version>${datanucleus-jodatime.version}</version>
+							</dependency>
+						</dependencies>
 					</plugin>
 				</plugins>
 			</build>
@@ -1224,6 +1672,7 @@
 		<module>config</module>
 		<module>interaction</module>
 		<module>internaltestsupport</module>
+		<module>internaltestvintage</module>
 		<module>metamodel</module>
 		<module>runtime</module>
 		<module>runtimeservices</module>

@@ -18,6 +18,7 @@
  */
 package org.apache.causeway.viewer.restfulobjects.viewer.resources;
 
+import javax.inject.Inject;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -27,6 +28,9 @@ import javax.ws.rs.core.Response;
 import org.springframework.stereotype.Component;
 
 import org.apache.causeway.applib.annotation.Where;
+import org.apache.causeway.applib.services.iactnlayer.InteractionLayerTracker;
+import org.apache.causeway.core.config.CausewayConfiguration;
+import org.apache.causeway.core.metamodel.context.MetaModelContext;
 import org.apache.causeway.viewer.restfulobjects.applib.JsonRepresentation;
 import org.apache.causeway.viewer.restfulobjects.applib.RepresentationType;
 import org.apache.causeway.viewer.restfulobjects.applib.RestfulMediaType;
@@ -47,8 +51,12 @@ public class HomePageResourceServerside
 extends ResourceAbstract
 implements HomePageResource {
 
-    public HomePageResourceServerside() {
-        super();
+    @Inject
+    public HomePageResourceServerside(
+            final MetaModelContext metaModelContext,
+            final CausewayConfiguration causewayConfiguration,
+            final InteractionLayerTracker iInteractionLayerTracker) {
+        super(metaModelContext, causewayConfiguration, iInteractionLayerTracker);
         log.debug("<init>");
     }
 

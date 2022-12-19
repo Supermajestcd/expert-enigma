@@ -50,7 +50,9 @@ class ShiroAuthenticatorOrAuthorizorTest_authenticate {
     @BeforeEach
     public void setUp() throws Exception {
 
-         val configuration = new CausewayConfiguration(null);
+        // PRODUCTION
+
+        val configuration = new CausewayConfiguration(null);
         configuration.getSecurity().getShiro().setAutoLogoutIfAlreadyAuthenticated(false);
 
         authenticator = new AuthenticatorShiro(configuration);

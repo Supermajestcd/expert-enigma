@@ -59,7 +59,7 @@ import org.apache.causeway.persistence.jpa.eclipselink.CausewayModulePersistence
 import org.apache.causeway.schema.ixn.v2.InteractionDto;
 import org.apache.causeway.security.bypass.CausewayModuleSecurityBypass;
 import org.apache.causeway.testing.fixtures.applib.CausewayModuleTestingFixturesApplib;
-import org.apache.causeway.viewer.restfulobjects.jaxrsresteasy.CausewayModuleViewerRestfulObjectsJaxrsResteasy;
+import org.apache.causeway.viewer.restfulobjects.jaxrsresteasy4.CausewayModuleViewerRestfulObjectsJaxrsResteasy4;
 
 @SpringBootTest(
         classes = OutboxRestClient_IntegTest.AppManifest.class,
@@ -76,7 +76,7 @@ public class OutboxRestClient_IntegTest  {
             CausewayModulePersistenceJpaEclipselink.class,
             CausewayModuleTestingFixturesApplib.class,
             CausewayModuleExtExecutionOutboxPersistenceJpa.class,
-            CausewayModuleViewerRestfulObjectsJaxrsResteasy.class,
+            CausewayModuleViewerRestfulObjectsJaxrsResteasy4.class,
             CausewayModuleCoreWebapp.class,
 
             // mixins
@@ -237,7 +237,7 @@ public class OutboxRestClient_IntegTest  {
 
     }
 
-    private void bump(final org.apache.causeway.extensions.executionoutbox.applib.integtest.model.Counter counter, final int numberOfTimes) {
+    private void bump(org.apache.causeway.extensions.executionoutbox.applib.integtest.model.Counter counter, int numberOfTimes) {
         IntStream.range(0, numberOfTimes).forEach(x -> {
             wrapperFactory.wrapMixin(Counter_bumpUsingMixin.class, counter).act();
         });

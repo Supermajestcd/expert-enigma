@@ -18,12 +18,12 @@
  */
 package org.apache.causeway.viewer.restfulobjects.applib.util;
 
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 
-class PathNodeTest_equalsHashcode {
+public class PathNodeTest_equalsHashcode {
 
     @Test
     public void simple() throws Exception {

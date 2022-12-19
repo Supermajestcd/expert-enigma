@@ -23,29 +23,32 @@ import org.apache.shiro.authz.permission.WildcardPermission;
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeMatcher;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 
 import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 import org.apache.causeway.security.shiro.authorization.CausewayPermission;
 
-class CausewayPermissionTest_typicalUsage {
+public class CausewayPermissionTest_typicalUsage {
 
-    @BeforeEach
-    void setUp() throws Exception {
+
+    @Before
+    public void setUp() throws Exception {
         CausewayPermission.resetVetoedPermissions();
     }
 
-    @AfterEach
-    void tearDown() throws Exception {
+    @After
+    public void tearDown() throws Exception {
         CausewayPermission.resetVetoedPermissions();
     }
+
+
 
     @Test
-    void typicalUsageWithinCauseway() throws Exception {
+    public void typicalUsageWithinCauseway() throws Exception {
 
         // these are the permissions that Causeway will check
         WildcardPermission viewCustomerChangeAddress = new WildcardPermission("com.mycompany.myapp:Customer:changeAddress:r");
@@ -87,12 +90,13 @@ class CausewayPermissionTest_typicalUsage {
         assertThat(viewCustomerChangeAddress, not(permittedBy("!foo/com.mycompany.myapp:Customer:changeAddress:r")));
         assertThat(useCustomerChangeAddress, not(permittedBy("!foo/com.mycompany.myapp:Customer:changeAddress:w")));
 
-        // and check that two wrongs don't make a right (ie the ! means veto, rather than "not")
+        // and check that two wrongs don't make a right (ie the ! means veto, rather than "not") 
         assertThat(useCustomerChangeAddress, not(permittedBy("!foo/com.mycompany.myapp:Customer:changeAddress:r")));
     }
 
+
     @Test
-    void vetoableDomains() throws Exception {
+    public void vetoableDomains() throws Exception {
 
         // these are the permissions that Causeway will check
         WildcardPermission viewCustomerChangeAddress = new WildcardPermission("com.mycompany.myapp:Customer:changeAddress:r");
@@ -108,8 +112,10 @@ class CausewayPermissionTest_typicalUsage {
         assertThat(viewCustomerChangeAddress, permittedBy("bar/com.mycompany.myapp:Customer:*"));
     }
 
+
+
     @Test
-    void defaultPackage() throws Exception {
+    public void defaultPackage() throws Exception {
 
         // these are the permissions that Causeway will check
         WildcardPermission viewCustomerChangeAddress = new WildcardPermission(":Customer:changeAddress:r");
@@ -125,6 +131,7 @@ class CausewayPermissionTest_typicalUsage {
         assertThat(viewCustomerChangeAddress, permittedBy("*"));
     }
 
+
     private static Matcher<? super Permission> permittedBy(final String permissionString) {
         return permittedBy(new CausewayPermission(permissionString));
     }
@@ -133,12 +140,12 @@ class CausewayPermissionTest_typicalUsage {
         return new TypeSafeMatcher<Permission>() {
 
             @Override
-            public void describeTo(final Description description) {
+            public void describeTo(Description description) {
                 description.appendText("permitted by " + wp.toString());
             }
 
             @Override
-            protected boolean matchesSafely(final Permission item) {
+            protected boolean matchesSafely(Permission item) {
                 return wp.implies(item);
             }
         };

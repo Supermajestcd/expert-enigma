@@ -17,6 +17,7 @@
  * under the License.
  *
  */
+
 package org.apache.causeway.persistence.jdo.metamodel.facets.prop.column;
 
 import java.util.Optional;

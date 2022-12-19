@@ -38,9 +38,6 @@ import lombok.val;
 import lombok.extern.log4j.Log4j2;
 
 /**
- * Implementation of {@link CommandSubscriber} responsible for persisting the {@link Command} as a
- * {@link CommandLogEntry}.
- *
  * @since 2.0 {@index}
  */
 @Service

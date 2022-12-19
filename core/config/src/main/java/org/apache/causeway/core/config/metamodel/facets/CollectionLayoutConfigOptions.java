@@ -24,11 +24,12 @@ import org.apache.causeway.core.config.CausewayConfiguration;
 
 import lombok.Getter;
 import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 import lombok.experimental.Accessors;
 
 public final class CollectionLayoutConfigOptions {
 
-    //@RequiredArgsConstructor XXX[ISIS-3287] don't use lombok here: hibernate-validation bug
+    @RequiredArgsConstructor
     public enum TableDecoration {
 
         /**
@@ -47,10 +48,6 @@ public final class CollectionLayoutConfigOptions {
 
         public boolean isNone() { return this == NONE; }
         public boolean isDataTablesNet() { return this == DATATABLES_NET; }
-
-        private TableDecoration(final String cssClass) {
-            this.cssClass = cssClass;
-        }
     }
 
     // -- FACTORIES
