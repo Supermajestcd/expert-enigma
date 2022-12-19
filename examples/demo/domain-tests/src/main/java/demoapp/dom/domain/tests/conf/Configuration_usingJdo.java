@@ -25,26 +25,26 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.annotation.PropertySources;
 
-import org.apache.causeway.core.config.presets.CausewayPresets;
-import org.apache.causeway.core.runtimeservices.CausewayModuleCoreRuntimeServices;
-import org.apache.causeway.persistence.jdo.datanucleus.CausewayModulePersistenceJdoDatanucleus;
-import org.apache.causeway.testing.fixtures.applib.CausewayModuleTestingFixturesApplib;
+import org.apache.isis.core.config.presets.IsisPresets;
+import org.apache.isis.core.runtimeservices.IsisModuleCoreRuntimeServices;
+import org.apache.isis.persistence.jdo.datanucleus.IsisModulePersistenceJdoDatanucleus;
+import org.apache.isis.testing.fixtures.applib.IsisModuleTestingFixturesApplib;
 
 import demoapp.web.DemoAppManifestJdo;
 
 @SpringBootConfiguration
 @EnableAutoConfiguration
 @Import({
-    CausewayModuleCoreRuntimeServices.class,
-    CausewayModulePersistenceJdoDatanucleus.class,
-    CausewayModuleTestingFixturesApplib.class,
+    IsisModuleCoreRuntimeServices.class,
+    IsisModulePersistenceJdoDatanucleus.class,
+    IsisModuleTestingFixturesApplib.class,
 
     // demo domain
     DemoAppManifestJdo.class,
 })
 @PropertySources({
-    @PropertySource(CausewayPresets.NoTranslations),
-    @PropertySource(CausewayPresets.H2InMemory_withUniqueSchema),
+    @PropertySource(IsisPresets.NoTranslations),
+    @PropertySource(IsisPresets.H2InMemory_withUniqueSchema),
 })
 @Profile("demo-jdo")
 public class Configuration_usingJdo {

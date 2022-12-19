@@ -22,12 +22,11 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.apache.causeway.applib.services.error.ErrorDetails;
-import org.apache.causeway.applib.services.error.ErrorReportingService;
-import org.apache.causeway.applib.services.error.SimpleTicket;
-import org.apache.causeway.applib.services.error.Ticket.StackTracePolicy;
+import org.apache.isis.applib.services.error.ErrorDetails;
+import org.apache.isis.applib.services.error.ErrorReportingService;
+import org.apache.isis.applib.services.error.SimpleTicket;
 
-import static org.apache.causeway.commons.internal.base._NullSafe.stream;
+import static org.apache.isis.commons.internal.base._NullSafe.stream;
 
 import lombok.Builder;
 
@@ -67,7 +66,7 @@ public class EmailTicket extends SimpleTicket {
 
         // -- STACKTRACE FORMATTING
 
-        public static String mailBodyOf(final ErrorDetails errorDetails) {
+        public static String mailBodyOf(ErrorDetails errorDetails) {
             return "Stacktrace:%0D%0A=================%0D%0A" +
                     stream(errorDetails.getStackTraceDetailPerCause())
             .map(MailTo::causeToString)
@@ -75,7 +74,7 @@ public class EmailTicket extends SimpleTicket {
             ;
         }
 
-        private static String causeToString(final List<String> list) {
+        private static String causeToString(List<String> list) {
             return "Cause%0D%0A------------%0D%0A" +
                     stream(list)
             .map(entry->String.format("# %s", entry))
@@ -92,12 +91,12 @@ public class EmailTicket extends SimpleTicket {
     private MailTo mailTo;
 
     public EmailTicket(
-            final MailTo mailTo,
-            final String reference,
-            final String userMessage,
-            final String details,
-            final StackTracePolicy stackTracePolicy,
-            final String kittenUrl) {
+            MailTo mailTo,
+            String reference,
+            String userMessage,
+            String details,
+            StackTracePolicy stackTracePolicy,
+            String kittenUrl) {
         super(reference, userMessage, details, stackTracePolicy, kittenUrl);
         this.mailTo = mailTo;
     }
