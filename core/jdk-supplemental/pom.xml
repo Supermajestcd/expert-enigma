@@ -209,7 +209,7 @@
 			<!-- provides @Inject, @Qualifier, -->
 		    <groupId>jakarta.inject</groupId>
 		    <artifactId>jakarta.inject-api</artifactId>
-		    <version>1.0.5</version> <!-- do not upgrade until Spring 6 -->
+		    <version>2.0.1</version> <!-- do not upgrade until Spring 6 -->
 		</dependency>
 		<dependency>
         	<!-- provides javax.enterprise.inject.* -->
