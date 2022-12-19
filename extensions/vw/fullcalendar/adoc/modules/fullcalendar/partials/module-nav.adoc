@@ -1,5 +1,5 @@
 
 
 
-** xref:vw:fullcalendar:about.adoc[Full Calendar]
+** xref:vw:fullcalendar:about.adoc[fullcalendar]
 

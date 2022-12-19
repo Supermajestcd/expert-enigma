@@ -15,7 +15,7 @@ NOTE: the HSQLDB Manager is a Swing application, so this can only be used in a l
 
 include::docs:mavendeps:partial$setup-and-configure-dependencyManagement.adoc[leveloffset=+2]
 
-In addition, add an entry for the BOM of all the testing support libraries:
+In addition, add a section for the BOM of all the testing support libraries:
 
 [source,xml,subs="attributes+"]
 .pom.xml
@@ -23,11 +23,11 @@ In addition, add an entry for the BOM of all the testing support libraries:
 <dependencyManagement>
     <dependencies>
         <dependency>
-        	<groupId>org.apache.causeway.testing</groupId>
-	        <artifactId>causeway-testing</artifactId>
+        	<groupId>org.apache.isis.testing</groupId>
+	        <artifactId>isis-testing</artifactId>
             <scope>import</scope>
             <type>pom</type>
-            <version>{page-causewayrel}</version>
+            <version>{page-isisrel}</version>
         </dependency>
     </dependencies>
 </dependencyManagement>
@@ -43,8 +43,8 @@ In the domain module(s) of your application, add the following dependency:
 ----
 <dependencies>
     <dependency>
-        <groupId>org.apache.causeway.testing</groupId>
-        <artifactId>causeway-testing-h2console-ui</artifactId>
+        <groupId>org.apache.isis.testing</groupId>
+        <artifactId>isis-testing-h2console-ui</artifactId>
     </dependency>
 </dependencies>
 ----

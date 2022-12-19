@@ -15,7 +15,5 @@
 
 ** Security
 
-*** xref:security:bypass:about.adoc[Bypass]
-*** xref:security:shiro:about.adoc[Shiro]
-*** xref:security:spring:about.adoc[Spring]
-*** xref:security:keycloak:about.adoc[Keycloak]
+*** xref:security:ROOT:about.adoc[Security Guide]
+

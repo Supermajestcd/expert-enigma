@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Licensed to the Apache Software Foundation (ASF) under one or more contributor
-	license agreements. See the NOTICE file distributed with this work for additional
-	information regarding copyright ownership. The ASF licenses this file to
-	you under the Apache License, Version 2.0 (the "License"); you may not use
-	this file except in compliance with the License. You may obtain a copy of
-	the License at http://www.apache.org/licenses/LICENSE-2.0 Unless required
-	by applicable law or agreed to in writing, software distributed under the
-	License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS
-	OF ANY KIND, either express or implied. See the License for the specific
+<!-- Licensed to the Apache Software Foundation (ASF) under one or more contributor 
+	license agreements. See the NOTICE file distributed with this work for additional 
+	information regarding copyright ownership. The ASF licenses this file to 
+	you under the Apache License, Version 2.0 (the "License"); you may not use 
+	this file except in compliance with the License. You may obtain a copy of 
+	the License at http://www.apache.org/licenses/LICENSE-2.0 Unless required 
+	by applicable law or agreed to in writing, software distributed under the 
+	License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS 
+	OF ANY KIND, either express or implied. See the License for the specific 
 	language governing permissions and limitations under the License. -->
 <project xmlns="http://maven.apache.org/POM/4.0.0"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -16,17 +16,17 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<parent>
-		<groupId>org.apache.causeway.viewer</groupId>
-		<artifactId>causeway-viewer-wicket</artifactId>
+		<groupId>org.apache.isis.viewer</groupId>
+		<artifactId>isis-viewer-wicket</artifactId>
 		<version>2.0.0-SNAPSHOT</version>
 	</parent>
 
-	<artifactId>causeway-viewer-wicket-ui</artifactId>
-	<name>Apache Causeway Viewer - Wicket (UI Components)</name>
+	<artifactId>isis-viewer-wicket-ui</artifactId>
+	<name>Apache Isis Viewer - Wicket (UI Components)</name>
 
 	<properties>
-		<jar-plugin.automaticModuleName>org.apache.causeway.viewer.wicket.ui</jar-plugin.automaticModuleName>
-		<git-plugin.propertiesDir>org/apache/causeway/viewer/wicket/ui</git-plugin.propertiesDir>
+		<jar-plugin.automaticModuleName>org.apache.isis.viewer.wicket.ui</jar-plugin.automaticModuleName>
+		<git-plugin.propertiesDir>org/apache/isis/viewer/wicket/ui</git-plugin.propertiesDir>
 	</properties>
 
 	<build>
@@ -50,7 +50,17 @@
 			<plugin>
 				<groupId>net.alchim31.maven</groupId>
 				<artifactId>yuicompressor-maven-plugin</artifactId>
-				<inherited>true</inherited>
+			</plugin>
+			<plugin>
+				<!-- overrides defaults as configured in our core pom, 
+        			to make javadoc failures non fatal and let the build continue;
+        			this we can set on a per module basis, to apply only to those, 
+        			we don't know how to fix otherwise -->
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<configuration>
+					<failOnError>false</failOnError>
+				</configuration>
 			</plugin>
 		</plugins>
 	</build>
@@ -58,20 +68,16 @@
 	<dependencies>
 
 		<dependency>
-			<groupId>org.apache.causeway.viewer</groupId>
-			<artifactId>causeway-viewer-wicket-model</artifactId>
+			<groupId>org.apache.isis.viewer</groupId>
+			<artifactId>isis-viewer-wicket-model</artifactId>
 		</dependency>
-
+		
 		<dependency>
-			<groupId>org.apache.causeway.viewer</groupId>
-            <artifactId>causeway-viewer-commons-services</artifactId>
+			<groupId>org.apache.isis.viewer</groupId>
+            <artifactId>isis-viewer-commons-prism</artifactId>
+            <version>${project.version}</version>
         </dependency>
-
-		<dependency>
-			<groupId>org.apache.causeway.viewer</groupId>
-            <artifactId>causeway-viewer-commons-prism</artifactId>
-        </dependency>
-
+		
 		<dependency>
 			<groupId>org.apache.wicket</groupId>
 			<artifactId>wicket-devutils</artifactId>
@@ -112,7 +118,7 @@
 			<groupId>org.apache.wicket</groupId>
 			<artifactId>wicket-spring</artifactId>
 			<exclusions>
-				<!-- already provided by jakarta.inject-api -->
+				<!-- already provided by JEE API -->
 				<exclusion>
 					<groupId>javax.inject</groupId>
 					<artifactId>javax.inject</artifactId>
@@ -127,7 +133,7 @@
 					<artifactId>slf4j-api</artifactId>
 				</exclusion>
 				<exclusion>
-					<!-- for Java7 compatibility (we don't use the proxying capability of
+					<!-- for Java7 compatibility (we don't use the proxying capability of 
 						this component) -->
 					<groupId>cglib</groupId>
 					<artifactId>cglib</artifactId>
@@ -157,11 +163,6 @@
 		<dependency>
 			<groupId>org.webjars</groupId>
 			<artifactId>select2</artifactId>
-		</dependency>
-
-		<dependency>
-			<groupId>org.webjars</groupId>
-			<artifactId>datatables</artifactId>
 		</dependency>
 
 		<dependency>
@@ -225,13 +226,79 @@
 		</dependency>
 
 		<dependency>
-			<groupId>org.webjars.npm</groupId>
-			<artifactId>summernote</artifactId>
+			<groupId>de.agilecoders.wicket</groupId>
+			<artifactId>wicket-bootstrap-extensions</artifactId>
+			<exclusions>
+				<!-- exclude unused extensions -->
+				<exclusion>
+					<groupId>org.apache.wicket</groupId>
+					<artifactId>wicket-util</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.apache.wicket</groupId>
+					<artifactId>wicket-request</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.apache.wicket</groupId>
+					<artifactId>wicket-core</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.apache.wicket</groupId>
+					<artifactId>wicket-extensions</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.webjars</groupId>
+					<artifactId>bootstrap</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.webjars</groupId>
+					<artifactId>font-awesome</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.webjars</groupId>
+					<artifactId>jquery</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.webjars</groupId>
+					<artifactId>jquerypp</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.webjars</groupId>
+					<artifactId>jquery-ui</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.webjars</groupId>
+					<artifactId>typeaheadjs</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.webjars</groupId>
+					<artifactId>x-editable-bootstrap</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.webjars</groupId>
+					<artifactId>spin-js</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>com.google.javascript</groupId>
+					<artifactId>closure-compiler</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>com.google.javascript</groupId>
+					<artifactId>closure-compiler-unshaded</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.webjars.bower</groupId>
+					<artifactId>summernote</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>com.google.guava</groupId>
+					<artifactId>guava</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
-		<!-- required by tempus-dominus up to v5 -->
 		<dependency>
-		    <groupId>org.webjars</groupId>
-		    <artifactId>momentjs</artifactId>
+			<groupId>org.webjars.bower</groupId>
+			<artifactId>summernote</artifactId>
 		</dependency>
 
 		<dependency>
@@ -269,22 +336,15 @@
 		<!-- TESTING -->
 
 		<dependency>
-			<groupId>org.apache.causeway.core</groupId>
-			<artifactId>causeway-core-internaltestsupport</artifactId>
+			<groupId>org.apache.isis.core</groupId>
+			<artifactId>isis-core-internaltestsupport</artifactId>
 			<scope>test</scope>
 		</dependency>
 
 		<dependency>
-			<groupId>org.apache.causeway.core</groupId>
-			<artifactId>causeway-core-runtimeservices</artifactId>
+			<groupId>javax.servlet</groupId>
+			<artifactId>javax.servlet-api</artifactId>
 			<scope>test</scope>
-		</dependency>
-
-		<dependency>
-			<groupId>org.apache.causeway.valuetypes</groupId>
-			<artifactId>causeway-valuetypes-jodatime-integration</artifactId>
-			<version>${project.version}</version>
-			<scope>provided</scope>
 		</dependency>
 
 	</dependencies>

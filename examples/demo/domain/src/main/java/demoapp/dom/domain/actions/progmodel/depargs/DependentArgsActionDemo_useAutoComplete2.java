@@ -24,17 +24,16 @@ import java.util.stream.Collectors;
 
 import javax.inject.Inject;
 
-import org.apache.causeway.applib.annotation.Action;
-import org.apache.causeway.applib.annotation.ActionLayout;
-import org.apache.causeway.applib.annotation.MemberSupport;
-import org.apache.causeway.applib.annotation.MinLength;
-import org.apache.causeway.applib.annotation.Optionality;
-import org.apache.causeway.applib.annotation.Parameter;
-import org.apache.causeway.applib.annotation.PromptStyle;
-import org.apache.causeway.applib.services.message.MessageService;
-import org.apache.causeway.commons.internal.base._NullSafe;
-import org.apache.causeway.commons.internal.base._Strings;
-import org.apache.causeway.commons.internal.collections._Lists;
+import org.apache.isis.applib.annotation.Action;
+import org.apache.isis.applib.annotation.ActionLayout;
+import org.apache.isis.applib.annotation.MemberSupport;
+import org.apache.isis.applib.annotation.MinLength;
+import org.apache.isis.applib.annotation.Optionality;
+import org.apache.isis.applib.annotation.Parameter;
+import org.apache.isis.applib.annotation.PromptStyle;
+import org.apache.isis.applib.services.message.MessageService;
+import org.apache.isis.commons.internal.base._NullSafe;
+import org.apache.isis.commons.internal.collections._Lists;
 
 import lombok.RequiredArgsConstructor;
 import lombok.Value;
@@ -83,14 +82,6 @@ public class DependentArgsActionDemo_useAutoComplete2 {
 
     // -- PARAM 1 (DemoItem)
 
-    @MemberSupport public List<DemoItem> defaultItems(final Parameters params) {
-        val paritiesFromDialog = params.parities(); // <-- the refining parameter from the dialog above
-        if(_NullSafe.isEmpty(paritiesFromDialog)) {
-            return Collections.emptyList();
-        }
-        return autoCompleteItems(params, "");
-    }
-
     @MemberSupport public List<DemoItem> autoCompleteItems(
             final Parameters params,
             @MinLength(2) final String search) {
@@ -103,9 +94,7 @@ public class DependentArgsActionDemo_useAutoComplete2 {
         return holder.getItems()
                 .stream()
                 .filter(item->paritiesFromDialog.contains(item.getParity()))
-                .filter(item->_Strings.isNullOrEmpty(search)
-                        ? true
-                        : item.getName().toLowerCase().contains(search.toLowerCase()))
+                .filter(item->item.getName().toLowerCase().contains(search.toLowerCase()))
                 .collect(Collectors.toList());
     }
 

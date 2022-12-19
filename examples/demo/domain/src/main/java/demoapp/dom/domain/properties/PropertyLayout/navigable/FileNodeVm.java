@@ -24,22 +24,23 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import javax.xml.bind.annotation.XmlRootElement;
 
-import org.apache.causeway.applib.annotation.DomainObject;
-import org.apache.causeway.applib.annotation.LabelPosition;
-import org.apache.causeway.applib.annotation.Nature;
-import org.apache.causeway.applib.annotation.Navigable;
-import org.apache.causeway.applib.annotation.ObjectSupport;
-import org.apache.causeway.applib.annotation.Property;
-import org.apache.causeway.applib.annotation.PropertyLayout;
-import org.apache.causeway.applib.annotation.Where;
-import org.apache.causeway.applib.graph.tree.TreeNode;
+import org.apache.isis.applib.annotation.DomainObject;
+import org.apache.isis.applib.annotation.LabelPosition;
+import org.apache.isis.applib.annotation.Nature;
+import org.apache.isis.applib.annotation.Navigable;
+import org.apache.isis.applib.annotation.ObjectSupport;
+import org.apache.isis.applib.annotation.Property;
+import org.apache.isis.applib.annotation.PropertyLayout;
+import org.apache.isis.applib.annotation.Where;
+import org.apache.isis.applib.graph.tree.TreeNode;
 
-import demoapp.dom._infra.asciidocdesc.HasAsciiDocDescription;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import lombok.val;
+
+import demoapp.dom._infra.asciidocdesc.HasAsciiDocDescription;
 
 @XmlRootElement(name="FileNode")
 @Named("demo.FileNode")
@@ -68,7 +69,8 @@ public class FileNodeVm implements HasAsciiDocDescription {
 //end::title[]
 
 //tag::iconName[]
-    @ObjectSupport public String iconName() {
+    @ObjectSupport
+    public String iconName() {
         return type!=null ? type.name() : "";
     }
 //end::iconName[]

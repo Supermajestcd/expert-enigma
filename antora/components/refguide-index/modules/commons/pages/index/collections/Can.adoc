@@ -15,13 +15,20 @@ A xref:refguide:commons:index/collections/Can.adoc[Can] must not contain element
 .Can.java
 ----
 interface Can<T> {
+  Cardinality getCardinality()     // <.>
+  int size()     // <.>
   Optional<T> get(int elementIndex)     // <.>
   T getElseFail(int elementIndex)     // <.>
   int compareTo(Can<T> o)     // <.>
+  Stream<T> stream()     // <.>
+  Stream<T> parallelStream()     // <.>
   Optional<T> getFirst()     // <.>
   T getFirstOrFail()     // <.>
   Optional<T> getLast()     // <.>
   T getLastOrFail()     // <.>
+  Optional<T> getSingleton()     // <.>
+  T getSingletonOrFail()     // <.>
+  boolean contains(T element)     // <.>
   Can<T> empty()     // <.>
   Can<T> ofNullable(T element)     // <.>
   Can<T> ofSingleton(T element)     // <.>
@@ -31,6 +38,7 @@ interface Can<T> {
   Can<T> ofIterable(Iterable<T> iterable)     // <.>
   Can<T> ofEnumeration(Enumeration<T> enumeration)     // <.>
   Can<T> ofStream(Stream<T> stream)     // <.>
+  Can<T> ofInstance(Instance<T> instance)     // <.>
   Can<T> sorted(Comparator<? super T> comparator)     // <.>
   Can<T> distinct()     // <.>
   Can<T> distinct(BiPredicate<T, T> equality)     // <.>
@@ -62,7 +70,6 @@ interface Can<T> {
   boolean isCardinalityMultiple()
   Collector<T, ?, Can<T>> toCan()
   List<T> toList()     // <.>
-  List<T> toArrayList()     // <.>
   Set<T> toSet()     // <.>
   Set<T> toSet(Consumer<T> onDuplicated)     // <.>
   C toCollection(Supplier<C> collectionFactory)     // <.>
@@ -71,6 +78,8 @@ interface Can<T> {
 }
 ----
 
+<.> xref:#getCardinality_[getCardinality()]
+<.> xref:#size_[size()]
 <.> xref:#get_int[get(int)]
 +
 --
@@ -86,6 +95,8 @@ Shortcut to _get(elementIndex).orElseThrow(...)_
 --
 For convenience allows the argument to be _null_ treating _null_ equivalent to _Can#empty()_ .
 --
+<.> xref:#stream_[stream()]
+<.> xref:#parallelStream_[parallelStream()]
 <.> xref:#getFirst_[getFirst()]
 <.> xref:#getFirstOrFail_[getFirstOrFail()]
 +
@@ -98,6 +109,13 @@ Shortcut for _getFirst().orElseThrow(_Exceptions::noSuchElement)_
 --
 Shortcut for _getLast().orElseThrow(_Exceptions::noSuchElement)_
 --
+<.> xref:#getSingleton_[getSingleton()]
+<.> xref:#getSingletonOrFail_[getSingletonOrFail()]
++
+--
+Shortcut for _getSingleton().orElseThrow(_Exceptions::noSuchElement)_
+--
+<.> xref:#contains_T[contains(T)]
 <.> xref:#empty_[empty()]
 +
 --
@@ -142,6 +160,11 @@ Returns either a _Can_ with all the elements from given _enumeration_ or an empt
 +
 --
 Returns either a _Can_ with all the elements from given _stream_ or an empty _Can_ if the _stream_ is _null_ . Any elements equal to _null_ are ignored and will not be contained in the resulting _Can_ .
+--
+<.> xref:#ofInstance_Instance[ofInstance(Instance)]
++
+--
+Returns either a _Can_ with all the elements from given _instance_ or an empty _Can_ if the _instance_ is _null_ . Any elements equal to _null_ are ignored and will not be contained in the resulting _Can_ .
 --
 <.> xref:#sorted_Comparator[sorted(Comparator)]
 +
@@ -230,7 +253,6 @@ Let _n_ be the number of elements in _other_ . Returns whether the first _n_ ele
 Let _n_ be the number of elements in _other_ . Returns whether the last _n_ elements of this _Can_ are element-wise equal to _other_ .
 --
 <.> xref:#toList_[toList()]
-<.> xref:#toArrayList_[toArrayList()]
 <.> xref:#toSet_[toSet()]
 <.> xref:#toSet_Consumer[toSet(Consumer)]
 <.> xref:#toCollection_Supplier[toCollection(Supplier)]
@@ -238,6 +260,12 @@ Let _n_ be the number of elements in _other_ . Returns whether the last _n_ elem
 <.> xref:#toArray_Class[toArray(Class)]
 
 == Members
+
+[#getCardinality_]
+=== getCardinality()
+
+[#size_]
+=== size()
 
 [#get_int]
 === get(int)
@@ -256,6 +284,12 @@ Will only ever throw, if the elementIndex is out of bounds.
 
 For convenience allows the argument to be _null_ treating _null_ equivalent to _Can#empty()_ .
 
+[#stream_]
+=== stream()
+
+[#parallelStream_]
+=== parallelStream()
+
 [#getFirst_]
 === getFirst()
 
@@ -271,6 +305,17 @@ Shortcut for _getFirst().orElseThrow(_Exceptions::noSuchElement)_
 === getLastOrFail()
 
 Shortcut for _getLast().orElseThrow(_Exceptions::noSuchElement)_
+
+[#getSingleton_]
+=== getSingleton()
+
+[#getSingletonOrFail_]
+=== getSingletonOrFail()
+
+Shortcut for _getSingleton().orElseThrow(_Exceptions::noSuchElement)_
+
+[#contains_T]
+=== contains(T)
 
 [#empty_]
 === empty()
@@ -320,6 +365,11 @@ As side-effect, consumes given _enumeration_ .
 Returns either a _Can_ with all the elements from given _stream_ or an empty _Can_ if the _stream_ is _null_ . Any elements equal to _null_ are ignored and will not be contained in the resulting _Can_ .
 
 As side-effect, consumes given _stream_ .
+
+[#ofInstance_Instance]
+=== ofInstance(Instance)
+
+Returns either a _Can_ with all the elements from given _instance_ or an empty _Can_ if the _instance_ is _null_ . Any elements equal to _null_ are ignored and will not be contained in the resulting _Can_ .
 
 [#sorted_Comparator]
 === sorted(Comparator)
@@ -421,9 +471,6 @@ Let _n_ be the number of elements in _other_ . Returns whether the last _n_ elem
 
 [#toList_]
 === toList()
-
-[#toArrayList_]
-=== toArrayList()
 
 [#toSet_]
 === toSet()

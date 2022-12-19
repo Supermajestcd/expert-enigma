@@ -18,33 +18,33 @@
 
 	<!-- this must come before <parent> because the version is manually updated
 		in build-artifacts.sh -->
-	<groupId>org.apache.causeway.app</groupId>
-	<artifactId>causeway-app-starter-parent</artifactId>
+	<groupId>org.apache.isis.app</groupId>
+	<artifactId>isis-app-starter-parent</artifactId>
 	<version>2.0.0-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>2.7.6</version>
+		<version>2.7.3</version>
 		<relativePath />
 	</parent>
 
-	<name>Apache Causeway Starter Parent</name>
+	<name>Apache Isis Starter Parent</name>
 	<description>
-		Parent pom providing dependency and plugin management for Apache Causeway applications
+		Parent pom providing dependency and plugin management for Apache Isis applications
 		built with Maven. Builds on top of spring-boot-starter-parent.
 	</description>
-	<url>https://causeway.apache.org</url>
+	<url>https://isis.apache.org</url>
 
 	<properties>
 
 		<maven.compiler.release>11</maven.compiler.release>
 
-		<spring-boot.version>2.7.6</spring-boot.version>
-		<approvaltests.version>18.5.0</approvaltests.version>
+		<spring-boot.version>2.7.3</spring-boot.version>
+		<approvaltests.version>18.0.0</approvaltests.version>
 
-		<resteasy.version>5.0.0.Final</resteasy.version> <!-- keep in sync with property defined in resteasy-spring-boot-starter -->
+		<resteasy.version>4.6.2.Final</resteasy.version> <!-- keep in sync with property defined in resteasy4-spring-boot-starter -->
 
 	</properties>
 
@@ -83,52 +83,52 @@
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
-				<groupId>org.apache.causeway</groupId>
-				<artifactId>causeway-bom</artifactId>
+				<groupId>org.apache.isis.core</groupId>
+				<artifactId>isis-core</artifactId>
 				<version>2.0.0-SNAPSHOT</version>
 				<scope>import</scope>
 				<type>pom</type>
 			</dependency>
 
 			<dependency>
-				<groupId>org.apache.causeway.extensions</groupId>
-				<artifactId>causeway-extensions</artifactId>
+				<groupId>org.apache.isis.extensions</groupId>
+				<artifactId>isis-extensions</artifactId>
 				<version>2.0.0-SNAPSHOT</version>
 				<scope>import</scope>
 				<type>pom</type>
 			</dependency>
 
 			<dependency>
-				<groupId>org.apache.causeway.testing</groupId>
-				<artifactId>causeway-testing</artifactId>
+				<groupId>org.apache.isis.testing</groupId>
+				<artifactId>isis-testing</artifactId>
 				<version>2.0.0-SNAPSHOT</version>
 				<scope>import</scope>
 				<type>pom</type>
 			</dependency>
 			
 			<dependency>
-				<groupId>org.apache.causeway.testing</groupId>
-				<artifactId>causeway-testing-fakedata-applib</artifactId>
+				<groupId>org.apache.isis.testing</groupId>
+				<artifactId>isis-testing-fakedata-applib</artifactId>
 				<version>2.0.0-SNAPSHOT</version>
 			</dependency>
 		
 			<dependency>
-				<groupId>org.apache.causeway.testing</groupId>
-				<artifactId>causeway-testing-fixtures-applib</artifactId>
+				<groupId>org.apache.isis.testing</groupId>
+				<artifactId>isis-testing-fixtures-applib</artifactId>
 				<version>2.0.0-SNAPSHOT</version>
 			</dependency>
 
 			<dependency>
-				<groupId>org.apache.causeway.valuetypes</groupId>
-				<artifactId>causeway-valuetypes</artifactId>
+				<groupId>org.apache.isis.valuetypes</groupId>
+				<artifactId>isis-valuetypes</artifactId>
 				<version>2.0.0-SNAPSHOT</version>
 				<scope>import</scope>
 				<type>pom</type>
 			</dependency>
 			
 			<dependency>
-				<groupId>org.apache.causeway.testing</groupId>
-				<artifactId>causeway-testing-integtestsupport-applib</artifactId>
+				<groupId>org.apache.isis.testing</groupId>
+				<artifactId>isis-testing-integtestsupport-applib</artifactId>
 				<version>2.0.0-SNAPSHOT</version>
 			</dependency>
 
@@ -144,29 +144,82 @@
 
 	<profiles>
 		<profile>
-			<id>causeway-app-starter-datanucleusenhance</id>
+			<id>isis-app-starter-datanucleusenhance</id>
 			<activation>
-				<property>
-					<name>causeway-app-starter-datanucleusenhance</name>
-					<value>true</value>
-				</property>
+				<file>
+					<exists>${basedir}/logging-dn-enhance.properties</exists>
+				</file>
 			</activation>
+			<properties>
+
+				<!-- keep in sync with versions used in Apache Isis -->
+				<datanucleus-api-jdo.version>6.0.0-release</datanucleus-api-jdo.version>
+				<datanucleus-api-jpa.version>6.0.0-release</datanucleus-api-jpa.version>
+				<datanucleus-core.version>6.0.0-release</datanucleus-core.version>
+				<datanucleus-jodatime.version>6.0.0-release</datanucleus-jodatime.version>
+				<datanucleus-maven-plugin.version>6.0.0-release</datanucleus-maven-plugin.version>
+
+				<datanucleus-maven-plugin.log4jConfiguration>${basedir}/logging-dn-enhance.properties</datanucleus-maven-plugin.log4jConfiguration>
+				<datanucleus-maven-plugin.verbose>true</datanucleus-maven-plugin.verbose>
+				<datanucleus-maven-plugin.fork>false</datanucleus-maven-plugin.fork>
+			</properties>
 			<build>
 				<plugins>
 					<plugin>
 						<groupId>org.datanucleus</groupId>
 						<artifactId>datanucleus-maven-plugin</artifactId>
-						<inherited>true</inherited>
+						<version>${datanucleus-maven-plugin.version}</version>
+						<configuration>
+							<fork>${datanucleus-maven-plugin.fork}</fork>
+							<log4jConfiguration>${datanucleus-maven-plugin.log4jConfiguration}</log4jConfiguration>
+							<verbose>${datanucleus-maven-plugin.verbose}</verbose>
+						</configuration>
+						<executions>
+							<execution>
+								<id>process-classes</id>
+								<phase>process-classes</phase>
+								<goals>
+									<goal>enhance</goal>
+								</goals>
+							</execution>
+							<execution>
+								<id>process-test-classes</id>
+								<phase>process-test-classes</phase>
+								<goals>
+									<goal>test-enhance</goal>
+								</goals>
+								<configuration>
+									<metadataDirectory>${project.build.testOutputDirectory}</metadataDirectory>
+								</configuration>
+							</execution>
+						</executions>
+						<dependencies>
+							<dependency>
+								<groupId>org.datanucleus</groupId>
+								<artifactId>datanucleus-core</artifactId>
+								<version>${datanucleus-core.version}</version>
+							</dependency>
+							<dependency>
+								<groupId>org.datanucleus</groupId>
+								<artifactId>datanucleus-api-jdo</artifactId>
+								<version>${datanucleus-api-jdo.version}</version>
+							</dependency>
+							<dependency>
+								<groupId>org.datanucleus</groupId>
+								<artifactId>datanucleus-jodatime</artifactId>
+								<version>${datanucleus-jodatime.version}</version>
+							</dependency>
+						</dependencies>
 					</plugin>
 				</plugins>
 			</build>
 		</profile>
 
 		<profile>
-			<id>causeway-app-starter-surefire</id>
+			<id>isis-app-starter-surefire</id>
 			<activation>
 				<property>
-					<name>!skip.causeway-app-starter-surefire</name>
+					<name>!skip.isis-app-starter-surefire</name>
 				</property>
 			</activation>
 
@@ -263,7 +316,7 @@
 						<plugin>
 							<groupId>org.apache.maven.plugins</groupId>
 							<artifactId>maven-surefire-report-plugin</artifactId>
-							<version>${maven-surefire-report-plugin.version}</version>
+							<version>${maven-surefire-plugin.version}</version>
 							<configuration>
 								<showSuccess>false</showSuccess>
 							</configuration>
@@ -288,14 +341,14 @@
 		</profile>
 
 		<profile>
-			<id>causeway-app-starter-docker</id>
+			<id>isis-app-starter-docker</id>
 			<activation>
 				<property>
-					<name>!skip.causeway-app-starter-docker</name>
+					<name>!skip.isis-app-starter-docker</name>
 				</property>
 			</activation>
 			<properties>
-				<jib-maven-plugin.version>3.3.1</jib-maven-plugin.version>
+				<jib-maven-plugin.version>3.2.1</jib-maven-plugin.version>
 			</properties>
 			<build>
 				<pluginManagement>
@@ -312,10 +365,10 @@
 
 		<!-- running: mvn spring-boot:run -->
 		<profile>
-			<id>causeway-app-starter-boot</id>
+			<id>isis-app-starter-boot</id>
 			<activation>
 				<property>
-					<name>!skip.causeway-app-starter-boot</name>
+					<name>!skip.isis-app-starter-boot</name>
 				</property>
 			</activation>
 			<properties>
@@ -417,7 +470,7 @@
 				<repository>
 					<id>github</id>
 					<name>Github Releases</name>
-					<url>https://maven.pkg.github.com/apache/causeway</url>
+					<url>https://maven.pkg.github.com/apache/isis</url>
 				</repository>
 			</distributionManagement>
 		</profile>

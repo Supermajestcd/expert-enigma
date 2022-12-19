@@ -7,9 +7,9 @@
   to you under the Apache License, Version 2.0 (the
   "License"); you may not use this file except in compliance
   with the License.  You may obtain a copy of the License at
-
+  
          http://www.apache.org/licenses/LICENSE-2.0
-
+         
   Unless required by applicable law or agreed to in writing,
   software distributed under the License is distributed on an
   "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
@@ -21,21 +21,21 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>org.apache.causeway.core</groupId>
-        <artifactId>causeway-core</artifactId>
+        <groupId>org.apache.isis.core</groupId>
+        <artifactId>isis-core</artifactId>
         <version>2.0.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>causeway-core-config</artifactId>
+    <artifactId>isis-core-config</artifactId>
 
-    <name>Apache Causeway Core - Configuration</name>
+    <name>Apache Isis Core - Configuration</name>
     <description>
-        Causeway configuration library for framework internal use.
+        Isis configuration library for framework internal use.
     </description>
 
     <properties>
-        <jar-plugin.automaticModuleName>org.apache.causeway.core.config</jar-plugin.automaticModuleName>
-        <git-plugin.propertiesDir>org/apache/causeway/core/config</git-plugin.propertiesDir>
+        <jar-plugin.automaticModuleName>org.apache.isis.core.config</jar-plugin.automaticModuleName>
+        <git-plugin.propertiesDir>org/apache/isis/core/config</git-plugin.propertiesDir>
     </properties>
 
     <build>
@@ -55,43 +55,20 @@
                 </excludes>
             </resource>
         </resources>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <configuration>
-                    <annotationProcessorPaths>
-                        <path>
-                            <!--
-                            as per https://github.com/spring-projects/spring-boot/issues/30986, must be before the spring-boot-configuration-processor
-                            https://docs.spring.io/spring-boot/docs/2.7.6/reference/html/configuration-metadata.html#appendix.configuration-metadata.annotation-processor
-                            -->
-                            <groupId>org.projectlombok</groupId>
-                            <artifactId>lombok</artifactId>
-                        </path>
-                        <path>
-                            <groupId>org.springframework.boot</groupId>
-                            <artifactId>spring-boot-configuration-processor</artifactId>
-                            <version>${spring-boot.version}</version>
-                        </path>
-                    </annotationProcessorPaths>
-                </configuration>
-            </plugin>
-        </plugins>
     </build>
 
     <dependencies>
-
+    
     	<dependency>
-            <groupId>org.apache.causeway.core</groupId>
-            <artifactId>causeway-applib</artifactId>
+            <groupId>org.apache.isis.core</groupId>
+            <artifactId>isis-applib</artifactId>
         </dependency>
-
+        
     	<dependency>
-            <groupId>org.apache.causeway.commons</groupId>
-			<artifactId>causeway-commons</artifactId>
+            <groupId>org.apache.isis.commons</groupId>
+			<artifactId>isis-commons</artifactId>
         </dependency>
-
+        
         <dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-validator</artifactId>
@@ -110,33 +87,22 @@
 			    </exclusion>
 			</exclusions>
 		</dependency>
-
-        <!--
-        as per https://github.com/spring-projects/spring-boot/issues/30986, must be before the spring-boot-configuration-processor
-        https://docs.spring.io/spring-boot/docs/2.7.6/reference/html/configuration-metadata.html#appendix.configuration-metadata.annotation-processor
-        -->
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <scope>provided</scope>
-        </dependency>
-
-        <!-- IDE support (optional) -->
+        
+        
+		<!-- IDE support (optional) -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-configuration-processor</artifactId>
 			<optional>true</optional>
 		</dependency>
-
-        <!-- TESTING -->
-
+        
+        <!-- TESTS -->
         <dependency>
-            <groupId>org.apache.causeway.core</groupId>
-            <artifactId>causeway-core-internaltestsupport</artifactId>
+            <groupId>org.apache.isis.core</groupId>
+            <artifactId>isis-core-internaltestsupport</artifactId>
             <scope>test</scope>
         </dependency>
 
     </dependencies>
-
 
 </project>

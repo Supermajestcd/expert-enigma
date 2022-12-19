@@ -26,16 +26,16 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
-import org.apache.causeway.applib.annotation.DomainObject;
-import org.apache.causeway.applib.annotation.Editing;
-import org.apache.causeway.applib.annotation.LabelPosition;
-import org.apache.causeway.applib.annotation.Nature;
-import org.apache.causeway.applib.annotation.ObjectSupport;
-import org.apache.causeway.applib.annotation.Property;
-import org.apache.causeway.applib.annotation.PropertyLayout;
-import org.apache.causeway.applib.annotation.ValueSemantics;
-import org.apache.causeway.applib.jaxb.JavaTimeXMLGregorianCalendarMarshalling;
-import org.apache.causeway.schema.chg.v2.ChangesDto;
+import org.apache.isis.applib.annotation.DomainObject;
+import org.apache.isis.applib.annotation.Editing;
+import org.apache.isis.applib.annotation.LabelPosition;
+import org.apache.isis.applib.annotation.Nature;
+import org.apache.isis.applib.annotation.ObjectSupport;
+import org.apache.isis.applib.annotation.Property;
+import org.apache.isis.applib.annotation.PropertyLayout;
+import org.apache.isis.applib.annotation.ValueSemantics;
+import org.apache.isis.applib.jaxb.JavaTimeXMLGregorianCalendarMarshalling;
+import org.apache.isis.schema.chg.v2.ChangesDto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -53,7 +53,8 @@ import lombok.Setter;
 @AllArgsConstructor
 public class ChangesVm {
 
-    @ObjectSupport public String title() {
+    @ObjectSupport
+    public String title() {
         int numCreated = changesDto.getObjects().getCreated().getOid().size();
         int numUpdated = changesDto.getObjects().getUpdated().getOid().size();
         int numDeleted = changesDto.getObjects().getDeleted().getOid().size();

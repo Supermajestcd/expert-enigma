@@ -22,9 +22,9 @@ import java.util.Objects;
 
 import javax.inject.Named;
 
-import org.apache.causeway.applib.annotation.DomainObject;
-import org.apache.causeway.applib.annotation.ObjectSupport;
-import org.apache.causeway.applib.annotation.Property;
+import org.apache.isis.applib.annotation.DomainObject;
+import org.apache.isis.applib.annotation.ObjectSupport;
+import org.apache.isis.applib.annotation.Property;
 
 import demoapp.dom._infra.values.ValueHolder;
 
@@ -39,7 +39,8 @@ implements
         return getName();
     }
 
-    @ObjectSupport public String title() {
+    @ObjectSupport
+    public String title() {
         return Objects.requireNonNull(getName(), "most likely a serialization or re-attach issue");
     }
 
