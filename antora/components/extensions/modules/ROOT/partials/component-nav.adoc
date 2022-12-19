@@ -1,0 +1,18 @@
+include::extensions:ROOT:partial$module-nav.adoc[]
+
+* Core
+
+include::userguide:flyway:partial$module-nav.adoc[]
+
+* Security
+include::security:shiro-realm-ldap:partial$module-nav.adoc[]
+include::security:secman:partial$module-nav.adoc[]
+
+* Restful Objects Viewer
+
+include::vro:cors:partial$module-nav.adoc[]
+
+* Wicket Viewer
+
+include::vw:exceldownload:partial$module-nav.adoc[]
+include::vw:pdfjs:partial$module-nav.adoc[]

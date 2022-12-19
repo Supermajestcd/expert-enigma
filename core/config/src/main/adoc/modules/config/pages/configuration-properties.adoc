@@ -1,0 +1,296 @@
+= Configuration Properties
+:Notice: Licensed to the Apache Software Foundation (ASF) under one or more contributor license agreements. See the NOTICE file distributed with this work for additional information regarding copyright ownership. The ASF licenses this file to you under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at. http://www.apache.org/licenses/LICENSE-2.0 . Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR  CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
+
+
+
+== Applib
+
+
+[cols="2a,2a,3a", options="header"]
+|===
+|Property
+|Value +
+(default value)
+|Description
+
+include::refguide:config:example$generated/isis.applib.adoc[]
+
+|===
+
+
+== Core Meta Model
+
+General configuration:
+
+[cols="2a,2a,3a", options="header"]
+|===
+|Property
+|Value +
+(default value)
+|Description
+
+include::refguide:config:example$generated/isis.core.meta-model.adoc[]
+
+|===
+
+=== Introspection
+
+[cols="2a,2a,3a", options="header"]
+|===
+|Property
+|Value +
+(default value)
+|Description
+
+include::refguide:config:example$generated/isis.core.meta-model.introspector.adoc[]
+
+|===
+
+=== Validator
+
+[cols="2a,2a,3a", options="header"]
+|===
+|Property
+|Value +
+(default value)
+|Description
+
+include::refguide:config:example$generated/isis.core.meta-model.validator.adoc[]
+
+|===
+
+
+
+
+== Core Runtime
+
+[cols="2a,2a,3a", options="header"]
+|===
+|Property
+|Value +
+(default value)
+|Description
+
+include::refguide:config:example$generated/isis.core.runtime.adoc[]
+
+|===
+
+
+
+
+== Core Runtime Services
+
+[cols="2a,2a,3a", options="header"]
+|===
+|Property
+|Value +
+(default value)
+|Description
+
+include::refguide:config:example$generated/isis.core.runtime-services.adoc[]
+
+|===
+
+
+
+
+
+== JDO DataNucleus Persistence
+
+[cols="2a,2a,3a", options="header"]
+|===
+|Property
+|Value +
+(default value)
+|Description
+
+include::refguide:config:example$generated/isis.persistence.jdo-datanucleus.adoc[]
+
+
+|===
+
+
+
+== JDO DataNucleus Persistence Pass-thru Settings
+
+[cols="2a,2a,3a", options="header"]
+|===
+|Property
+|Value +
+(default value)
+|Description
+
+include::refguide:config:example$generated/isis.persistence.jdo-datanucleus.impl.adoc[]
+
+|===
+
+
+== Shiro Security
+
+[cols="2a,2a,3a", options="header"]
+|===
+|Property
+|Value +
+(default value)
+|Description
+
+
+include::refguide:config:example$generated/isis.security.shiro.adoc[]
+
+|===
+
+
+
+== Restful Objects Viewer
+
+[cols="2a,2a,3a", options="header"]
+|===
+|Property
+|Value +
+(default value)
+|Description
+
+include::refguide:config:example$generated/isis.viewer.restfulobjects.adoc[]
+
+|===
+
+
+
+== Wicket Viewer
+
+[cols="2a,2a,3a", options="header"]
+|===
+|Property
+|Value +
+(default value)
+|Description
+
+include::refguide:config:example$generated/isis.viewer.wicket.adoc[]
+
+|===
+
+
+== Value Types
+
+[cols="2a,2a,3a", options="header"]
+|===
+|Property
+|Value +
+(default value)
+|Description
+
+include::refguide:config:example$generated/isis.value-types.adoc[]
+
+|===
+
+
+ifdef::env-this-stuff-is-currently-disabled[]
+
+== Subdomains
+
+[cols="2a,2a,3a", options="header"]
+|===
+|Property
+|Value +
+(default value)
+|Description
+
+include::refguide:config:example$generated/isis.subdomains.adoc[]
+
+|===
+
+== Mappings
+
+[cols="2a,2a,3a", options="header"]
+|===
+|Property
+|Value +
+(default value)
+|Description
+
+include::refguide:config:example$generated/isis.mappings.adoc[]
+
+|===
+
+endif::[]
+
+== Extensions
+
+[cols="2a,2a,3a", options="header"]
+|===
+|Property
+|Value +
+(default value)
+|Description
+
+include::refguide:config:example$generated/isis.extensions.adoc[]
+
+|===
+
+ifdef::env-this-stuff-is-currently-disabled[]
+
+== Incubator
+
+[cols="2a,2a,3a", options="header"]
+|===
+|Property
+|Value +
+(default value)
+|Description
+
+include::refguide:config:example$generated/isis.incubator.adoc[]
+
+|===
+
+endif::[]
+
+
+== Legacy
+
+[cols="2a,2a,3a", options="header"]
+|===
+|Property
+|Value +
+(default value)
+|Description
+
+include::refguide:config:example$generated/isis.legacy.adoc[]
+
+|===
+
+
+== 3rd Party
+
+These configuration options are defined by 3rd party libraries (dependency of the Apache Isis framework) that nevertheless significantly impact the behaviour of the framework.
+
+=== RestEasy
+
+[cols="2a,2a,3a", options="header"]
+|===
+|Property
+|Value +
+(default value)
+|Description
+
+include::refguide:config:example$generated/resteasy.adoc[]
+
+|===
+
+
+
+
+
+== Other
+
+[cols="2a,2a,3a", options="header"]
+|===
+|Property
+|Value +
+(default value)
+|Description
+
+include::refguide:config:example$generated/Other.adoc[]
+
+|===
+
+
