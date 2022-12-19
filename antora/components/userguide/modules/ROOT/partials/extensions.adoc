@@ -4,4 +4,5 @@ include::userguide:executionlog:partial$module-nav.adoc[]
 include::userguide:executionoutbox:partial$module-nav.adoc[]
 include::userguide:executionrepublisher:partial$module-nav.adoc[]
 include::userguide:flyway:partial$module-nav.adoc[]
+include::userguide:quartz:partial$module-nav.adoc[]
 

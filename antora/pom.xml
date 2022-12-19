@@ -15,8 +15,8 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<parent>
-		<groupId>org.apache.causeway</groupId>
-		<artifactId>causeway-bom</artifactId>
+		<groupId>org.apache.isis</groupId>
+		<artifactId>isis-bom</artifactId>
 		<version>2.0.0-SNAPSHOT</version>
 		<relativePath>../bom/pom.xml</relativePath>
 	</parent>
@@ -25,7 +25,7 @@
 
 	<packaging>pom</packaging>
 
-	<name>Apache Causeway - Antora</name>
+	<name>Apache Isis - Antora</name>
 
 	<build>
 		<plugins>

@@ -8,7 +8,7 @@
 ----
 class ShiroUtils {
   RealmSecurityManager getSecurityManager()
-  CausewayModuleExtSecmanShiroRealm getCausewayModuleSecurityRealm()
+  IsisModuleExtSecmanShiroRealm getIsisModuleSecurityRealm()
   boolean isSingleRealm()
 }
 ----
