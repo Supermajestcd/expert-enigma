@@ -1,0 +1,41 @@
+group = 'org.apache.isis.examples.apps'
+description = 'Apache Isis App - Demo (Wicket)'
+buildscript {
+    repositories {
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
+    }
+    dependencies {
+        classpath "org.springframework.boot:spring-boot-gradle-plugin:2.3.1.RELEASE"
+    }
+}
+apply plugin: 'org.springframework.boot'
+apply plugin: 'java'
+
+dependencies {
+    compile project(':demo-domain')
+    compile project(':demo-web')
+    compile project(':isis-extensions-pdfjs-ui')
+    compile project(':isis-valuetypes-asciidoc-metamodel')
+    compile project(':isis-valuetypes-asciidoc-persistence-jdo-dn5')
+    compile project(':isis-valuetypes-asciidoc-ui-wkt')
+    compile project(':isis-valuetypes-markdown-persistence-jdo-dn5')
+    compile project(':isis-valuetypes-markdown-ui-wkt')
+    compile project(':isis-valuetypes-sse-ui-wkt')
+    compile project(':isis-viewer-wicket-viewer')
+    implementation(Libs.springBootStarterDataJpa)
+    implementation(Libs.springBootStarterWeb)
+}
+
+task packageTests(type: Jar) {
+    from sourceSets.test.output
+    classifier = 'tests'
+}
+artifacts.archives packageTests
+
+tasks.withType(JavaExec) {
+    if (System.getProperty('DEBUG', 'false') == 'true') {
+        jvmArgs '-Xdebug', '-Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5005'
+    }
+}

@@ -1,0 +1,17 @@
+group = 'org.apache.isis.legacy'
+description = 'Apache Isis Legacy - Commons'
+apply plugin: 'war'
+dependencies {
+    compile(Libs.guava)
+    compile project(':isis-applib')
+    compile project(':isis-core-runtime')
+    testCompile project(':isis-core-internaltestsupport')
+    compileOnly(Libs.javaxJdo)
+    providedCompile project(':isis-persistence-jdo-applib')
+}
+
+task packageTests(type: Jar) {
+    from sourceSets.test.output
+    classifier = 'tests'
+}
+artifacts.archives packageTests

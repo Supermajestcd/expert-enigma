@@ -1,0 +1,20 @@
+group = 'org.apache.isis.legacy'
+description = 'Apache Isis Legacy - Runtime'
+apply plugin: 'war'
+dependencies {
+    compile(Libs.guava)
+    compile project(':isis-applib')
+    compile project(':isis-legacy-applib')
+    compile project(':isis-core-runtime')
+    testCompile project(':isis-core-internaltestsupport')
+    compileOnly(Libs.javaxJdo)
+    providedCompile project(':isis-persistence-jdo-applib')
+    providedCompile project(':isis-persistence-jdo-datanucleus5')
+    providedCompile project(':isis-viewer-wicket-ui')
+}
+
+task packageTests(type: Jar) {
+    from sourceSets.test.output
+    classifier = 'tests'
+}
+artifacts.archives packageTests

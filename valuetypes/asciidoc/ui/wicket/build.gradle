@@ -1,0 +1,18 @@
+description = 'Apache Isis Val - Asciidoctor (ui wicket)'
+apply plugin: 'war'
+apply plugin: 'io.freefair.lombok'
+
+dependencies {
+    compile project(':isis-applib')
+    compile project(':isis-core-commons')
+    compile project(':isis-valuetypes-asciidoc')
+    compile project(':isis-valuetypes-asciidoc-applib')
+
+    providedCompile project(':isis-viewer-wicket-ui')
+}
+
+task packageTests(type: Jar) {
+    from sourceSets.test.output
+    classifier = 'tests'
+}
+artifacts.archives packageTests

@@ -1,0 +1,13 @@
+JAXB supports `long` link:https://docs.oracle.com/cd/E12840_01/wls/docs103/webserv/data_types.html#wp223908[out-of-the-box], so no special annotations are required.
+
+[source,java]
+----
+include::PrimitiveLongVm.java[tags="class"]
+----
+<.> a no-arg constructor is required by JAXB
+<.> no additional JAXB annotations required.
+
+
+
+
+include::../PrimitiveLongs-common.adoc[]

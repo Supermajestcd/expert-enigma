@@ -1,0 +1,17 @@
+group = 'org.apache.isis.testing'
+description = 'Apache Isis Tst - Fixtures (applib)'
+apply plugin: 'war'
+dependencies {
+    compile(Libs.jodaTime)
+    compile project(':isis-subdomains-spring-applib')
+    providedCompile project(':isis-testing-integtestsupport-applib')
+    compileOnly(Libs.javaxJdo)
+    providedCompile project(':isis-persistence-jdo-applib')
+    providedCompile project(':isis-core-runtime')
+}
+
+task packageTests(type: Jar) {
+    from sourceSets.test.output
+    classifier = 'tests'
+}
+artifacts.archives packageTests

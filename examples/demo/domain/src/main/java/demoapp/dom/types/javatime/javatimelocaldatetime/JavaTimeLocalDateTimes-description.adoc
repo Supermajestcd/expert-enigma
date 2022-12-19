@@ -1,0 +1,27 @@
+The framework has built-in support for a number of temporal types, including `java.time.LocalDateTime`.
+
+From here you can:
+
+* navigate to an entity that uses the `java.time.LocalDateTime` datatype
+* open a view model that uses the `java.time.LocalDateTime` datatype
+
+Some properties on these domain objects are mandatory, some optional.
+
+== Common interfaces
+
+The entity and view model types both implement some common interfaces.
+
+=== JavaTimeLocalDateTimeHolder
+
+The `JavaTimeLocalDateTimeHolder` interface is used to contribute a number of mixins to both types:
+
+[source,java]
+----
+include::holder/JavaTimeLocalDateTimeHolder.java[tags=class]
+----
+
+=== JavaTimeLocalDateTimeHolder2
+
+The `JavaTimeLocalDateTimeHolder2` interface is used to demonstrate support for label positions using `@PropertyLayout(labelPosition=...)`.
+
+Further details, along with the effect of this annotation, can be seen on the entity and view model object pages.

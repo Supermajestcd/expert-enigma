@@ -1,0 +1,27 @@
+The framework has built-in support for all of the Wrapper data types, including `Character`.
+
+From here you can:
+
+* navigate to an entity that uses the `Character` datatype
+* open a view model that uses the `Character` datatype
+
+Some properties on these domain objects are mandatory, some optional.
+
+== Common interfaces
+
+The entity and view model types both implement some common interfaces.
+
+=== WrapperCharacterHolder
+
+The `WrapperCharacterHolder` interface is used to contribute a number of mixins to both types:
+
+[source,java]
+----
+include::holder/WrapperCharacterHolder.java[tags=class]
+----
+
+=== WrapperCharacterHolder2
+
+The `WrapperCharacterHolder2` interface is used to demonstrate support for label positions using `@PropertyLayout(labelPosition=...)`.
+
+Further details, along with the effect of this annotation, can be seen on the entity and view model object pages.

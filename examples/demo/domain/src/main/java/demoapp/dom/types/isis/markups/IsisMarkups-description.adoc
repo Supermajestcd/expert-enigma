@@ -1,0 +1,29 @@
+The framework has built-in support for rendering HTML written using Markup, using the `Markup` data type.
+
+NOTE: This is an Apache Isis specific data type.
+
+From here you can:
+
+* navigate to an entity that uses the `Markup` datatype
+* open a view model that uses the `Markup` datatype
+
+Some properties on these domain objects are mandatory, some optional.
+
+== Common interfaces
+
+The entity and view model types both implement some common interfaces.
+
+=== IsisMarkupHolder
+
+The `IsisMarkupHolder` interface is used to contribute a number of mixins to both types:
+
+[source,java]
+----
+include::holder/IsisMarkupHolder.java[tags=class]
+----
+
+=== IsisMarkupHolder2
+
+The `IsisMarkupHolder2` interface is used to demonstrate support for label positions using `@PropertyLayout(labelPosition=...)`.
+
+Further details, along with the effect of this annotation, can be seen on the entity and view model object pages.
