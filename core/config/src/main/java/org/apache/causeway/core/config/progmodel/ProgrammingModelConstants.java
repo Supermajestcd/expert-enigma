@@ -64,7 +64,6 @@ import org.apache.causeway.commons.internal.collections._Collections;
 import org.apache.causeway.commons.internal.collections._Lists;
 import org.apache.causeway.commons.internal.exceptions._Exceptions;
 import org.apache.causeway.commons.internal.reflection._Annotations;
-import org.apache.causeway.commons.internal.reflection._ClassCache;
 import org.apache.causeway.commons.internal.reflection._Reflect;
 
 import static org.apache.causeway.commons.internal.reflection._Reflect.Filter.paramAssignableFrom;
@@ -482,14 +481,9 @@ public final class ProgrammingModelConstants {
         VIEWMODEL_CONFLICTING_SERIALIZATION_STRATEGIES(
                 "${type}: has multiple incompatible annotations/interfaces indicating that "
                 + "it is a recreatable object of some sort (${facetA} and ${facetB})"),
-        VIEWMODEL_MULTIPLE_CONSTRUCTORS_WITH_INJECT_SEMANTICS(
-                "${type}: ViewModel contract violation: there must be at most one public constructor that has inject semantics, "
-                + "but found ${found}. "
-                + "See " + org.apache.causeway.applib.ViewModel.class.getName() + " java-doc for details."),
-        VIEWMODEL_MISSING_OR_MULTIPLE_PUBLIC_CONSTRUCTORS(
-                "${type}: ViewModel contract violation: in absence of inject semantics there must be exactly one public constructor, "
-                + "but found ${found}. "
-                + "See " + org.apache.causeway.applib.ViewModel.class.getName() + " java-doc for details."),
+        VIEWMODEL_MISSING_DESERIALIZING_CONSTRUCTOR(
+                "${type}: ViewModel contract violation: missing single (String) arg constructor "
+                + "(for de-serialization from memento string)."),
         VIEWMODEL_MISSING_SERIALIZATION_STRATEGY(
                 "${type}: Missing ViewModel serialization strategy encountered; "
                 + "for ViewModels one of those must be true: "
@@ -544,35 +538,20 @@ public final class ProgrammingModelConstants {
         }
     }
 
-    /**
-     * violation of view-model contract should be covered by meta-model validation
-     */
     public static enum ViewmodelConstructor {
-        PUBLIC_WITH_INJECT_SEMANTICS {
-            @Override public <T> Stream<Constructor<T>> streamAll(final Class<T> cls) {
+        SINGLE_STRING_ARG {
+
+            @Override
+            public <T> Optional<Constructor<T>> get(final Class<T> cls) {
+                // heap-pollution: only produces stack-traces when cls violates viewmodel contract,
+                // which is covered by mm validation
                 return Try.call(()->
-                    _ClassCache.getInstance()
-                        .streamPublicConstructorsWithInjectSemantics(cls))
-                        .getValue()
-                        .orElse(Stream.empty());
+                        cls.getDeclaredConstructor(new Class<?>[]{String.class}))
+                        .getValue();
             }
-        },
-        PUBLIC_ANY {
-            @Override public <T> Stream<Constructor<T>> streamAll(final Class<T> cls) {
-                return Try.call(()->
-                    _ClassCache.getInstance()
-                        .streamPublicConstructors(cls))
-                        .getValue()
-                        .orElse(Stream.empty());
-            }
+
         };
-        public <T> Can<Constructor<T>> getAll(final Class<T> cls) {
-            return streamAll(cls).collect(Can.toCan());
-        }
-        public <T> Optional<Constructor<T>> getFirst(final Class<T> cls) {
-            return streamAll(cls).findFirst();
-        }
-        public abstract <T> Stream<Constructor<T>> streamAll(Class<T> cls);
+        public abstract <T> Optional<Constructor<T>> get(Class<T> correspondingClass);
 
     }
 

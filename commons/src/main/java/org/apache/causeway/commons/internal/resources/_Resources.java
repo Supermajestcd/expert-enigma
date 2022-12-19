@@ -23,7 +23,6 @@ import java.io.InputStream;
 import java.net.URL;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
-import java.util.Optional;
 import java.util.function.Predicate;
 import java.util.regex.Pattern;
 
@@ -63,12 +62,8 @@ public final class _Resources {
             final @NonNull Class<?> contextClass,
             final @NonNull String resourceName) {
 
-        val absoluteResourceName = resolveName(contextClass, resourceName);
-
-        return Optional
-                .ofNullable(contextClass.getResourceAsStream(absoluteResourceName))
-                .orElseGet(()->_Context.getDefaultClassLoader()
-                        .getResourceAsStream(absoluteResourceName));
+        val absoluteResourceName = resolveName(resourceName, contextClass);
+        return _Context.getDefaultClassLoader().getResourceAsStream(absoluteResourceName);
     }
 
     /**
@@ -106,13 +101,11 @@ public final class _Resources {
             final @NonNull Class<?> contextClass,
             final @NonNull String resourceName) {
 
-        final String absoluteResourceName = resolveName(contextClass, resourceName);
+        final String absoluteResourceName = resolveName(resourceName, contextClass);
 
-        return Optional
-                .ofNullable(contextClass.getResource(absoluteResourceName))
-                .orElseGet(()->_Context.getDefaultClassLoader()
-                        .getResource(absoluteResourceName));
+        return _Context.getDefaultClassLoader().getResource(absoluteResourceName);
     }
+
 
     // -- LOCAL vs EXTERNAL resource path
 
@@ -145,7 +138,7 @@ public final class _Resources {
      *
      * Adapted copy of JDK 8 Class::resolveName
      */
-    private static String resolveName(final Class<?> contextClass, String name) {
+    private static String resolveName(String name, final Class<?> contextClass) {
         if (name == null) {
             return name;
         }

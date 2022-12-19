@@ -21,6 +21,7 @@ package org.apache.causeway.viewer.restfulobjects.rendering.service.conneg;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import javax.annotation.Priority;
 import javax.inject.Inject;
@@ -42,6 +43,7 @@ import org.apache.causeway.core.metamodel.interactions.managed.ManagedProperty;
 import org.apache.causeway.core.metamodel.object.ManagedObject;
 import org.apache.causeway.core.metamodel.spec.ObjectSpecification;
 import org.apache.causeway.core.metamodel.specloader.SpecificationLoader;
+import org.apache.causeway.core.metamodel.util.Facets;
 import org.apache.causeway.viewer.restfulobjects.applib.CausewayModuleViewerRestfulObjectsApplib;
 import org.apache.causeway.viewer.restfulobjects.applib.JsonRepresentation;
 import org.apache.causeway.viewer.restfulobjects.applib.RepresentationType;
@@ -195,30 +197,25 @@ implements ContentNegotiationService {
             final IResourceContext resourceContext,
             final ObjectAndActionInvocation objectAndActionInvocation) {
 
-        final List<MediaType> acceptableMediaTypes = resourceContext.getAcceptableMediaTypes();
-
         val returnTypeCompileTimeSpecification = objectAndActionInvocation.getReturnTypeSpecification();
 
         val isDomainObjectOrCollection = returnTypeCompileTimeSpecification.isEntityOrViewModelOrAbstract()
                 || returnTypeCompileTimeSpecification.isPlural();
 
+        final List<MediaType> acceptableMediaTypes = resourceContext.getAcceptableMediaTypes();
         if(isDomainObjectOrCollection
                 && isAccepted(RepresentationType.DOMAIN_OBJECT, acceptableMediaTypes)) {
 
-            return objectAndActionInvocation.asEitherSingularOrPlural()
-            .fold(singularActionResult->{
-                return responseBuilder(
-                        buildResponse(
-                                resourceContext,
-                                singularActionResult));
-            }, pluralActionResult->{
+            final Collection<ManagedObject> collectionAdapters = objectAdaptersFrom(objectAndActionInvocation);
+
+            if(collectionAdapters != null) {
                 final ObjectSpecification elementSpec =
                         objectAndActionInvocation.getAction().getElementType();
                 final ObjectSpecification actionOwnerSpec = actionOwnerSpecFrom(objectAndActionInvocation);
                 final String actionId = actionIdFrom(objectAndActionInvocation);
                 final String actionArguments = actionArgumentsFrom(objectAndActionInvocation);
                 final DomainObjectList listAsViewmodel = domainObjectListFrom(
-                        pluralActionResult, elementSpec, actionOwnerSpec, actionId, actionArguments);
+                        collectionAdapters, elementSpec, actionOwnerSpec, actionId, actionArguments);
 
                 val domainObjectListSpec = resourceContext.getMetaModelContext().getSpecificationLoader()
                     .specForType(DomainObjectList.class)
@@ -231,7 +228,14 @@ implements ContentNegotiationService {
                         buildResponse(
                                 resourceContext,
                                 listAdapter));
-            });
+
+            } else {
+
+                return responseBuilder(
+                        buildResponse(
+                                resourceContext,
+                                objectAndActionInvocation.getReturnedAdapter()));
+            }
 
         }
 
@@ -335,6 +339,14 @@ implements ContentNegotiationService {
             break;
         }
         return title;
+    }
+
+    private Collection<ManagedObject> objectAdaptersFrom(final ObjectAndActionInvocation objectAndActionInvocation) {
+        val returnedAdapter = objectAndActionInvocation.getReturnedAdapter();
+        val returnTypeSpec = objectAndActionInvocation.getAction().getReturnType();
+
+        return Facets.collectionStream(returnTypeSpec, returnedAdapter)
+                .collect(Collectors.toList());
     }
 
     /**

@@ -19,7 +19,6 @@
 package org.apache.causeway.persistence.jdo.spring.test.integration;
 
 import java.io.IOException;
-import java.nio.file.Path;
 import java.util.Map;
 import java.util.Properties;
 
@@ -27,7 +26,7 @@ import javax.jdo.JDOFatalUserException;
 import javax.jdo.PersistenceManagerFactory;
 
 import org.junit.jupiter.api.Test;
-import org.springframework.core.io.PathResource;
+import org.springframework.core.io.ClassPathResource;
 
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -36,8 +35,6 @@ import static org.mockito.Mockito.mock;
 
 import org.apache.causeway.persistence.jdo.spring.integration.LocalPersistenceManagerFactoryBean;
 
-import lombok.val;
-
 class LocalPersistenceManagerFactoryTests {
 
 	@Test
@@ -45,7 +42,7 @@ class LocalPersistenceManagerFactoryTests {
 		final PersistenceManagerFactory pmf = mock(PersistenceManagerFactory.class);
 		LocalPersistenceManagerFactoryBean pmfb = new LocalPersistenceManagerFactoryBean() {
 			@Override
-			protected PersistenceManagerFactory newPersistenceManagerFactory(final Map<?, ?> props) {
+			protected PersistenceManagerFactory newPersistenceManagerFactory(Map<?, ?> props) {
 				return pmf;
 			}
 		};
@@ -85,7 +82,7 @@ class LocalPersistenceManagerFactoryTests {
 	void testLocalPersistenceManagerFactoryBeanWithInvalidProperty() throws IOException {
 		LocalPersistenceManagerFactoryBean pmfb = new LocalPersistenceManagerFactoryBean() {
 			@Override
-			protected PersistenceManagerFactory newPersistenceManagerFactory(final Map<?, ?> props) {
+			protected PersistenceManagerFactory newPersistenceManagerFactory(Map<?, ?> props) {
 				throw new IllegalArgumentException((String) props.get("myKey"));
 			}
 		};
@@ -104,14 +101,13 @@ class LocalPersistenceManagerFactoryTests {
 
 	@Test
 	void testLocalPersistenceManagerFactoryBeanWithFile() throws IOException {
-	    val configResource = new PathResource(Path.of("src/test/resources/test.properties"));
 		LocalPersistenceManagerFactoryBean pmfb = new LocalPersistenceManagerFactoryBean() {
 			@Override
-			protected PersistenceManagerFactory newPersistenceManagerFactory(final Map<?, ?> props) {
+			protected PersistenceManagerFactory newPersistenceManagerFactory(Map<?, ?> props) {
 				throw new IllegalArgumentException((String) props.get("myKey"));
 			}
 		};
-		pmfb.setConfigLocation(configResource);
+		pmfb.setConfigLocation(new ClassPathResource("test.properties", getClass()));
 		try {
 			pmfb.afterPropertiesSet();
 			fail("Should have thrown IllegalArgumentException");
@@ -126,7 +122,7 @@ class LocalPersistenceManagerFactoryTests {
 	public void testLocalPersistenceManagerFactoryBeanWithName() throws IOException {
 		LocalPersistenceManagerFactoryBean pmfb = new LocalPersistenceManagerFactoryBean() {
 			@Override
-			protected PersistenceManagerFactory newPersistenceManagerFactory(final String name) {
+			protected PersistenceManagerFactory newPersistenceManagerFactory(String name) {
 				throw new IllegalArgumentException(name);
 			}
 		};
@@ -145,7 +141,7 @@ class LocalPersistenceManagerFactoryTests {
 	public void testLocalPersistenceManagerFactoryBeanWithNameAndProperties() throws IOException {
 		LocalPersistenceManagerFactoryBean pmfb = new LocalPersistenceManagerFactoryBean() {
 			@Override
-			protected PersistenceManagerFactory newPersistenceManagerFactory(final String name) {
+			protected PersistenceManagerFactory newPersistenceManagerFactory(String name) {
 				throw new IllegalArgumentException(name);
 			}
 		};

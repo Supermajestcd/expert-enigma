@@ -25,7 +25,6 @@ import java.lang.annotation.Target;
 import java.util.List;
 import java.util.SortedSet;
 
-import javax.inject.Inject;
 import javax.inject.Named;
 
 import org.apache.causeway.applib.CausewayModuleApplib;
@@ -55,7 +54,6 @@ public class ApplicationNamespace extends ApplicationFeatureViewModel {
     public ApplicationNamespace(final ApplicationFeatureId featureId) {
         super(featureId);
     }
-    @Inject
     public ApplicationNamespace(final String memento) {
         super(memento);
     }

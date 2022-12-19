@@ -18,14 +18,14 @@
  */
 package org.apache.causeway.viewer.restfulobjects.applib.client;
 
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 import org.apache.causeway.viewer.restfulobjects.applib.RestfulResponse;
 
-class RestfulResponse_HeaderTest_Warning {
+public class RestfulResponse_HeaderTest_Warning {
 
 
     @Test

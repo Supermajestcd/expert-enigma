@@ -18,22 +18,22 @@
  */
 package org.apache.causeway.viewer.wicket.viewer.integration;
 
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
-import org.junit.jupiter.api.Test;
+import org.junit.Before;
+import org.junit.Ignore;
+import org.junit.Test;
 
-class AuthenticatedWebSessionForCauseway_DownCastsInheritedFunctionality {
+public class AuthenticatedWebSessionForCauseway_DownCastsInheritedFunctionality {
 
-    @BeforeEach
+    @Before
     public void setUp() throws Exception {
     }
 
-    @Disabled("thread-safe downcast of inherited functionality")
+    @Ignore("thread-safe downcast of inherited functionality")
     @Test
     public void testGet() {
     }
 
-    @Disabled("thread-safe downcast of inherited functionality")
+    @Ignore("thread-safe downcast of inherited functionality")
     @Test
     public void testGetClientInfo() {
     }

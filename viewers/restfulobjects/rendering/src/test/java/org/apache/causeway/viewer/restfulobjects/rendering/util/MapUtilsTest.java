@@ -20,13 +20,12 @@ package org.apache.causeway.viewer.restfulobjects.rendering.util;
 
 import java.util.Map;
 
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 
-class MapUtilsTest {
+public class MapUtilsTest {
 
     @Test
     public void happyCase() throws Exception {
@@ -42,11 +41,9 @@ class MapUtilsTest {
         assertThat(map.size(), is(0));
     }
 
-    @Test
+    @Test(expected = IllegalArgumentException.class)
     public void uneven() throws Exception {
-        assertThrows(IllegalArgumentException.class, ()->{
-            MapUtils.mapOf("foo");
-        });
+        MapUtils.mapOf("foo");
     }
 
 }

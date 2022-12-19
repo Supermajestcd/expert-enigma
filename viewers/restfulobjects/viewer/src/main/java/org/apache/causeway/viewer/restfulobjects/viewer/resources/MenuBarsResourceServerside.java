@@ -20,6 +20,7 @@ package org.apache.causeway.viewer.restfulobjects.viewer.resources;
 
 import java.util.function.Consumer;
 
+import javax.inject.Inject;
 import javax.ws.rs.HttpMethod;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
@@ -31,7 +32,10 @@ import org.apache.causeway.applib.annotation.Where;
 import org.apache.causeway.applib.layout.component.ServiceActionLayoutData;
 import org.apache.causeway.applib.layout.links.Link;
 import org.apache.causeway.applib.layout.menubars.MenuBars;
+import org.apache.causeway.applib.services.iactnlayer.InteractionLayerTracker;
 import org.apache.causeway.applib.services.menu.MenuBarsService;
+import org.apache.causeway.core.config.CausewayConfiguration;
+import org.apache.causeway.core.metamodel.context.MetaModelContext;
 import org.apache.causeway.viewer.restfulobjects.applib.Rel;
 import org.apache.causeway.viewer.restfulobjects.applib.RepresentationType;
 import org.apache.causeway.viewer.restfulobjects.applib.RestfulMediaType;
@@ -42,17 +46,18 @@ import org.apache.causeway.viewer.restfulobjects.rendering.service.Representatio
 import org.apache.causeway.viewer.restfulobjects.viewer.context.ResourceContext;
 
 import lombok.val;
-import lombok.extern.log4j.Log4j2;
 
 @Component
-@Log4j2
 public class MenuBarsResourceServerside extends ResourceAbstract implements MenuBarsResource {
 
     public static final String SERVICE_IDENTIFIER = "1";
 
-    public MenuBarsResourceServerside() {
-        super();
-        log.debug("<init>");
+    @Inject
+    public MenuBarsResourceServerside(
+            final MetaModelContext metaModelContext,
+            final CausewayConfiguration causewayConfiguration,
+            final InteractionLayerTracker iInteractionLayerTracker) {
+        super(metaModelContext, causewayConfiguration, iInteractionLayerTracker);
     }
 
     @Override

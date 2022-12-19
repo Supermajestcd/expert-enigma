@@ -18,65 +18,61 @@
  */
 package org.apache.causeway.viewer.restfulobjects.viewer.resources;
 
-import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import org.hamcrest.CoreMatchers;
+import org.junit.Assert;
+import org.junit.Test;
 
 import org.apache.causeway.viewer.restfulobjects.applib.JsonRepresentation;
 import org.apache.causeway.viewer.restfulobjects.rendering.RestfulObjectsApplicationException;
 import org.apache.causeway.viewer.restfulobjects.rendering.util.Util;
 
-class DomainResourceHelper_readBodyAsMap_Test {
+public class DomainResourceHelper_readBodyAsMap_Test {
 
     private JsonRepresentation representation;
 
     @Test
-    void whenNull() throws Exception {
+    public void whenNull() throws Exception {
         representation = Util.readAsMap(null);
 
-        assertTrue(representation.isMap());
-        assertEquals(0, representation.size());
+        Assert.assertThat(representation.isMap(), CoreMatchers.is(true));
+        Assert.assertThat(representation.size(), CoreMatchers.is(0));
     }
 
     @Test
-    void whenEmptyString() throws Exception {
+    public void whenEmptyString() throws Exception {
         representation = Util.readAsMap("");
 
-        assertTrue(representation.isMap());
-        assertEquals(0, representation.size());
+        Assert.assertThat(representation.isMap(), CoreMatchers.is(true));
+        Assert.assertThat(representation.size(), CoreMatchers.is(0));
     }
 
     @Test
-    void whenWhitespaceOnlyString() throws Exception {
+    public void whenWhitespaceOnlyString() throws Exception {
         representation = Util.readAsMap(" \t ");
 
-        assertTrue(representation.isMap());
-        assertEquals(0, representation.size());
+        Assert.assertThat(representation.isMap(), CoreMatchers.is(true));
+        Assert.assertThat(representation.size(), CoreMatchers.is(0));
     }
 
     @Test
-    void emptyMap() throws Exception {
+    public void emptyMap() throws Exception {
         representation = Util.readAsMap("{}");
 
-        assertTrue(representation.isMap());
-        assertEquals(0, representation.size());
+        Assert.assertThat(representation.isMap(), CoreMatchers.is(true));
+        Assert.assertThat(representation.size(), CoreMatchers.is(0));
     }
 
     @Test
-    void map() throws Exception {
+    public void map() throws Exception {
         representation = Util.readAsMap("{\"foo\":\"bar\"}");
 
-        assertTrue(representation.isMap());
-        assertEquals(1, representation.size());
+        Assert.assertThat(representation.isMap(), CoreMatchers.is(true));
+        Assert.assertThat(representation.size(), CoreMatchers.is(1));
     }
 
-    @Test
-    void whenArray() throws Exception {
-        assertThrows(RestfulObjectsApplicationException.class, ()->{
-            Util.readAsMap("[]");
-        });
+    @Test(expected = RestfulObjectsApplicationException.class)
+    public void whenArray() throws Exception {
+        Util.readAsMap("[]");
     }
 
 }

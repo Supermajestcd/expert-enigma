@@ -18,18 +18,19 @@
  */
 package org.apache.causeway.security.shiro.authorization;
 
-import org.junit.jupiter.api.Test;
+import org.junit.Assert;
+import org.junit.Test;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.hamcrest.CoreMatchers.is;
 
-class CausewayPermissionTest_equals {
+public class CausewayPermissionTest_equals {
 
     @Test
-    void differentByPermGroup() throws Exception {
+    public void differentByPermGroup() throws Exception {
         final CausewayPermission perm1 = new CausewayPermission("adm/*");
         final CausewayPermission perm2 = new CausewayPermission("aba/*");
 
-        assertFalse(perm1.equals(perm2));
+        Assert.assertThat(perm1.equals(perm2), is(false));
     }
 
 

@@ -29,6 +29,7 @@ import org.apache.causeway.core.metamodel.interactions.managed.ManagedCollection
 import org.apache.causeway.core.metamodel.interactions.managed.ManagedProperty;
 import org.apache.causeway.core.metamodel.object.ManagedObject;
 import org.apache.causeway.core.metamodel.object.ManagedObjects;
+import org.apache.causeway.core.metamodel.services.ServiceUtil;
 import org.apache.causeway.core.metamodel.spec.feature.MixedIn;
 import org.apache.causeway.core.metamodel.spec.feature.ObjectAction;
 import org.apache.causeway.core.metamodel.spec.feature.ObjectAssociation;
@@ -189,7 +190,7 @@ extends ReprRendererAbstract<ManagedObject> {
 
             // serviceId or instance Id
             if (isService) {
-                representation.mapPutString("serviceId", objectAdapter.getSpecification().getLogicalTypeName());
+                representation.mapPutString("serviceId", ServiceUtil.idOfAdapter(objectAdapter));
             } else {
                 oidIfAny.ifPresent(oid->{
                     Optional.ofNullable(oid.getLogicalTypeName())

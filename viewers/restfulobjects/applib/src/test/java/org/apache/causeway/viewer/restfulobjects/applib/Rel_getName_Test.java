@@ -18,13 +18,13 @@
  */
 package org.apache.causeway.viewer.restfulobjects.applib;
 
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 
-class Rel_getName_Test {
+public class Rel_getName_Test {
 
     @Test
     public void iana_namespace() throws Exception {

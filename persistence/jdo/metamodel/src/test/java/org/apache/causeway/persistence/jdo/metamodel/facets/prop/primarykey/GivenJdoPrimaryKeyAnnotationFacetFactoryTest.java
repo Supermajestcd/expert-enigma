@@ -22,11 +22,6 @@ import java.lang.reflect.Method;
 
 import javax.jdo.annotations.PrimaryKey;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
 import org.apache.causeway.core.metamodel.facetapi.Facet;
 import org.apache.causeway.core.metamodel.facetapi.FeatureType;
 import org.apache.causeway.core.metamodel.facets.FacetFactory.ProcessMethodContext;
@@ -37,7 +32,7 @@ import org.apache.causeway.persistence.jdo.provider.metamodel.facets.prop.primar
 
 import lombok.val;
 
-class GivenJdoPrimaryKeyAnnotationFacetFactoryTest
+public class GivenJdoPrimaryKeyAnnotationFacetFactoryTest
 extends AbstractFacetFactoryTest {
 
     private JdoPrimaryKeyAnnotationFacetFactory facetFactory;

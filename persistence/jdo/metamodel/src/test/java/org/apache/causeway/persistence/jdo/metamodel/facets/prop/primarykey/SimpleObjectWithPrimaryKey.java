@@ -20,7 +20,7 @@ package org.apache.causeway.persistence.jdo.metamodel.facets.prop.primarykey;
 
 import javax.jdo.annotations.PrimaryKey;
 
-abstract class SimpleObjectWithPrimaryKey {
+public abstract class SimpleObjectWithPrimaryKey {
 
     private Long id;
 

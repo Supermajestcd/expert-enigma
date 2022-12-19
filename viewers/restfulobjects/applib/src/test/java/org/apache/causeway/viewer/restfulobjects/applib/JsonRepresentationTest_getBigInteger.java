@@ -21,23 +21,25 @@ package org.apache.causeway.viewer.restfulobjects.applib;
 import java.io.IOException;
 import java.math.BigInteger;
 
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.Before;
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.rules.ExpectedException;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import static org.apache.causeway.viewer.restfulobjects.applib.JsonFixture.readJson;
 
-import lombok.val;
+public class JsonRepresentationTest_getBigInteger {
 
-class JsonRepresentationTest_getBigInteger {
+    @Rule
+    public ExpectedException expectedException = ExpectedException.none();
 
     private JsonRepresentation jsonRepresentation;
 
-    @BeforeEach
+    @Before
     public void setUp() throws Exception {
         jsonRepresentation = new JsonRepresentation(readJson("map.json"));
     }
@@ -54,12 +56,10 @@ class JsonRepresentationTest_getBigInteger {
 
     @Test
     public void invalidFormat() throws IOException {
+        expectedException.expect(IllegalArgumentException.class);
+        expectedException.expectMessage("Value '12345678901234567890' larger than that allowed by format 'big-integer(19)'");
 
-        val expectMessage = "Value '12345678901234567890' larger than that allowed by format 'big-integer(19)'";
-
-        assertThrows(IllegalArgumentException.class, ()->{
-            assertThat(jsonRepresentation.getBigInteger("aBigInteger", "big-integer(19)"), is(new BigInteger("12345678901234567890")));
-        }, expectMessage);
+        assertThat(jsonRepresentation.getBigInteger("aBigInteger", "big-integer(19)"), is(new BigInteger("12345678901234567890")));
     }
 
     @Test
@@ -69,11 +69,10 @@ class JsonRepresentationTest_getBigInteger {
 
     @Test
     public void invalidFormattedFromPath() throws IOException {
-        val expectMessage = "Value '123' larger than that allowed by format 'big-integer(2)'";
+        expectedException.expect(IllegalArgumentException.class);
+        expectedException.expectMessage("Value '123' larger than that allowed by format 'big-integer(2)'");
 
-        assertThrows(IllegalArgumentException.class, ()->{
-            jsonRepresentation.getBigInteger("yetAnotherSubMap.anInvalidFormattedBigInteger.value");
-        }, expectMessage);
+        jsonRepresentation.getBigInteger("yetAnotherSubMap.anInvalidFormattedBigInteger.value");
     }
 
     @Test
@@ -88,27 +87,26 @@ class JsonRepresentationTest_getBigInteger {
 
     @Test
     public void forNonParseableString() throws IOException {
-        val expectMessage = "'aString' is not a biginteger";
+        expectedException.expect(IllegalArgumentException.class);
+        expectedException.expectMessage("'aString' is not a biginteger");
 
-        assertThrows(IllegalArgumentException.class, ()->{
-            jsonRepresentation.getBigInteger("aString");
-        }, expectMessage);
+        jsonRepresentation.getBigInteger("aString");
     }
 
     @Test
     public void forMap() throws IOException {
-        val expectMessage = "'aSubMap' is not a biginteger";
-        assertThrows(IllegalArgumentException.class, ()->{
-            jsonRepresentation.getBigInteger("aSubMap");
-        }, expectMessage);
+        expectedException.expect(IllegalArgumentException.class);
+        expectedException.expectMessage("'aSubMap' is not a biginteger");
+
+        jsonRepresentation.getBigInteger("aSubMap");
     }
 
     @Test
     public void forList() throws IOException {
-        val expectMessage = "'aSubList' is not a biginteger";
-        assertThrows(IllegalArgumentException.class, ()->{
-            jsonRepresentation.getBigInteger("aSubList");
-        }, expectMessage);
+        expectedException.expect(IllegalArgumentException.class);
+        expectedException.expectMessage("'aSubList' is not a biginteger");
+
+        jsonRepresentation.getBigInteger("aSubList");
     }
 
     @Test

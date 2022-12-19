@@ -71,8 +71,6 @@ module org.apache.causeway.commons {
     requires transitive spring.beans;
     requires transitive spring.context;
     requires transitive spring.core;
-    requires java.inject;
-    requires java.annotation;
 
     // JAXB JUnit test
     opens org.apache.causeway.commons.internal.resources to java.xml.bind;

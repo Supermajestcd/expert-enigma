@@ -18,35 +18,54 @@
  */
 package org.apache.causeway.viewer.wicket.viewer.registries.pages;
 
-import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
-
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import org.jmock.Expectations;
+import org.jmock.Mockery;
+import org.jmock.integration.junit4.JMock;
+import org.jmock.integration.junit4.JUnit4Mockery;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 
 import org.apache.causeway.viewer.wicket.ui.pages.PageClassList;
+import org.apache.causeway.viewer.wicket.ui.pages.PageClassRegistrySpi;
 
-class PageClassListDefault_Instantiation {
+@RunWith(JMock.class)
+public class PageClassListDefault_Instantiation {
+
+    private final Mockery context = new JUnit4Mockery();
+
+    @Before
+    public void setUp() throws Exception {
+    }
+
+    @After
+    public void tearDown() throws Exception {
+    }
 
     @Test
-    void shouldCauseAllPagesToBeRegistered() {
+    public void shouldCauseAllPagesToBeRegistered() {
         // necessary to provide an implementation that will register
         // all pages with the registry.
         final PageClassListDefault pageClassList = new PageClassListDefault();
         newPageClassRegistryDefault(pageClassList);
     }
 
-    @Test
-    void shouldFailIfNoPagesRegistered() {
+    @Test(expected = IllegalStateException.class)
+    public void shouldFailIfNoPagesRegistered() {
         // no side effects, ie doesn't register
-        final PageClassList mockPageClassList = Mockito.mock(PageClassList.class);
-        assertThrows(IllegalStateException.class, ()->{
-            newPageClassRegistryDefault(mockPageClassList);
+        final PageClassList mockPageClassList = context.mock(PageClassList.class);
+        context.checking(new Expectations() {
+            {
+                mockPageClassList.registerPages(with(any(PageClassRegistrySpi.class)));
+            }
         });
+        newPageClassRegistryDefault(mockPageClassList);
     }
 
     // -- HELPER
 
-    static PageClassRegistryDefault newPageClassRegistryDefault(final PageClassList pageClassList) {
+    public static PageClassRegistryDefault newPageClassRegistryDefault(PageClassList pageClassList) {
         PageClassRegistryDefault pageClassRegistry = new PageClassRegistryDefault(pageClassList);
         pageClassRegistry.init();
         return pageClassRegistry;

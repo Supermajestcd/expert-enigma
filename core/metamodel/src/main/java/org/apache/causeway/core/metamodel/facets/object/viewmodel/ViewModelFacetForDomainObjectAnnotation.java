@@ -31,6 +31,7 @@ import org.apache.causeway.commons.internal.memento._Mementos;
 import org.apache.causeway.commons.internal.memento._Mementos.SerializingAdapter;
 import org.apache.causeway.core.metamodel.consent.InteractionInitiatedBy;
 import org.apache.causeway.core.metamodel.facetapi.FacetHolder;
+import org.apache.causeway.core.metamodel.facets.HasPostConstructMethodCache;
 import org.apache.causeway.core.metamodel.facets.properties.update.modify.PropertySetterFacet;
 import org.apache.causeway.core.metamodel.object.ManagedObject;
 import org.apache.causeway.core.metamodel.spec.ObjectSpecification;
@@ -45,7 +46,8 @@ extends ViewModelFacetAbstract {
 
     public static Optional<ViewModelFacetForDomainObjectAnnotation> create(
             final Optional<DomainObject> domainObjectIfAny,
-            final FacetHolder holder) {
+            final FacetHolder holder,
+            final HasPostConstructMethodCache postConstructMethodCache) {
 
         return domainObjectIfAny
                 .map(DomainObject::nature)
@@ -71,7 +73,8 @@ extends ViewModelFacetAbstract {
                         }
                         // else fall through
                     case VIEW_MODEL:
-                        return new ViewModelFacetForDomainObjectAnnotation(holder);
+                        return new ViewModelFacetForDomainObjectAnnotation(
+                                holder, postConstructMethodCache);
                     }
                     // shouldn't happen, the above switch should match all cases
                     throw new IllegalArgumentException("nature of '" + nature + "' not recognized");
@@ -83,9 +86,10 @@ extends ViewModelFacetAbstract {
     private SerializingAdapter serializer;
 
     protected ViewModelFacetForDomainObjectAnnotation(
-            final FacetHolder holder) {
+            final FacetHolder holder,
+            final HasPostConstructMethodCache postConstructMethodCache) {
         // is overruled by any other ViewModelFacet type
-        super(holder, Precedence.LOW);
+        super(holder, postConstructMethodCache, Precedence.LOW);
     }
 
     @Override

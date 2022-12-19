@@ -20,7 +20,7 @@ package org.apache.causeway.persistence.jdo.metamodel.facets.prop.notpersistent;
 
 import javax.jdo.annotations.NotPersistent;
 
-abstract class SimpleObjectWithNotPersistentColumn {
+public abstract class SimpleObjectWithNotPersistentColumn {
 
     private Long someColumn;
 

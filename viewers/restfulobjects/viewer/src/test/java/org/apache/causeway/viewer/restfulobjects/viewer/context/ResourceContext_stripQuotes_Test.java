@@ -18,58 +18,58 @@
  */
 package org.apache.causeway.viewer.restfulobjects.viewer.context;
 
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.nullValue;
 
-class ResourceContext_stripQuotes_Test {
+public class ResourceContext_stripQuotes_Test {
 
     @Test
-    void whenQuotes() throws Exception {
+    public void whenQuotes() throws Exception {
         final String x = ResourceContext.stripQuotes("\"123\"");
         assertThat(x, is("123"));
     }
 
     @Test
-    void whenNoQuotes() throws Exception {
+    public void whenNoQuotes() throws Exception {
         final String x = ResourceContext.stripQuotes("123");
         assertThat(x, is("123"));
     }
 
     @Test
-    void whenFirstQuote() throws Exception {
+    public void whenFirstQuote() throws Exception {
         final String x = ResourceContext.stripQuotes("\"123");
         assertThat(x, is("\"123"));
     }
 
     @Test
-    void whenEndQuote() throws Exception {
+    public void whenEndQuote() throws Exception {
         final String x = ResourceContext.stripQuotes("123\"");
         assertThat(x, is("123\""));
     }
 
     @Test
-    void whenCharsAfter() throws Exception {
+    public void whenCharsAfter() throws Exception {
         final String x = ResourceContext.stripQuotes("\"123\" ");
         assertThat(x, is("\"123\" "));
     }
 
     @Test
-    void whenCharsBefore() throws Exception {
+    public void whenCharsBefore() throws Exception {
         final String x = ResourceContext.stripQuotes(" \"123\"");
         assertThat(x, is(" \"123\""));
     }
 
     @Test
-    void whenEmpty() throws Exception {
+    public void whenEmpty() throws Exception {
         final String x = ResourceContext.stripQuotes("");
         assertThat(x, is(""));
     }
 
     @Test
-    void whenNull() throws Exception {
+    public void whenNull() throws Exception {
         final String x = ResourceContext.stripQuotes(null);
         assertThat(x, is(nullValue()));
     }

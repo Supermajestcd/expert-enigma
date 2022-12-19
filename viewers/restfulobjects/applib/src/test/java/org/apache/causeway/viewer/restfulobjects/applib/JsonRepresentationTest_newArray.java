@@ -18,12 +18,12 @@
  */
 package org.apache.causeway.viewer.restfulobjects.applib;
 
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 
-class JsonRepresentationTest_newArray {
+public class JsonRepresentationTest_newArray {
 
     @Test
     public void newArray() throws Exception {

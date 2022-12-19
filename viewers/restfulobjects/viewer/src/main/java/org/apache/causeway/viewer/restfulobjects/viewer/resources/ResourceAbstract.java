@@ -22,6 +22,7 @@ import java.io.InputStream;
 import java.util.Map;
 import java.util.function.UnaryOperator;
 
+import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.core.Context;
@@ -31,18 +32,18 @@ import javax.ws.rs.core.SecurityContext;
 import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.ext.Providers;
 
-import org.springframework.beans.factory.annotation.Autowired;
-
 import org.apache.causeway.applib.annotation.Where;
 import org.apache.causeway.applib.services.bookmark.Bookmark;
+import org.apache.causeway.applib.services.iactnlayer.InteractionLayerTracker;
 import org.apache.causeway.commons.internal.base._Refs;
 import org.apache.causeway.commons.internal.base._Strings;
 import org.apache.causeway.commons.internal.codec._UrlDecoderUtil;
+import org.apache.causeway.core.config.CausewayConfiguration;
 import org.apache.causeway.core.config.viewer.web.WebAppContextPath;
 import org.apache.causeway.core.metamodel.consent.InteractionInitiatedBy;
-import org.apache.causeway.core.metamodel.context.HasMetaModelContext;
 import org.apache.causeway.core.metamodel.context.MetaModelContext;
 import org.apache.causeway.core.metamodel.object.ManagedObject;
+import org.apache.causeway.core.metamodel.specloader.SpecificationLoader;
 import org.apache.causeway.viewer.restfulobjects.applib.RepresentationType;
 import org.apache.causeway.viewer.restfulobjects.applib.RestfulResponse.HttpStatusCode;
 import org.apache.causeway.viewer.restfulobjects.rendering.RestfulObjectsApplicationException;
@@ -51,16 +52,14 @@ import org.apache.causeway.viewer.restfulobjects.rendering.service.Representatio
 import org.apache.causeway.viewer.restfulobjects.rendering.util.Util;
 import org.apache.causeway.viewer.restfulobjects.viewer.context.ResourceContext;
 
-import lombok.Getter;
 import lombok.NonNull;
 import lombok.val;
 
-public abstract class ResourceAbstract
-implements HasMetaModelContext {
+public abstract class ResourceAbstract {
 
-    @Getter(onMethod_={@Override})
-    @Autowired protected MetaModelContext metaModelContext;
-    @Autowired protected WebAppContextPath webAppContextPath;
+    protected final MetaModelContext metaModelContext;
+    protected final CausewayConfiguration causewayConfiguration;
+    protected final InteractionLayerTracker iInteractionLayerTracker;
 
     @Context HttpHeaders httpHeaders;
     @Context UriInfo uriInfo;
@@ -70,7 +69,17 @@ implements HasMetaModelContext {
     @Context SecurityContext securityContext;
     @Context Providers providers;
 
-    protected ResourceAbstract() {
+    @Inject WebAppContextPath webAppContextPath;
+
+    @Inject
+    protected ResourceAbstract(
+            final MetaModelContext metaModelContext,
+            final CausewayConfiguration causewayConfiguration,
+            final InteractionLayerTracker iInteractionLayerTracker) {
+
+        this.metaModelContext = metaModelContext;
+        this.causewayConfiguration = causewayConfiguration;
+        this.iInteractionLayerTracker = iInteractionLayerTracker;
     }
 
     // -- FACTORIES
@@ -100,12 +109,12 @@ implements HasMetaModelContext {
             final ResourceDescriptor resourceDescriptor,
             final String urlUnencodedQueryString) {
 
-        if (!getInteractionService().isInInteraction()) {
+        if (!iInteractionLayerTracker.isInInteraction()) {
             throw RestfulObjectsApplicationException.create(HttpStatusCode.UNAUTHORIZED);
         }
 
         // eg. http://localhost:8080/ctx/restful/
-        final String restfulAbsoluteBase = getConfiguration().getViewer().getRestfulobjects().getBaseUri()
+        final String restfulAbsoluteBase = causewayConfiguration.getViewer().getRestfulobjects().getBaseUri()
                                     .orElseGet(()->uriInfo.getBaseUri().toString());
 
         // eg. /ctx/restful/
@@ -154,6 +163,10 @@ implements HasMetaModelContext {
                         .createWithMessage(HttpStatusCode.NOT_FOUND,
                                 "Could not determine adapter for bookmark: '%s'",
                                 bookmark)));
+    }
+
+    protected SpecificationLoader getSpecificationLoader() {
+        return metaModelContext.getSpecificationLoader();
     }
 
     // -- HELPER

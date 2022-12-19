@@ -28,6 +28,7 @@ import org.apache.causeway.applib.services.urlencoding.UrlEncodingService;
 import org.apache.causeway.commons.internal.debug._Debug;
 import org.apache.causeway.commons.internal.debug.xray.XrayUi;
 import org.apache.causeway.core.metamodel.facetapi.FacetHolder;
+import org.apache.causeway.core.metamodel.facets.HasPostConstructMethodCache;
 import org.apache.causeway.core.metamodel.object.ManagedObject;
 import org.apache.causeway.core.metamodel.spec.ObjectSpecification;
 
@@ -40,17 +41,19 @@ extends ViewModelFacetAbstract {
 
     public static Optional<ViewModelFacet> create(
             final Optional<XmlRootElement> xmlRootElementIfAny,
-            final FacetHolder facetHolder) {
+            final FacetHolder facetHolder,
+            final HasPostConstructMethodCache postConstructMethodCache) {
 
         return xmlRootElementIfAny.map(xmlRootElement->
             new ViewModelFacetForXmlRootElementAnnotation(
-                    facetHolder));
+                    facetHolder, postConstructMethodCache));
     }
 
     private ViewModelFacetForXmlRootElementAnnotation(
-            final FacetHolder facetHolder) {
+            final FacetHolder facetHolder,
+            final HasPostConstructMethodCache postConstructMethodCache) {
         // overruled by other non fallback ViewModelFacet types
-        super(facetHolder, Precedence.DEFAULT);
+        super(facetHolder, postConstructMethodCache, Precedence.DEFAULT);
     }
 
     @Override

@@ -18,9 +18,10 @@
  */
 package org.apache.causeway.extensions.commandreplay.secondary.job;
 
-import org.quartz.JobExecutionContext;
-
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
+
+import org.quartz.JobExecutionContext;
 
 /**
  * Requires that the job is annotated with the {@link org.quartz.PersistJobDataAfterExecution} annotation.
@@ -35,7 +36,7 @@ class JobExecutionData {
     /**
      * Lookup property from the job detail.
      */
-    public String getString(final String key, final String defaultValue) {
+    public String getString(String key, final String defaultValue) {
         try {
             String v = context.getJobDetail().getJobDataMap().getString(key);
             return v != null ? v : defaultValue;
@@ -47,7 +48,7 @@ class JobExecutionData {
     /**
      * Save key into the job detail obtained from context.
      */
-    public void setString(final String key, final String value) {
+    public void setString(String key, String value) {
         context.getJobDetail().getJobDataMap().put(key, value);
     }
 

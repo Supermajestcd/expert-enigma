@@ -58,6 +58,7 @@ import org.apache.causeway.core.metamodel.facets.object.publish.entitychange.Ent
 import org.apache.causeway.core.metamodel.facets.object.viewmodel.ViewModelFacet;
 import org.apache.causeway.core.metamodel.facets.object.viewmodel.ViewModelFacetForDomainObjectAnnotation;
 import org.apache.causeway.core.metamodel.facets.objectvalue.choices.ChoicesFacet;
+import org.apache.causeway.core.metamodel.methods.MethodByClassMap;
 
 import lombok.val;
 
@@ -68,7 +69,7 @@ extends AbstractFacetFactoryJupiterTestCase {
 
     @BeforeEach
     void setUp() throws Exception {
-        facetFactory = new DomainObjectAnnotationFacetFactory(metaModelContext);
+        facetFactory = new DomainObjectAnnotationFacetFactory(metaModelContext, new MethodByClassMap());
     }
 
     @AfterEach
