@@ -26,9 +26,9 @@ import javax.inject.Named;
 
 import org.springframework.stereotype.Service;
 
-import org.apache.causeway.commons.internal.base._Refs;
-import org.apache.causeway.commons.internal.collections._Maps;
-import org.apache.causeway.core.config.CausewayConfiguration;
+import org.apache.isis.commons.internal.base._Refs;
+import org.apache.isis.commons.internal.collections._Maps;
+import org.apache.isis.core.config.IsisConfiguration;
 
 import lombok.val;
 
@@ -39,13 +39,13 @@ public class MarkupVariableResolverService {
     private final Map<String, String> constants;
 
     @Inject
-    public MarkupVariableResolverService(final CausewayConfiguration configuration) {
+    public MarkupVariableResolverService(IsisConfiguration configuration) {
         constants = _Maps.unmodifiable(
-                "SOURCES_CAUSEWAY", "https://github.com/apache/causeway/blob/master/core/applib/src/main/java",
-                "SOURCES_DEMO", "https://github.com/apache/causeway/tree/master/examples/demo/domain/src/main/java",
+                "SOURCES_ISIS", "https://github.com/apache/isis/blob/master/core/applib/src/main/java",
+                "SOURCES_DEMO", "https://github.com/apache/isis/tree/master/examples/demo/domain/src/main/java",
                 "ISSUES_DEMO", "https://issues.apache.org/jira/",
-                "CAUSEWAY_VERSION", Optional.ofNullable(
-                        configuration.getViewer().getCommon().getApplication().getVersion())
+                "ISIS_VERSION", Optional.ofNullable(
+                        configuration.getViewer().getWicket().getApplication().getVersion())
                         .orElse("unkown-version")
             );
     }
@@ -54,7 +54,7 @@ public class MarkupVariableResolverService {
      * For the given {@code input} replaces '${var-name}' with the variable's value.
      * @param input
      */
-    public String resolveVariables(final String input) {
+    public String resolveVariables(String input) {
         val stringRef = _Refs.objectRef(input);
         constants.forEach((k, v)->{
             stringRef.update(string->string.replace(var(k), v));
@@ -62,7 +62,7 @@ public class MarkupVariableResolverService {
         return stringRef.getValueElseDefault(input);
     }
 
-    private String var(final String name) {
+    private String var(String name) {
         return String.format("${%s}", name);
     }
 

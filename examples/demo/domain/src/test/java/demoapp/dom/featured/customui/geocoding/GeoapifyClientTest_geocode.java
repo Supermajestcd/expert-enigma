@@ -18,12 +18,12 @@
  */
 package demoapp.dom.featured.customui.geocoding;
 
+import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import lombok.val;
 
 import demoapp.dom.AppConfiguration;
-import lombok.val;
 
 class GeoapifyClientTest_geocode {
 
@@ -38,7 +38,10 @@ class GeoapifyClientTest_geocode {
         val latLng = client.geocode("38 Upper Montagu Street, Westminster W1H 1LJ, United Kingdom");
 
         // then
-        assertEquals(Double.valueOf(latLng.getLatitude()), 51.520, 1E-2);
-        assertEquals(Double.valueOf(latLng.getLongitude()), -0.160, 1E-2);
+        val softly = new SoftAssertions();
+        softly.assertThat(latLng.getLatitude()).isEqualTo("51.52016005");
+        softly.assertThat(latLng.getLongitude()).isEqualTo("-0.16030636023550826");
+
+        softly.assertAll();
     }
 }

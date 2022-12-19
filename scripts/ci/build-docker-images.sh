@@ -55,9 +55,9 @@ fi
 
 bash $SCRIPT_DIR/_print-environment.sh "build-demo-app"
 
-export CAUSEWAY_VERSION=$REVISION
+export ISIS_VERSION=$REVISION
 echo ""
-echo "\$Causeway Version: ${CAUSEWAY_VERSION}"
+echo "\$Isis Version: ${ISIS_VERSION}"
 echo ""
 
 function setRevision() {
