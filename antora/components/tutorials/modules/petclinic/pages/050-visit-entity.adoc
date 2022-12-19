@@ -103,7 +103,7 @@ mvn -pl spring-boot:run
         @UniqueConstraint(name = "Visit__pet_visitAt__UNQ", columnNames = {"owner_id", "name"})
     }
 )
-@EntityListeners(CausewayEntityListener.class)
+@EntityListeners(IsisEntityListener.class)
 @Named("visits.Visit")
 @DomainObject(entityChangePublishing = Publishing.ENABLED)
 @DomainObjectLayout()

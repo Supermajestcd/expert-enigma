@@ -17,7 +17,7 @@
 #
 # See also config/application.properties
 #
-causeway:
+isis:
 
   applib:
     annotation:
@@ -69,25 +69,25 @@ causeway:
           mode: disabled
 
   viewer:
-    common:
+    wicket:
       application:
-        menubars-layout-file: demoapp/dom/menubars.layout.xml
+        menubars-layout-xml: demoapp/dom/menubars.layout.xml
         favicon-url: images/gift.svg
         brand-logo-header: images/gift_48.png
         brand-logo-signin: images/gift_256.png
-        name: Apache Causeway Demo App
+        name: Apache Isis Demo App
         # https://stackoverflow.com/a/38983935/56880
         # in addition using special config with the project's maven-resources-plugin
         version: ${project.version}
-        about: This application demonstrates many aspects of the Apache Causeway programming model, as well as some of the most significant domain services and extensions such as the WrapperFactory, security, commands and publishing.
+        css: css/application.css
+        js: scripts/application.js
+        about: This application demonstrates many aspects of the Apache Isis programming model, as well as some of the most significant domain services and extensions such as the WrapperFactory, security, commands and publishing.
+
       credit:
-        - url:  http://causeway.apache.org
-          image: images/apache-causeway/logo-48x48.png
-          name: Apache Causeway
-          
-    wicket:
-      css: css/application.css
-      js: scripts/application.js
+        - url:  http://isis.apache.org
+          image: images/apache-isis/logo-48x48.png
+          name: Apache Isis
+
       themes:
         initial: Flatly
         showChooser: true
@@ -107,7 +107,7 @@ causeway:
 # schema auto creation etc. ...
   persistence:
     schema:
-       autoCreateSchemas: causewayExtSecman,causewayExtCommandLog,causewayExtExecutionLog,causewayExtExecutionOutbox,causewayExtSessionLog,causewayExtAuditTrail,demo
+       autoCreateSchemas: isisExtSecman,isisExtCommandLog,isisExtExecutionLog,isisExtExecutionOutbox,isisExtSessionLog,isisExtAuditTrail,demo
 
   extensions:
     secman:
@@ -115,12 +115,12 @@ causeway:
         admin:
           user-name: "sven"
           password: "pass"
-          role-name: "causeway-ext-secman-admin"
+          role-name: "isis-ext-secman-admin"
           namespace-permissions:
-            sticky: "causeway"
+            sticky: "isis"
             additional: "demo"
         regular-user:
-          role-name: "causeway-ext-secman-user"
+          role-name: "isis-ext-secman-user"
       permissionsEvaluationPolicy: ALLOW_BEATS_VETO
 
   testing:
