@@ -1,0 +1,6 @@
+
+
+
+* xref:mappings:jaxrsclient:about.adoc[JAX-RS Client Library]
+
+
