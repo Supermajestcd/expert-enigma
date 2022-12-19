@@ -1,0 +1,44 @@
+= @Value
+:Notice: Licensed to the Apache Software Foundation (ASF) under one or more contributor license agreements. See the NOTICE file distributed with this work for additional information regarding copyright ownership. The ASF licenses this file to you under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at. http://www.apache.org/licenses/LICENSE-2.0 . Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR  CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
+
+Indicates that the class has value semantics.
+
+== API
+
+[source,java]
+.Value.java
+----
+@interface Value {
+  @Deprecated(forRemoval = true, since = "2.0.0-M8")
+String logicalTypeName() default "";     // <.>
+}
+----
+
+<.> xref:#logicalTypeName[logicalTypeName]
++
+--
+[WARNING]
+====
+[red]#_deprecated:_#
+
+use _Named_ instead
+====
+
+The logical name of this value's type, that uniquely and fully qualifies it. The logical name is analogous to - but independent of - the actual fully qualified class name. eg. _sales.Customer_ for a class 'org.mycompany.dom.Customer'
+--
+
+== Members
+
+[#logicalTypeName]
+=== logicalTypeName
+
+[WARNING]
+====
+[red]#_deprecated:_#
+
+use _Named_ instead
+====
+
+The logical name of this value's type, that uniquely and fully qualifies it. The logical name is analogous to - but independent of - the actual fully qualified class name. eg. _sales.Customer_ for a class 'org.mycompany.dom.Customer'
+
+If not specified, the fully qualified class name is used instead.
