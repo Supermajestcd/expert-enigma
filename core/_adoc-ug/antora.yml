@@ -1,0 +1,8 @@
+name: ug
+title: "Fundamentals & Beyond"
+version: master
+start_page: ROOT:about.adoc
+nav:
+- modules/ROOT/nav.adoc
+- modules/fun/nav.adoc
+- modules/btb/nav.adoc
