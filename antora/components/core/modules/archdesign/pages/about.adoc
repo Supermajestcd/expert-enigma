@@ -1,0 +1,20 @@
+= Architecture & Design
+include::_attributes.adoc[]
+
+This guide describes the internal architecture and design of the framework.
+
+[CAUTION]
+====
+This material is out-of-date.
+====
+
+
+to discuss:
+
+* our plugin architecture (using ServiceLoader)
+* webmodule architecture (programmatic web.xml)
+* use of Spring Boot & our modules for classpath scanning
+* configuration
+* extensions
+* log4j2
+* plugins

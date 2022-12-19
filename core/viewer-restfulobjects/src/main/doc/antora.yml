@@ -1,0 +1,7 @@
+name: vro
+title: "Restful Objects Viewer"
+version: master
+start_page: ROOT:about.adoc
+nav:
+- modules/ROOT/nav.adoc
+- modules/security/nav.adoc
