@@ -1,0 +1,17 @@
+group = 'org.apache.isis.subdomains'
+description = 'Apache Isis Sub - Base (applib)'
+dependencies {
+    compile project(':org.apache.isis.core:isis-applib')
+    compile(Libs.guava)
+    compile(Libs.commonsLang3)
+    testCompile(Libs.reflections)
+    testCompile project(':org.apache.isis.core:isis-core-metamodel')
+    testCompile(Libs.javaxJdo)
+    testCompile project(':org.apache.isis.testing:isis-testing-unittestsupport-applib')
+}
+
+task packageTests(type: Jar) {
+    from sourceSets.test.output
+    classifier = 'tests'
+}
+artifacts.archives packageTests

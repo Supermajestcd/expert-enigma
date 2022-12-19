@@ -1,0 +1,16 @@
+group = 'org.apache.isis.extensions'
+description = 'Apache Isis Ext - Sec Man Persistence (Using JDO)'
+apply plugin: 'war'
+dependencies {
+    compile project(':org.apache.isis.testing:isis-testing-fixtures-applib')
+    providedCompile project(':org.apache.isis.persistence:isis-persistence-jdo-datanucleus5')
+    providedCompile project(':org.apache.isis.core:isis-core-runtime')
+    providedCompile project(':org.apache.isis.extensions:isis-extensions-secman-api')
+    providedCompile project(':org.apache.isis.extensions:isis-extensions-secman-model')
+}
+
+task packageTests(type: Jar) {
+    from sourceSets.test.output
+    classifier = 'tests'
+}
+artifacts.archives packageTests

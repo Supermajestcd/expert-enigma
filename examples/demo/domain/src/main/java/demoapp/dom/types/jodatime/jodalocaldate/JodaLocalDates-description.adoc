@@ -1,0 +1,27 @@
+The framework has built-in support for a number of temporal types, including `joda.time.LocalDate`.
+
+From here you can:
+
+* navigate to an entity that uses the `joda.time.LocalDate` datatype
+* open a view model that uses the `joda.time.LocalDate` datatype
+
+Some properties on these domain objects are mandatory, some optional.
+
+== Common interfaces
+
+The entity and view model types both implement some common interfaces.
+
+=== JodaLocalDateHolder
+
+The `JodaLocalDateHolder` interface is used to contribute a number of mixins to both types:
+
+[source,java]
+----
+include::holder/JodaLocalDateHolder.java[tags=class]
+----
+
+=== JodaLocalDateHolder2
+
+The `JodaLocalDateHolder2` interface is used to demonstrate support for label positions using `@PropertyLayout(labelPosition=...)`.
+
+Further details, along with the effect of this annotation, can be seen on the entity and view model object pages.

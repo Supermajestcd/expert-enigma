@@ -1,0 +1,19 @@
+description = 'Apache Isis Core - Runtime Services'
+
+sourceSets.test.resources { 
+	srcDirs = ["src/test/java"]
+	include "**/*.*" 
+}
+
+dependencies {
+    compile project(':org.apache.isis.core:isis-core-runtime')
+    compile project(':org.apache.isis.core:isis-core-codegen-bytebuddy')
+    compile(Libs.hsqldb)
+    testCompile project(':org.apache.isis.core:isis-core-internaltestsupport')
+}
+
+task packageTests(type: Jar) {
+    from sourceSets.test.output
+    classifier = 'tests'
+}
+artifacts.archives packageTests

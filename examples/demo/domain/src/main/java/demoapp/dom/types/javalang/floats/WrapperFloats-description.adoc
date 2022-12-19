@@ -1,0 +1,27 @@
+The framework has built-in support for all of the Wrapper data types, including `Float`.
+
+From here you can:
+
+* navigate to an entity that uses the `Float` datatype
+* open a view model that uses the `Float` datatype
+
+Some properties on these domain objects are mandatory, some optional.
+
+== Common interfaces
+
+The entity and view model types both implement some common interfaces.
+
+=== WrapperFloatHolder
+
+The `WrapperFloatHolder` interface is used to contribute a number of mixins to both types:
+
+[source,java]
+----
+include::holder/WrapperFloatHolder.java[tags=class]
+----
+
+=== WrapperFloatHolder2
+
+The `WrapperFloatHolder2` interface is used to demonstrate support for label positions using `@PropertyLayout(labelPosition=...)`.
+
+Further details, along with the effect of this annotation, can be seen on the entity and view model object pages.

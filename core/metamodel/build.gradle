@@ -1,0 +1,57 @@
+description = 'Apache Isis Core - MetaModel'
+
+apply plugin: 'java'
+
+compileTestJava {
+    options.compilerArgs << '-parameters'
+}
+
+sourceSets {
+	main {
+        resources {
+            srcDirs += "src/main/java"
+            include "**/*"
+            exclude "**/*.java"
+        }
+    }
+    test {
+        resources {
+            srcDirs += "src/test/java"
+            include "**/*"
+            exclude "**/*.java"
+        }
+    }
+}
+
+dependencies {
+    compile project(':org.apache.isis.core:isis-applib')
+    compile project(':org.apache.isis.core:isis-core-config')
+    compile project(':org.apache.isis.core:isis-core-security')
+    compile(Libs.swaggerCore) {
+        exclude(module: 'guava')
+        exclude(module: 'validation-api')
+        exclude(module: 'snakeyaml')
+        exclude(module: 'slf4j-api')
+        exclude(module: 'commons-lang3')
+    }
+    compile project(':org.apache.isis.commons:isis-commons')
+
+    testCompile project(':org.apache.isis.core:isis-core-internaltestsupport')
+
+    testCompile(Libs.junitJupiterApi)
+    testCompile(Libs.junitJupiterEngine)
+    testCompile(Libs.junitVintageEngine)
+    testCompile(Libs.jmock)
+    testCompile(Libs.jmockJunit4) {
+        exclude(module: 'junit-dep')
+        exclude(module: 'byte-buddy')
+    }
+    testCompile(Libs.hibernateValidator)
+    
+}
+
+task packageTests(type: Jar) {
+    from sourceSets.test.output
+    archiveClassifier = 'tests'
+}
+artifacts.archives packageTests

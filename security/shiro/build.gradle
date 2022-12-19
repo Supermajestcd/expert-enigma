@@ -1,0 +1,17 @@
+group = 'org.apache.isis.security'
+description = 'Apache Isis Security - Shiro'
+dependencies {
+    compile project(':org.apache.isis.core:isis-core-runtimeservices')
+    compile project(':org.apache.isis.core:isis-core-webapp')
+    compile(Libs.shiroCore) {
+        exclude(module: 'slf4j-api')
+    }
+    compile(Libs.shiroWeb)
+    testCompile project(':org.apache.isis.core:isis-core-internaltestsupport')
+}
+
+task packageTests(type: Jar) {
+    from sourceSets.test.output
+    classifier = 'tests'
+}
+artifacts.archives packageTests

@@ -1,0 +1,132 @@
+= Tooling - Model for AsciiDoc
+
+Allows for programmatic generation of ascii-doc representing document models. 
+
+NOTE: The _AsciiDoc_ name is trademarked by the https://www.eclipse.org/[_Eclipse Foundation_].
+This project is *not* part of the specification effort for _AsciiDoc_ under the 
+_AsciiDoc Working Group_. See https://projects.eclipse.org/proposals/asciidoc-language[]
+and https://accounts.eclipse.org/mailing-list/asciidoc-wg[]. However, we are happy to 
+help with transfer of source code, if any project (under the umbrella of the 
+_AsciiDoc Working Group_) is willing to take over.   
+
+WARNING: This is work-in-progress, no official Maven artifacts are published yet at the time of writing.
+However, snapshots are available with our nightly-builds:
+https://github.com/apache-isis-committers/isis-nightly[]
+
+== Usage
+
+Say we have a list of employees, which we want to express as ascii-doc table.
+
+[source,java]
+----
+public static class Employee {  
+    private int id;  
+    private String firstName;  
+    private String sirName;
+    ...
+}
+
+List<Employee> employees = List.of(
+        new Employee(1, "Alice", "Wonder"),
+        new Employee(2, "Bob", "Uncle")
+);
+----
+
+Lets generate a _Document_ model programmatically, then print it to _System.out_. 
+
+[source,java]
+----
+
+import org.apache.isis.tooling.model4adoc.AsciiDocWriter;
+import static org.apache.isis.tooling.model4adoc.AsciiDocFactory.*;
+
+...
+
+Document doc = doc();
+doc.setTitle("Hello World");
+
+Block block = block(doc);
+block.getLines().add("A simple block corresponds to a normal paragraph.");
+
+Table table = table(doc);
+table.setTitle("Employees");
+table.setAttribute("cols", "1m,3,3", true);
+table.setAttribute("header-option", "", true);
+
+Row headRow = headRow(table);
+
+cell(table, headRow, "ID");
+cell(table, headRow, "Firstname");
+cell(table, headRow, "Sirname");
+
+for(Employee employee : employees) {
+    
+    Row row = row(table);
+    cell(table, row, "" + employee.getId());
+    cell(table, row, employee.getFirstName());
+    cell(table, row, employee.getSirName());
+}
+
+System.out.println(AsciiDocWriter.toString(doc));
+
+----
+
+ascii-doc syntax generated:
+
+[source]
+----
+= Hello World
+
+A simple block corresponds to a normal paragraph.
+
+.Employees
+[cols="1m,3,3", options="header"]
+|===
+|ID |Firstname |Sirname 
+
+|1
+|Alice
+|Wonder
+
+|2
+|Bob
+|Uncle
+|===
+----
+
+which renders as
+
+==== Hello World
+
+A simple block corresponds to a normal paragraph.
+
+.Employees
+[cols="1m,3,3", options="header"]
+|===
+|ID |Firstname |Sirname 
+
+|1
+|Alice
+|Wonder
+
+|2
+|Bob
+|Uncle
+|===
+
+== Install
+
+Use Maven and our snapshot repository for a preview:
+https://github.com/apache-isis-committers/isis-nightly#maven[]
+
+[source,xml]
+----
+<dependency>
+    <groupId>org.apache.isis.tooling</groupId>
+    <artifactId>isis-tooling-model4adoc</artifactId>
+    <version>2.0.0-???</version>
+</dependency>
+----
+
+
+ 

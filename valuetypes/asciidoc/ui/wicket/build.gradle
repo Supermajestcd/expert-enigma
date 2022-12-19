@@ -1,0 +1,18 @@
+group = 'org.apache.isis.valuetypes'
+description = 'Apache Isis Val - Asciidoctor (ui wicket)'
+apply plugin: 'war'
+
+dependencies {
+    compile project(':org.apache.isis.core:isis-applib')
+    compile project(':org.apache.isis.commons:isis-commons')
+    compile project(':org.apache.isis.valuetypes:isis-valuetypes-asciidoc')
+    compile project(':org.apache.isis.valuetypes:isis-valuetypes-asciidoc-applib')
+
+    providedCompile project(':org.apache.isis.viewer:isis-viewer-wicket-ui')
+}
+
+task packageTests(type: Jar) {
+    from sourceSets.test.output
+    classifier = 'tests'
+}
+artifacts.archives packageTests

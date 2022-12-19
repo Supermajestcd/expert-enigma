@@ -1,0 +1,33 @@
+description = 'Apache Isis Core - Configuration'
+apply plugin: 'war'
+
+sourceSets {
+	main {
+        resources {
+            srcDirs += "src/main/java"
+            include "**/*"
+            exclude "**/*.java"
+        }
+    }
+    test {
+        resources {
+            srcDirs += "src/test/java"
+            include "**/*"
+            exclude "**/*.java"
+        }
+    }
+}
+
+dependencies {
+    compile project(':org.apache.isis.core:isis-applib')
+    compile project(':org.apache.isis.commons:isis-commons')
+    compile (Libs.hibernateValidator)
+    compile (Libs.springBootConfigurationProcessor)
+    testCompile project(':org.apache.isis.core:isis-core-internaltestsupport')
+}
+
+task packageTests(type: Jar) {
+    from sourceSets.test.output
+    classifier = 'tests'
+}
+artifacts.archives packageTests

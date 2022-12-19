@@ -1,0 +1,24 @@
+group = 'org.apache.isis.examples.apps'
+description = 'Apache Isis App - Demo (Domain)'
+
+dependencies {
+
+    compile project(':org.apache.isis.core:isis-applib')
+    compile project(':org.apache.isis.commons:isis-commons')
+    compile project(':org.apache.isis.testing:isis-testing-fixtures-applib')
+    compile project(':org.apache.isis.valuetypes:isis-valuetypes-asciidoc-applib')
+    compile project(':org.apache.isis.valuetypes:isis-valuetypes-markdown-applib')
+
+    // ISIS-2374 compile('commons-httpclient:commons-httpclient:3.1')  // did not work for me
+    compile(Libs.httpClient)
+
+    compile project(':org.apache.isis.extensions:isis-extensions-pdfjs-applib')
+    compile project(':org.apache.isis.extensions:isis-extensions-exceldownload-ui')
+    compile project(':org.apache.isis.testing:isis-testing-h2console-ui')
+    compile project(':org.apache.isis.viewer:isis-viewer-restfulobjects-jaxrsresteasy4')
+    compile project(':org.apache.isis.extensions:isis-extensions-secman-encryption-jbcrypt')
+    compile project(':org.apache.isis.extensions:isis-extensions-secman-persistence-jdo')
+    compile project(':org.apache.isis.extensions:isis-extensions-secman-shiro-realm')
+    compile project(':org.apache.isis.extensions:isis-extensions-modelannotation')
+    compile project(':org.apache.isis.valuetypes:isis-valuetypes-sse-applib')
+}

@@ -1,0 +1,22 @@
+group = 'org.apache.isis.testing'
+description = 'Apache Isis Tst - FakeData (applib)'
+
+sourceSets.main.resources { 
+	srcDirs = ["src/main/java"]
+	include "**/*.*" 
+}
+
+dependencies {
+    compile project(':org.apache.isis.core:isis-applib')
+    compile(Libs.javafaker) {
+        exclude(module: 'snakeyaml')
+    }
+    compile(Libs.guava)
+    testCompile project(':org.apache.isis.testing:isis-testing-unittestsupport-applib')
+}
+
+task packageTests(type: Jar) {
+    from sourceSets.test.output
+    classifier = 'tests'
+}
+artifacts.archives packageTests

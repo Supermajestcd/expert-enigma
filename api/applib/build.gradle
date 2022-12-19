@@ -1,0 +1,38 @@
+description = 'Apache Isis Core - AppLib'
+apply plugin: 'war'
+
+dependencies {
+    compile project(':org.apache.isis.core:isis-schema')
+    compile project(':org.apache.isis.commons:isis-commons')
+
+    compile(Libs.javaeeApi)
+    compile(Libs.findbugsAnnotations)
+    compile(Libs.springContext)
+    compile(Libs.jodaTime)
+
+    compile(Libs.springBootStarterLog4j2) {
+        exclude(module: 'slf4j-api')
+    }
+    compile(Libs.slf4jApi)
+
+	testCompile project(':org.apache.isis.core:isis-core-internaltestsupport')
+
+    testCompile(Libs.junitJupiterApi)
+    testCompile(Libs.junitJupiterEngine)
+    testCompile(Libs.junitVintageEngine)
+    testCompile(Libs.jmock)
+    testCompile(Libs.jmockJunit4) {
+        exclude(module: 'junit-dep')
+        exclude(module: 'byte-buddy')
+    }
+    testCompile (Libs.assertjCore)
+    
+}
+
+task packageTests(type: Jar) {
+    from sourceSets.test.output
+    classifier = 'tests'
+}
+artifacts.archives packageTests
+
+

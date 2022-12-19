@@ -1,0 +1,16 @@
+group = 'org.apache.isis.extensions'
+description = 'Apache Isis Ext - Sec Man API'
+apply plugin: 'war'
+
+dependencies {
+    compile project(':org.apache.isis.commons:isis-commons')
+    compile project(':org.apache.isis.core:isis-applib')
+    compile project(':org.apache.isis.extensions:isis-extensions-secman')
+    compile project(':org.apache.isis.core:isis-core-metamodel')
+}
+
+task packageTests(type: Jar) {
+    from sourceSets.test.output
+    classifier = 'tests'
+}
+artifacts.archives packageTests

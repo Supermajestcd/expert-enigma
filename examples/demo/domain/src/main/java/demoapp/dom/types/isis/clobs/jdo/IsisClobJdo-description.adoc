@@ -1,0 +1,18 @@
+Apache Isis implements the relevant JDO extension points to allow the `Clob` type to be persisted.
+To do so correctly, it requires that the column names for the three constituent parts of a `Clob` are specified using `@Column`.
+It's also necessary to specify the `jdbcType` to hold the characters:
+
+[source,java]
+----
+include::IsisClobJdo.java[tags=class]
+----
+<.> a no-arg constructor is introduced by JDO enhancer
+<.> required property as defined to JDO/DataNucleus.
++
+Apache Isis assumes properties are mandatory, so no additional annotation is required.
+<.> directly editable property as defined to Apache Isis
+<.> optional property as defined to Apache Isis
+<.> optional property as defined to JDO/DataNucleus
+
+
+include::../IsisClobs-common.adoc[]

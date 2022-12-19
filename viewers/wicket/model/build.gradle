@@ -1,0 +1,22 @@
+group = 'org.apache.isis.viewer'
+description = 'Apache Isis Viewer - Wicket (Model)'
+dependencies {
+    compile(Libs.wicketCore) {
+        exclude(module: 'slf4j-api')
+        exclude(module: 'commons-io')
+    }
+    compile(Libs.wicketExtensions) {
+        exclude(module: 'slf4j-api')
+    }
+    compile project(':org.apache.isis.core:isis-core-webapp')
+    compile project(':org.apache.isis.viewer:isis-viewer-common')
+    testCompile project(':org.apache.isis.core:isis-core-internaltestsupport')
+    testCompile project(':org.apache.isis.testing:isis-testing-unittestsupport-applib')
+    testCompile(Libs.guava)
+}
+
+task packageTests(type: Jar) {
+    from sourceSets.test.output
+    classifier = 'tests'
+}
+artifacts.archives packageTests

@@ -1,0 +1,12 @@
+JDO supports `int` link:http://www.datanucleus.org:15080/products/accessplatform_5_2/jdo/mapping.html#_primitive_and_java_lang_types[out-of-the-box], so no special annotations are required.
+
+[source,java]
+----
+include::PrimitiveIntJdo.java[tags="class"]
+----
+<.> a no-arg constructor is introduced by JDO enhancer
+<.> no additional JDO annotations required.
+
+
+
+include::../PrimitiveInts-common.adoc[]

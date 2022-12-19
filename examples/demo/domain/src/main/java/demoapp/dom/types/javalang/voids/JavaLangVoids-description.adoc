@@ -1,0 +1,4 @@
+Actions can return `void` or `java.lang.Void`.
+
+Rather than navigate to an empty page, the framework will render the target domain object.
+

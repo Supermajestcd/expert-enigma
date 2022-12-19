@@ -1,0 +1,19 @@
+group = 'org.apache.isis.viewer'
+description = 'Apache Isis Viewer - RO (JAX-RS Resteasy v4)'
+dependencies {
+    compile project(':org.apache.isis.viewer:isis-viewer-restfulobjects-rendering')
+    compile project(':org.apache.isis.viewer:isis-viewer-restfulobjects-viewer')
+    compile(Libs.resteasySpringBootStarter) {
+        exclude(module: 'spring-boot-starter-logging')
+    }
+    compile(Libs.jacksonModuleJaxbAnnotations)
+    testCompile project(':org.apache.isis.core:isis-core-internaltestsupport')
+    testCompile project(':org.apache.isis.viewer:isis-viewer-restfulobjects-testing')
+    testCompile(Libs.javaxJdo)
+}
+
+task packageTests(type: Jar) {
+    from sourceSets.test.output
+    classifier = 'tests'
+}
+artifacts.archives packageTests

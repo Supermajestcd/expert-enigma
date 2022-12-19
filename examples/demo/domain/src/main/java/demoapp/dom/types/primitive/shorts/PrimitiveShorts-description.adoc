@@ -1,0 +1,27 @@
+The framework has built-in support for all of the primitive data types, including `short`.
+
+From here you can:
+
+* navigate to an entity that uses the `short` datatype
+* open a view model that uses the `short` datatype
+
+Because `short` is a primitive value, the properties on these domain objects are mandatory.
+
+== Common interfaces
+
+The entity and view model types both implement some common interfaces.
+
+=== PrimitiveShortHolder
+
+The `PrimitiveShortHolder` interface is used to contribute a number of mixins to both types:
+
+[source,java]
+----
+include::holder/PrimitiveShortHolder.java[tags=class]
+----
+
+=== PrimitiveShortHolder2
+
+The `PrimitiveShortHolder2` interface is used to demonstrate support for label positions using `@PropertyLayout(labelPosition=...)`.
+
+Further details, along with the effect of this annotation, can be seen on the entity and view model object pages.

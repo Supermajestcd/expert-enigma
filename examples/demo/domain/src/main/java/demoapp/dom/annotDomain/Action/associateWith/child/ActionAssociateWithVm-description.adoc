@@ -1,0 +1,1 @@
+This child object exists just to act as the element of the two collections of the `ActionAssociateWithVm` demo object.

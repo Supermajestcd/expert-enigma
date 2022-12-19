@@ -1,0 +1,27 @@
+The framework has built-in support for all of the primitive data types, including `double`.
+
+From here you can:
+
+* navigate to an entity that uses the `double` datatype
+* open a view model that uses the `double` datatype
+
+Because `double` is a primitive value, the properties on these domain objects are mandatory.
+
+== Common interfaces
+
+The entity and view model types both implement some common interfaces.
+
+=== PrimitiveDoubleHolder
+
+The `PrimitiveDoubleHolder` interface is used to contribute a number of mixins to both types:
+
+[source,java]
+----
+include::holder/PrimitiveDoubleHolder.java[tags=class]
+----
+
+=== PrimitiveDoubleHolder2
+
+The `PrimitiveDoubleHolder2` interface is used to demonstrate support for label positions using `@PropertyLayout(labelPosition=...)`.
+
+Further details, along with the effect of this annotation, can be seen on the entity and view model object pages.

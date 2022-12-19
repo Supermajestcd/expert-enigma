@@ -1,0 +1,11 @@
+group = 'org.apache.isis.incubator.viewer'
+description = 'Apache Isis Inc - Viewer Vaadin (Viewer)'
+dependencies {
+    compile project(':org.apache.isis.incubator.viewer:isis-viewer-vaadin-ui')
+}
+
+task packageTests(type: Jar) {
+    from sourceSets.test.output
+    classifier = 'tests'
+}
+artifacts.archives packageTests

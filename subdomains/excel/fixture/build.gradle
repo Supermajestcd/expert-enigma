@@ -1,0 +1,15 @@
+group = 'org.apache.isis.subdomains'
+description = 'Apache Isis Sub - Excel (Fixtures)'
+dependencies {
+    compile project(':org.apache.isis.subdomains:isis-subdomains-excel-applib')
+    compile project(':org.apache.isis.subdomains:isis-subdomains-excel-testing')
+    compile project(':org.apache.isis.core:isis-applib')
+    compile project(':org.apache.isis.testing:isis-testing-fixtures-applib')
+    compile project(':org.apache.isis.persistence:isis-persistence-jdo-datanucleus5')
+}
+
+task packageTests(type: Jar) {
+    from sourceSets.test.output
+    classifier = 'tests'
+}
+artifacts.archives packageTests
