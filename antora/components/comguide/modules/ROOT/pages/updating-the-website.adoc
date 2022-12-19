@@ -4,29 +4,40 @@
 :page-partial:
 
 As part of the release process we xref:post-release-successful.adoc#generate-website[generate] and publish the website.
-An (intentional) side-effect of this process is to create a branch for the release (that is, `{page-causewayrel}`).
+An (intentional) side-effect of this process is to create a branch for the release (that is, `{page-isisrel}`).
 This branch can then be used for documentation updates.
 
 == Update docs
 
-Prereqs:
-
-* jdk 11
-* mvn 3.x
-* groovy 3.x
-* pandoc 2.x
-* dos2unix
-
-In the regular `causeway` repo:
+In the regular `isis` repo:
 
 * Check out the branch:
 +
 [source,bash,subs="attributes+"]
 ----
-git checkout {page-causewayrel}
+git checkout {page-isisrel}
 ----
 
 * make documentation updates, and commit changes
+
+* make sure config properties are up-to-date:
++
+This is most easily done by rebuilding all:
++
+[source,bash,subs="attributes+"]
+----
+pushd bom
+mvn clean install -DskipTests -Dreleased
+popd
+----
++
+Though it might be sufficient to just build the core/config module
++
+[source,bash,subs="attributes+"]
+----
+mvn clean install -pl core/config
+----
+
 
 * make sure the tooling is also built:
 +
@@ -42,9 +53,9 @@ mvn -D module-tooling -D skip.essential install -DskipTests
 sh preview.sh
 ----
 +
-NOTE: this now runs `mvn clean install -pl core/config` automatically (unless suppressed with a flag)
-
-This updated website is written to `antora/target/site`; we'll use the results in the xref:#publish-website[next section].
+This will write to `antora/target/site`; we'll use the results in the xref:#publish-website[next section].
++
+NOTE: this requires Java 11 for the projdoc tooling.
 
 
 

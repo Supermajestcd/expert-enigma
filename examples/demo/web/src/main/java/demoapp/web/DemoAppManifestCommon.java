@@ -26,18 +26,19 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
-import org.apache.causeway.extensions.cors.impl.CausewayModuleExtCors;
-import org.apache.causeway.extensions.secman.encryption.spring.CausewayModuleExtSecmanEncryptionSpring;
-import org.apache.causeway.extensions.secman.integration.CausewayModuleExtSecmanIntegration;
-import org.apache.causeway.extensions.viewer.wicket.exceldownload.ui.CausewayModuleExtExcelDownloadWicketUi;
-import org.apache.causeway.testing.h2console.ui.CausewayModuleTestingH2ConsoleUi;
-import org.apache.causeway.viewer.restfulobjects.jaxrsresteasy.CausewayModuleViewerRestfulObjectsJaxrsResteasy;
-import org.apache.causeway.viewer.restfulobjects.viewer.CausewayModuleViewerRestfulObjectsViewer;
+import org.apache.isis.extensions.cors.impl.IsisModuleExtCors;
+import org.apache.isis.extensions.secman.encryption.spring.IsisModuleExtSecmanEncryptionSpring;
+import org.apache.isis.extensions.secman.integration.IsisModuleExtSecmanIntegration;
+import org.apache.isis.extensions.viewer.wicket.exceldownload.ui.IsisModuleExtExcelDownloadWicketUi;
+import org.apache.isis.testing.h2console.ui.IsisModuleTestingH2ConsoleUi;
+import org.apache.isis.viewer.restfulobjects.jaxrsresteasy4.IsisModuleViewerRestfulObjectsJaxrsResteasy4;
+import org.apache.isis.viewer.restfulobjects.viewer.IsisModuleViewerRestfulObjectsViewer;
+
+import lombok.val;
+import lombok.extern.log4j.Log4j2;
 
 import demoapp.dom._infra.fixtures.DemoFixtureScript;
 import demoapp.web.security.PrototypeActionsVisibilityAdvisor;
-import lombok.val;
-import lombok.extern.log4j.Log4j2;
 
 /**
  * Makes the integral parts of the 'demo' web application.
@@ -45,18 +46,18 @@ import lombok.extern.log4j.Log4j2;
 @Configuration
 @Import({
     // Security Manager Extension (secman)
-    CausewayModuleExtSecmanIntegration.class,
-    CausewayModuleExtSecmanEncryptionSpring.class,
+    IsisModuleExtSecmanIntegration.class,
+    IsisModuleExtSecmanEncryptionSpring.class,
 
     // REST
-    CausewayModuleViewerRestfulObjectsViewer.class,
-    CausewayModuleViewerRestfulObjectsJaxrsResteasy.class,
+    IsisModuleViewerRestfulObjectsViewer.class,
+    IsisModuleViewerRestfulObjectsJaxrsResteasy4.class,
 
     // CORS
-    CausewayModuleExtCors.class,
+    IsisModuleExtCors.class,
 
-    CausewayModuleTestingH2ConsoleUi.class, // enables the H2 console menu item
-    CausewayModuleExtExcelDownloadWicketUi.class, // allows for collection download as excel
+    IsisModuleTestingH2ConsoleUi.class, // enables the H2 console menu item
+    IsisModuleExtExcelDownloadWicketUi.class, // allows for collection download as excel
 
     // services
     PrototypeActionsVisibilityAdvisor.class,
