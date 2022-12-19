@@ -19,7 +19,7 @@
  */
 
 //
-// groovy generateConfigDocs -f "target/classes/META-INF/spring-configuration-metadata.json" -o /c/tmp
+// groovy generateConfigDocs -f "target/classes/META-INF/spring-configuration-metadata.json" -o /tmp
 
 import groovy.json.JsonSlurper
 
@@ -74,91 +74,85 @@ class PropertyGroup {
 
 List<PropertyGroup> groups = []
 groups+= new PropertyGroup() {{
-    prefix = "causeway.applib"
+    prefix = "isis.applib"
     name = "Applib"
     searchOrder = 501
 }}
 
 groups+= new PropertyGroup() {{
-    prefix = "causeway.core.config"
+    prefix = "isis.core.config"
     name = "Core Configuration"
     searchOrder = 100
 }}
 
 groups+= new PropertyGroup() {{
-    prefix = "causeway.core.meta-model"
+    prefix = "isis.core.meta-model"
     name = "Core MetaModel"
     searchOrder = 501
 }}
 
 groups+= new PropertyGroup() {{
-    prefix = "causeway.core.meta-model.introspector"
+    prefix = "isis.core.meta-model.introspector"
     name = "Core MetaModel Introspection"
     searchOrder = 100
 }}
 
 groups+= new PropertyGroup() {{
-    prefix = "causeway.core.meta-model.validator"
+    prefix = "isis.core.meta-model.validator"
     name = "MetaModel Validator"
     searchOrder = 101
 }}
 
 groups+= new PropertyGroup() {{
-    prefix = "causeway.core.runtime"
+    prefix = "isis.core.runtime"
     name = "Core Runtime"
     properties: []
     searchOrder = 501
 }}
 
 groups+= new PropertyGroup() {{
-    prefix = "causeway.core.runtime-services"
+    prefix = "isis.core.runtime-services"
     name = "Core Runtime Services"
     properties: []
     searchOrder = 101
 }}
 
 groups+= new PropertyGroup() {{
-    prefix = "causeway.persistence.schema"
+    prefix = "isis.persistence.schema"
     name = "Core Persistence Schema"
     properties: []
     searchOrder = 100
 }}
 
 groups+= new PropertyGroup() {{
-    prefix = "causeway.security.shiro"
+    prefix = "isis.security.shiro"
     name = "Shiro Security Implementation"
     properties: []
     searchOrder = 501
 }}
 
 groups+= new PropertyGroup() {{
-    prefix = "causeway.security.keycloak"
+    prefix = "isis.security.keycloak"
     name = "Keycloak Security Implementation"
     properties: []
     searchOrder = 501
 }}
 
 groups+= new PropertyGroup() {{
-    prefix = "causeway.security.spring"
+    prefix = "isis.security.spring"
     name = "Spring Security Implementation"
     properties: []
     searchOrder = 501
 }}
 
 groups+= new PropertyGroup() {{
-    prefix = "causeway.viewer.common"
-    name = "Common Config for Viewers"
-    searchOrder = 501
-}}
-
-groups+= new PropertyGroup() {{
-    prefix = "causeway.viewer.restfulobjects"
+    prefix = "isis.viewer.restfulobjects"
     name = "Restful Objects Viewer"
     searchOrder = 501
 }}
 
 groups+= new PropertyGroup() {{
-    prefix = "causeway.viewer.wicket"
+    prefix = "isis.viewer.wicket"
     name = "Wicket Viewer"
     searchOrder = 501
 }}
@@ -189,31 +183,49 @@ groups+= new PropertyGroup() {{
 }}
 
 groups+= new PropertyGroup() {{
-    prefix = "causeway.extensions"
+    prefix = "isis.extensions"
     name = "Extensions"
     searchOrder = 501
 }}
 
 groups+= new PropertyGroup() {{
-    prefix = "causeway.value-types"
+    prefix = "isis.value-types"
     name = "Value types"
     searchOrder = 501
 }}
 
 groups+= new PropertyGroup() {{
-    prefix = "causeway.testing"
+    prefix = "isis.subdomains"
+    name = "Subdomains"
+    searchOrder = 501
+}}
+
+groups+= new PropertyGroup() {{
+    prefix = "isis.testing"
     name = "Testing"
     searchOrder = 501
 }}
 
 groups+= new PropertyGroup() {{
-    prefix = "causeway.incubator"
+    prefix = "isis.mappings"
+    name = "Bounded Context Mappings"
+    searchOrder = 501
+}}
+
+groups+= new PropertyGroup() {{
+    prefix = "isis.incubator"
     name = "Incubator"
     searchOrder = 501
 }}
 
 groups+= new PropertyGroup() {{
-    prefix = "" // 'causeway.objects', 'causeway.environment'
+    prefix = "isis.legacy"
+    name = "Legacy"
+    searchOrder = 501
+}}
+
+groups+= new PropertyGroup() {{
+    prefix = "" // 'isis.objects', 'isis.environment'
     name = "Other"
     searchOrder = 999
 }}
@@ -228,8 +240,8 @@ def data = jsonSlurper.parse(inputFile)
 
 eachProperty:
 for (property in data.properties) {
-    if(['causeway.raw-key-value-map',
-        'causeway.environment'].contains(property.name)) {
+    if(['isis.raw-key-value-map',
+        'isis.environment'].contains(property.name)) {
         // ignore these special cases
         continue
     }
@@ -357,12 +369,8 @@ static String toAsciidoc(String str) {
     if (str == null) return null;
 
     System.out.print(".");
-    String orig = str;
-
-    str = str.replaceAll( /\{@link[ ]+(?:[^ }]+)[^}]+?[ ]+([^})]+)}/, '$1')          // {@link org.apache.causeway.applib.events.lifecycle.ObjectLoadedEvent.Noop ObjectLoadedEvent.Noop}: ObjectLoadedEvent.Noop
-    str = str.replaceAll( /\{@link[ ]+?(?:[^ }]+?[ ]+?([^})]+))}/, '$1')             // {@link Foo foo bar} and {@link Foo#bar foo bar} : "foo bar"
-    str = str.replaceAll( /\{@link[ ]+?(?:[^}]+?[ ]+?([^})]+))}/, '$1') // {@link Foo#bar(abc, def) foo bar} and {@link Foo#bar() foo bar} : "foo bar" ;
-    str = str.replaceAll( /\{@link (?:(?:[^} ]|[.])+[.])*([^}]+)}/, '``$1``')        // {@link org.apache.causeway.applib.annotation.Action#domainEvent()} : ``Action#domainEvent()``
+    str = str.replaceAll( /\{@link[ ]+?([^}]+?)[ ]+?([^}]+?)}/, '$2')
+    str = str.replaceAll( /\{@link (?:(?:[^}]|[.])+[.])*([^}]+)}/, '``$1``')
     str = str.replaceAll( /<tt>(?:(?:[^<]|[.])+[.])*([^<]+)<\/tt>/, '``$1``')
     str = str.replaceAll( /<code>(?:(?:[^<]|[.])+[.])*([^<]+)<\/code>/, '``$1``')
     str = str.replaceAll( /@apiNote -/, 'TIP:')
@@ -376,10 +384,6 @@ static String toAsciidoc(String str) {
 
     File tf = File.createTempFile("input",".html")
     tf.write(str)   // write to the file
-
-    if (str.contains("@link")) {
-        System.out.println(str);
-    }
 
     String cmd = "pandoc --wrap=none -f html -t asciidoc " + tf.getCanonicalPath()
     String adoc = cmd.execute().text

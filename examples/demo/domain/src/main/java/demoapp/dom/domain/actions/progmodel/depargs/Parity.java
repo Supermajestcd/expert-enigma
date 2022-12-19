@@ -18,7 +18,7 @@
  */
 package demoapp.dom.domain.actions.progmodel.depargs;
 
-import org.apache.causeway.applib.annotation.ObjectSupport;
+import org.apache.isis.applib.annotation.ObjectSupport;
 
 public enum Parity {
     EVEN,

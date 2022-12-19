@@ -27,20 +27,21 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.annotation.PropertySources;
 
-import org.apache.causeway.core.config.presets.CausewayPresets;
-import org.apache.causeway.incubator.viewer.javafx.model.events.JavaFxViewerConfig;
+import org.apache.isis.core.config.presets.IsisPresets;
+import org.apache.isis.incubator.viewer.javafx.model.events.JavaFxViewerConfig;
+
+import lombok.val;
 
 import demoapp.javafx.DemoAppJavaFx;
 import javafx.application.HostServices;
-import lombok.val;
 
 @Configuration
 @PropertySources({
-    @PropertySource(CausewayPresets.DatanucleusAutocreateNoValidate),
-    @PropertySource(CausewayPresets.H2InMemory_withUniqueSchema)
+    @PropertySource(IsisPresets.DatanucleusAutocreateNoValidate),
+    @PropertySource(IsisPresets.H2InMemory_withUniqueSchema)
 })
 public class DemoFxTestConfig_usingJdo {
-
+    
     //XXX why is the H2InMemory_withUniqueSchema preset not working?
     @Bean(destroyMethod = "close")
     public DataSource getDataSource() {
@@ -56,12 +57,12 @@ public class DemoFxTestConfig_usingJdo {
     public JavaFxViewerConfig viewerConfig() {
         return new DemoAppJavaFx().viewerConfig();
     }
-
+    
     @Bean
     public HostServices hostServices() {
         return  null;
     }
 
-
-
+    
+    
 }
