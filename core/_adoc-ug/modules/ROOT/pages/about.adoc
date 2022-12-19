@@ -1,0 +1,21 @@
+= User Guides
+include::_attributes.adoc[]
+
+The user guides available are:
+
+* xref:ug:fun:about.adoc[Fundamentals]
+* xref:ug:btb:about.adoc[Beyond the Basics]
+
+There are also guides for testing & prototyping:
+
+* xref:testing:ROOT:about.adoc[Testing]
+
+\... as well as user guides for each of the components:
+
+* xref:vw:ROOT:about.adoc[Wicket viewer]
+* xref:vro:ROOT:about.adoc[Restful Objects viewer]
+* xref:odn:ROOT:about.adoc[DataNucleus object store]
+* xref:security:ROOT:about.adoc[Security]
+
+
+
