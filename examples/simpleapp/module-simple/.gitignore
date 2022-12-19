@@ -1,0 +1,7 @@
+.gradle
+translations.pot
+*.jar
+gradle/wrapper
+!gradle-wrapper.jar
+/.apt_generated/
+/.apt_generated_tests/
