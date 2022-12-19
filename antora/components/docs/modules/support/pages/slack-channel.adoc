@@ -1,0 +1,51 @@
+= Slack Channel
+
+:Notice: Licensed to the Apache Software Foundation (ASF) under one or more contributor license agreements. See the NOTICE file distributed with this work for additional information regarding copyright ownership. The ASF licenses this file to you under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at. http://www.apache.org/licenses/LICENSE-2.0 . Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR  CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
+
+
+
+To supplement our xref:support/mailing-list.adoc[mailing list] we also have a channel on the ASF Slack.
+Anyone can join:
+
+* navigate to https://s.apache.org/slack-invite[]
++
+image:support/slack/010.png[link={imagesdir}/support/slack/010.png]
+
+* enter your email:
++
+image:support/slack/020.png[link={imagesdir}/support/slack/020.png]
++
+image:support/slack/030.png[link={imagesdir}/support/slack/030.png]
+
+* as it says, check your email:
++
+image:support/slack/040.png[link={imagesdir}/support/slack/040.png]
+
+* as it says, check your email:
++
+image:support/slack/050.png[link={imagesdir}/support/slack/050.png]
+
+* Create an account on the Slack:
++
+image:support/slack/060.png[link={imagesdir}/support/slack/060.png]
+
+* you'll then arrive in the Slack, with the following welcome page.  You can skip this first step (1):
++
+image:support/slack/070.png[link={imagesdir}/support/slack/070.png]
+
+* Instead, scroll down the page to the step (2) to browse channels:
++
+image:support/slack/080.png[link={imagesdir}/support/slack/080.png]
+
+* Enter 'isis' in the search box, and click through to the `#apache-isis` channel:
++
+image:support/slack/090.png[link={imagesdir}/support/slack/090.png]
+
+* At this point you are still just previewing the channel, so press `Join Channel`:
++
+image:support/slack/100.png[link={imagesdir}/support/slack/100.png]
+
+* Finally, say hello:
++
+image:support/slack/110.png[link={imagesdir}/support/slack/110.png]
+
