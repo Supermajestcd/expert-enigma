@@ -1,0 +1,65 @@
+= JDO Persistence
+
+:Notice: Licensed to the Apache Software Foundation (ASF) under one or more contributor license agreements. See the NOTICE file distributed with this work for additional information regarding copyright ownership. The ASF licenses this file to you under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at. http://www.apache.org/licenses/LICENSE-2.0 . Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR  CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
+:page-partial:
+
+
+TODO: (more) to document
+
+== Overriding JDO Annotations (Schema and Table)
+
+JDO entity classes for _SecMan_ come preconfigured with *schema* and *table* names.
+
+For example:
+
+[source,java]
+----
+@javax.jdo.annotations.PersistenceCapable( ...
+        schema = "isisExtensionsSecman",
+        table = "ApplicationUser")
+public class ApplicationUser ... { /* ... */ }
+----
+
+We can override these with custom values by specifying a *.orm* file.
+
+For example, overriding the destination database name to be *'secman'*:
+
+[source,xml]
+.META-INF/package-secman.orm
+----
+<?xml version="1.0" encoding="UTF-8" ?>
+<orm xmlns="http://xmlns.jcp.org/xml/ns/jdo/orm"
+     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+     xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/jdo/orm http://xmlns.jcp.org/xml/ns/jdo/orm_3_0.xsd">
+
+	<package name="org.apache.isis.extensions.secman.jdo.dom.permission">
+		<class name="ApplicationPermission" schema="secman"/>
+	</package>
+	
+	<package name="org.apache.isis.extensions.secman.jdo.dom.role">
+		<class name="ApplicationRole" schema="secman"/>
+	</package>
+	
+	<package name="org.apache.isis.extensions.secman.jdo.dom.tenancy">
+		<class name="ApplicationTenancy" schema="secman"/>
+	</package>
+	
+	<package name="org.apache.isis.extensions.secman.jdo.dom.user">
+		<class name="ApplicationUser" schema="secman"/>
+	</package>
+    
+</orm>
+----  
+
+This *.orm* file can then be activated with a DataNucleus configuration entry:
+
+[source,yml]
+.application.yml
+----
+isis:
+  persistence:
+    jdo-datanucleus:
+      impl:
+        datanucleus:
+          mapping: secman
+----

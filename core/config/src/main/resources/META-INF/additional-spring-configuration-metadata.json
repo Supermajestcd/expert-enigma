@@ -1,0 +1,39 @@
+{
+  "properties": [
+    {
+      "name": "datanucleus.identifier.case",
+      "type": "org.apache.isis.core.config.DatanucleusConfiguration.Identifier.Case",
+      "description": "Which case to use in generated table/column identifier names. See also the Datastore Identifier Guide. RDBMS defaults to UPPERCASE."
+    }
+  ],
+  "hints": [
+    {
+      "name": "isis.testing.fixtures.initial-script",
+      "providers": [{
+        "name": "class-reference",
+        "parameters": {
+          "target": "org.apache.isis.testing.fixtures.applib.fixturescripts.FixtureScript"
+        }
+      }]
+    },
+    {
+      "name": "isis.viewer.wicket.themes.provider",
+      "providers": [{
+        "name": "class-reference",
+        "parameters": {
+          "target": "org.apache.isis.viewer.wicket.ui.components.widgets.themepicker.IsisWicketThemeSupport"
+        }
+      }]
+    },
+    {
+      "name": "isis.viewer.wicket.app",
+      "providers": [{
+        "name": "class-reference",
+        "parameters": {
+          "target": "org.apache.isis.viewer.wicket.viewer.wicketapp.IsisWicketApplication"
+        }
+      }]
+    }
+  ]
+}
+
