@@ -1,0 +1,555 @@
+= Post Release (Successful)
+
+:Notice: Licensed to the Apache Software Foundation (ASF) under one or more contributor license agreements. See the NOTICE file distributed with this work for additional information regarding copyright ownership. The ASF licenses this file to you under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at. http://www.apache.org/licenses/LICENSE-2.0 . Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR  CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
+:page-partial:
+
+The release process consists of:
+
+* the release manager xref:comguide:ROOT:cutting-a-release.adoc[cutting the release]
+
+* members of the Apache Isis PMC xref:comguide:ROOT:verifying-releases.adoc[verifying] and voting on the release
+
+* the release manager performing post-release tasks, for either a successful or an xref:comguide:ROOT:post-release-unsuccessful.adoc[unsuccessful] vote (former documented below)
+
+For a vote to succeed, there must be +3 votes from PMC members, and the vote must have been open at least 72 hours.
+If there are not +3 votes after this time then it is perfectly permissible to keep the vote open longer.
+
+This section describes the steps to perform if the vote has been successful.
+
+== Inform dev ML
+
+Post the results to the `dev@isis.a.o` mailing list:
+
+[source,subs="attributes+"]
+----
+[RESULT] [VOTE] Apache Isis Core release {isisrel}
+----
+
+using the body (alter last line as appropriate):
+
+[source]
+----
+The vote has completed with the following result :
+
+  +1 (binding): ... list of names ...
+  +1 (non binding): ... list of names ...
+
+  -1 (binding): ... list of names ...
+  -1 (non binding): ... list of names ...
+
+The vote is SUCCESSFUL.
+
+I'll now go ahead and complete the post-release activities.
+----
+
+== Release to Maven Central
+
+CAUTION: We release from Maven Central before anything else; we don't want to push the git tags (an irreversible action) until we know that this has worked ok.
+
+From the http://repository.apache.org[ASF Nexus repository], select the staging repository and select 'release' from the top menu.
+
+image::release-process/nexus-release-1.png[width="600px",link="{imagesdir}/release-process/nexus-release-1.png"]
+
+This moves the release artifacts into an Apache releases repository; from there they will be automatically moved to the Maven repository.
+
+== Set environment variables
+
+As we did for the cutting of the release, we set environment variables to parameterize the following steps:
+
+[source,bash,subs="attributes+"]
+----
+export ISISJIRA=ISIS-9999                           # <.>
+export ISISTMP=/c/tmp                               # <.>
+export ISISREL={isisrel}                           # <.>
+export ISISRC=RC1                                   # <.>
+export ISISBRANCH=release-$ISISREL-$ISISRC
+export ISISART=isis
+
+env | grep ISIS | sort
+----
+<.> set to an "umbrella" ticket for all release activities.
+(One should exist already, xref:comguide:ROOT:post-release-successful.adoc#create-new-jira[created at] the beginning of the development cycle now completing).
+<.> adjust by platform
+<.> adjust as required
+<.> adjust as necessary if there was more than one attempt to release
+
+Open up a terminal, and switch to the correct release branch:
+
+[source,bash,subs="attributes+"]
+----
+git checkout $ISISBRANCH
+----
+
+== Update tags
+
+Replace the `-RCn` tag with another without the qualifier.
+
+You can do this using the `scripts/promoterctag.sh` script; for example:
+
+[source,bash,subs="attributes+"]
+----
+sh scripts/promoterctag.sh $ISISART-$ISISREL $ISISRC
+----
+
+This script pushes the tag under `refs/tags/rel`.
+As per Apache policy (communicated on 10th Jan 2016 to Apache PMCs), this path is 'protected' and is unmodifiable (guaranteeing the provenance that the ASF needs for releases).
+
+== Update JIRA
+
+=== Close tickets
+
+Close all JIRA tickets for the release, or moved to future releases if not yet addressed.
+Any tickets that were partially implemented should be closed, and new tickets created for the functionality on the ticket not yet implemented.
+
+=== Generate Release Notes
+
+From the root directory, generate the release notes for the current release, in Asciidoc format; eg:
+
+[source,bash,subs="attributes+"]
+----
+sh scripts/jira-release-notes.sh ISIS $ISISREL > /tmp/1
+----
+
+[NOTE]
+====
+This script uses 'jq' to parse JSON.
+See the script itself for details of how to install this utility.
+====
+
+=== Mark the version as released
+
+In JIRA, go to the link:https://issues.apache.org/jira/plugins/servlet/project-config/ISIS/versions[administration section] for the Apache Isis project and update the version as being released.
+
+In the link:https://issues.apache.org/jira/secure/RapidBoard.jspa?rapidView=87[Kanban view] this will have the effect of marking all tickets as released (clearing the "done" column).
+
+[#create-new-jira]
+=== Create new JIRA
+
+Create a new JIRA ticket as a catch-all for the _next_ release.
+
+== Update Release Notes
+
+In the main `isis` repo (ie containing the asciidoc source):
+
+* Create a new `relnotes.adoc` file to hold the JIRA-generated release notes generated above.
++
+This should live in  `antora/components/relnotes/modules/ROOT/pages/yyyy/vvv/relnotes.adoc`
+
+** where `yyyy` is the year
+** where `vvv` is the version number
+
+* Update the `nav.adoc` file to reference these release notes
++
+In `antora/components/relnotes/ROOT/nav.adoc`
+
+* Update the table in the `about.adoc` summary
++
+In `antora/components/relnotes/ROOT/pages/about.adoc`
+
+
+* update the `doap_isis.rdf` file (which provides a machine-parseable description of the project) with details of the new release.
+Validate using the http://www.w3.org/RDF/Validator/[W3C RDF Validator] service.
++
+TIP: For more on DOAP files, see these link:http://projects.apache.org/doap.html[Apache policy docs].
+
+* Update the link:https://github.com/apache/isis/blob/master/STATUS[STATUS] file (in root of Apache Isis' source) should be updated with details of the new release.
+
+* commit the changes
++
+[source,bash,subs="attributes+"]
+----
+git add .
+git commit -m "$ISISJIRA: updates release notes, STATUS and doap_isis.rdf"
+----
+
+== Release Source Zip
+
+As described in the link:http://www.apache.org/dev/release-publishing.html#distribution_dist[Apache documentation], each Apache TLP has a `release/TLP-name` directory in the distribution Subversion repository at link:https://dist.apache.org/repos/dist[https://dist.apache.org/repos/dist].
+Once a release vote passes, the release manager should `svn add` the artifacts (plus signature and hash files) into this location.
+The release is then automatically pushed to http://www.apache.org/dist/[http://www.apache.org/dist/] by `svnpubsub`.
+Only the most recent release of each supported release line should be contained here, old versions should be deleted.
+
+Each project is responsible for the structure of its directory.
+The directory structure of Apache Isis reflects the directory structure in our git source code repo:
+
+[source]
+----
+isis/
+  core/
+----
+
+If necessary, checkout this directory structure:
+
+[source,bash]
+----
+svn co https://dist.apache.org/repos/dist/release/isis isis-dist
+----
+
+Next, add the new release into the appropriate directory, and delete any previous release.
+The `upd.sh` script can be used to automate this:
+
+[source,bash]
+----
+old_ver=$1
+new_ver=$2
+
+
+# constants
+repo_root=https://repository.apache.org/content/repositories/releases/org/apache/isis
+
+zip="source-release.zip"
+asc="$zip.asc"
+md5="$zip.md5"
+
+
+#
+# isis-core
+#
+type="core"
+fullname="isis"
+pushd isis-core
+
+curl -O $repo_root/$type/$fullname/$new_ver/$fullname-$new_ver-$asc
+svn add $fullname-$new_ver-$asc
+curl -O $repo_root/$type/$fullname/$new_ver/$fullname-$new_ver-$md5
+svn add $fullname-$new_ver-$md5
+curl -O $repo_root/$type/$fullname/$new_ver/$fullname-$new_ver-$zip
+svn add $fullname-$new_ver-$zip
+
+svn delete $fullname-$old_ver-$asc
+svn delete $fullname-$old_ver-$md5
+svn delete $fullname-$old_ver-$zip
+
+popd
+
+----
+
+[source,bash,subs="attributes+"]
+----
+sh upd.sh [previous_release] {isisrel}
+----
+
+The script downloads the artifacts from the Nexus release repository, adds the artifacts to subversion and deletes the previous version.
+
+Double check that the files are correct; there is sometimes a small delay in the files becoming available in the release repository.
+It should be sufficient to check just the `md5` or `.asc` files that these look valid (aren't HTML 404 error pages):
+
+[source,bash,subs="attributes+"]
+----
+vi `find . -name *.md5`
+----
+
+Assuming all is good, commit the changes:
+
+[source,subs="attributes+"]
+----
+svn commit -m "publishing isis source releases to dist.apache.org"
+----
+
+If the files are invalid, then revert using `svn revert . --recursive` and try again in a little while.
+
+== Final website updates
+
+Apply any remaining documentation updates:
+
+* If there have been documentation changes made in other branches since the release branch was created, then merge these in.
+
+* If there have been updates to any of the schemas, copy them over:
+
+** copy the new schema(s) from `api/schema/src/main/resources/o.a.i.s.xxx`
++
+to its versioned:
++
+`antora/supplemental-ui/schema/xxx/xxx-ver.xsd`
+
+** ensure the non-versioned is same as the highest versioned
++
+`antora/supplemental-ui/schema/xxx/xxx.xsd`
+
+* Commit the changes:
++
+[source,bash,subs="attributes+"]
+----
+git add .
+git commit -m "$ISISJIRA: merging in final changes to docs"
+----
+
+We are now ready to xref:#generate-website[generate the website].
+
+[#generate-website]
+== Generate website
+
+We use Antora to generate the site, not only the version being release but also any previous versions listed in `site.yml`.
+This is done using the `content.sources.url[].branches` properties.
+We use branches for all cases - note that the branch name appears in the generated UI.
+If there are patches to the documentation, we move the branches.
+
+We therefore temporarily modify all of the `antora.yml` files (and update `index.html`) file and create a branch for this change; then we update `site.yml` with a reference to that new branch.
+All of this is changed afterwards.
+
+=== Create doc branch
+
+First, we prepare a doc branch to reference:
+
+* Update all `antora.yml` files, eg using an IDE:
++
+** `version: latest` -> `version: {isisrel}`
+
+* Commit all these changes:
++
+[source,bash,subs="attributes+"]
+----
+git add .
+git commit -m "$ISISJIRA: bumps antora.yml and index.html to $ISISREL"
+----
+
+We now create a branch to reference in the `site.yml`, later on.
+
+* We create the `{isisrel}` branch.
++
+This mirrors the "rel/isis-{isisrel}" used for the formal (immutable) release tag, but is a branch because it allows us to move it, and must have this simplified name as it is used in the "edit page" link of the site template.
++
+[source,bash,subs="attributes+"]
+----
+git branch {isisrel}
+git push origin {isisrel}
+----
+
+Finally, revert the last commit (backing changes to `antora.yml` files and `index.html`):
+
+[source,bash,subs="attributes+"]
+----
+git revert HEAD
+----
+
+=== Update `index.html` & site.yml` & generate
+
+Lastly, we update `index.html` and then `site.yml`
+
+* Update the home page of the website, `antora/supplemental-ui/index.html`
++
+Note that this isn't performed in the docs branch (xref:#create-doc-branch[previous section]) because the supplemental files are _not_ versioned as a doc component:
+
+** update any mention of `master` -> `{isisrel}`
++
+This should be the two sets of starter app instructions for helloworld and simpleapp.
+
+** update any mention of `latest` -> `{isisrel}`
++
+This should be in hyperlinks, `<a href="docs/...">`
+
+* Now update `site.yml`
++
+This will reference the new branch (and any previous branches).
+Every content source needs to be updated:
++
+//** `url: .` -> `url: https://github.com/apache/isis.git`
+** `branches: HEAD` -> `branches: {isisrel}`
+
+* commit this change, too (there's no need to push):
++
+[source,bash,subs="attributes+"]
+----
+git add .
+git commit -m "$ISISJIRA: adds tag to site.yml"
+----
+
+We are now in a position to actually generate the Antora website:
+
+* generate the website:
++
+[source,bash,subs="attributes+"]
+----
+sh preview.sh
+----
++
+This will write to `antora/target/site`; we'll use the results in the xref:#publish-website[next section].
+
+Finally, revert the last commit (backing out changes to `site.yml`):
+
+[source,bash,subs="attributes+"]
+----
+git revert HEAD
+----
+
+[#publish-website]
+== Publish website
+
+We now copy the results of the Antora website generation over to the `isis-site` repo:
+
+* in the `isis-site` repo, check out the `asf-site` branch:
++
+[source,bash,subs="attributes+"]
+----
+cd ../isis-site
+
+git checkout asf-site
+git pull --ff-only
+----
+
+* still in the `isis-site` repo, delete all the files in `content/` _except_ for the `schema` and `versions` directories:
++
+[source,bash,subs="attributes+"]
+----
+pushd content
+for a in $(ls -1 | grep -v schema | grep -v versions)
+do
+    rm -rf $a
+done
+popd
+----
+
+* Copy the generated Antora site to `isis-site` repo's `contents` directory:
++
+[source,bash,subs="attributes+"]
+----
+cd ../isis
+
+cp -Rf antora/target/site/* ../isis-site/content/.
+----
+
+* Back in the `isis-site` repo, commit the changes and preview:
++
+[source,bash,subs="attributes+"]
+----
+cd ../isis-site
+
+git add .
+git commit -m "$ISISJIRA : production changes to website"
+
+sh preview.sh
+----
+
+* If everything looks ok, then push the changes to make live, and switch back to the `isis` repo:
++
+[source,bash,subs="attributes+"]
+----
+git push origin asf-site
+
+cd ../isis
+----
+
+== Merge in release branch
+
+Because we release from a branch, the changes made in the branch should be merged back from the release branch back into the `master` branch.
+
+In the `isis` repo:
+
+[source,bash,subs="attributes+"]
+----
+git checkout master                              # update master with latest
+git pull
+git merge release-{isisrel}-RC1                  # merge branch onto master
+git push origin --delete release-{isisrel}-RC1   # remote branch no longer needed
+git branch -d release-{isisrel}-RC1              # branch no longer needed
+----
+
+== Bump \{isisrel} in `site.yml`
+
+In `site.yml` file, bump the version of `\{isisrel}`, and commit.
+
+== Update the ASF Reporter website
+
+Log the new release in the link:https://reporter.apache.org/addrelease.html?isis[ASF Reporter website].
+
+== Announce the release
+
+Announce the release to link:mailto:users@isis.apache.org[users mailing list].
+
+For example, for a release of Apache Isis Core, use the following subject:
+
+[source,subs="attributes+"]
+----
+[ANN] Apache Isis version {isisrel} Released
+----
+
+And use the following body (summarizing the main points as required):
+
+[source,subs="attributes+"]
+----
+The Apache Isis team is pleased to announce the release of Apache Isis {isisrel}.
+
+New features in this release include:
+
+* ...
+
+Full release notes are available on the Apache Isis website at [1].
+
+You can access this release directly from the Maven central repo [2].
+Alternatively, download the release and build it from source [3].
+
+Enjoy!
+
+--The Apache Isis team
+
+[1] http://isis.apache.org/relnotes/latest/about.html
+[2] http://search.maven.org
+[3] http://isis.apache.org/downloads.html
+----
+
+== Blog post
+
+link:https://blogs.apache.org/roller-ui/login.rol[Log onto] the http://blogs.apache.org/isis/[Apache blog] and create a new post.
+Copy-n-paste the above mailing list announcement should suffice.
+
+== Update dependencies
+
+With the release complete, now is a good time to bump versions of dependencies (so that there is a full release cycle to identify any possible issues).
+
+You will probably want to create a new JIRA ticket for these updates (or if minor then use the "catch-all" JIRA ticket raised earlier for the next release).
+
+=== Merge in any changes from `org.apache:apache`
+
+Check (via link:http://search.maven.org/#search%7Cga%7C1%7Cg%3A%22org.apache%22%20a%3A%22apache%22[search.maven.org]) whether there is a newer version of the Apache parent `org.apache:apache`.
+
+If there are, merge in these changes to the `core-parent` POM.
+
+=== Update plugin versions
+
+The `maven-versions-plugin` should be used to determine if there are newer versions of any of the plugins used to build Apache Isis.
+Since this goes off to the internet, it may take a minute or two to run:
+
+[source,bash]
+----
+mvn versions:display-plugin-updates > /tmp/foo
+grep "\->" /tmp/foo | /bin/sort -u
+----
+
+Review the generated output and make updates as you see fit.
+(However, if updating, please check by searching for known issues with newer versions).
+
+=== Update dependency versions
+
+The `maven-versions-plugin` should be used to determine if there are newer versions of any of Isis' dependencies.
+Since this goes off to the internet, it may take a minute or two to run:
+
+[source,bash]
+----
+mvn versions:display-dependency-updates > /tmp/foo
+grep "\->" /tmp/foo | /bin/sort -u
+----
+
+Update any of the dependencies that are out-of-date.
+That said, do note that some dependencies may show up with a new dependency, when in fact the dependency is for an old, badly named version.
+Also, there may be new dependencies that you do not wish to move to, eg release candidates or milestones.
+
+For example, here is a report showing both of these cases:
+
+[source,bash]
+----
+[INFO]   asm:asm ..................................... 3.3.1 -> 20041228.180559
+[INFO]   commons-httpclient:commons-httpclient .......... 3.1 -> 3.1-jbossorg-1
+[INFO]   commons-logging:commons-logging ......... 1.1.1 -> 99.0-does-not-exist
+[INFO]   dom4j:dom4j ................................. 1.6.1 -> 20040902.021138
+[INFO]   org.datanucleus:datanucleus-api-jdo ................ 3.1.2 -> 3.2.0-m1
+[INFO]   org.datanucleus:datanucleus-core ................... 3.1.2 -> 3.2.0-m1
+[INFO]   org.datanucleus:datanucleus-jodatime ............... 3.1.1 -> 3.2.0-m1
+[INFO]   org.datanucleus:datanucleus-rdbms .................. 3.1.2 -> 3.2.0-m1
+[INFO]   org.easymock:easymock ................................... 2.5.2 -> 3.1
+[INFO]   org.jboss.resteasy:resteasy-jaxrs ............. 2.3.1.GA -> 3.0-beta-1
+----
+
+For these artifacts you will need to search http://search.maven.org[Maven central repo] directly yourself to confirm there are no newer dependencies not shown in this list.
+
+
+
