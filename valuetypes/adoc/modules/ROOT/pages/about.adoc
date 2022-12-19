@@ -1,0 +1,22 @@
+= Value Type Catalog
+
+:Notice: Licensed to the Apache Software Foundation (ASF) under one or more contributor license agreements. See the NOTICE file distributed with this work for additional information regarding copyright ownership. The ASF licenses this file to you under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at. http://www.apache.org/licenses/LICENSE-2.0 . Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR  CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
+
+
+Value types (or value objects) are building blocks of domain objects (entities and view models), used as the data types for the object's properties.
+
+For complete support:
+
+* the framework must now how to render and parse the values (the UI/presentation)
+* the framework must now how to encode/decode the value (if used in a view model)
+* the persistence mechanism (xref:pjpa::about.adoc[JPA] or xref:pjdo:ROOT:about.adoc[JDO]) must know how to persist the value
+
+The framework of course supports a whole set of value types (strings, dates, URL); Java's primitive types (`int`, `boolean` etc).
+See the reference guide's section on  xref:refguide:applib-classes:value-types.adoc[value types] for the full list of types supported out-of-the-box.
+
+The framework also provides this catalog of additional value types that can be used in your application with a minimum amount of setup.
+
+It's also possible to define your own xref:custom-value-types.adoc[custom value types], or even to use 3rd party value types.
+
+
+

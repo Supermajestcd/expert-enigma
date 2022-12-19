@@ -1,0 +1,85 @@
+[#value-types]
+= Value Types
+
+:Notice: Licensed to the Apache Software Foundation (ASF) under one or more contributor license agreements. See the NOTICE file distributed with this work for additional information regarding copyright ownership. The ASF licenses this file to you under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at. http://www.apache.org/licenses/LICENSE-2.0 . Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR  CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
+:page-partial:
+
+
+Value types (or value objects) are building blocks of domain objects (entities and view models), used as the data types for the object's properties.
+
+For complete support:
+
+* the framework must now how to render and parse the values (the UI/presentation)
+* the framework must now how to encode/decode the value (if used in a view model)
+* the persistence mechanism (xref:pjpa::about.adoc[JPA] or xref:pjdo:ROOT:about.adoc[JDO]) must know how to persist the value
+
+The framework supports a large number of JDK value types (strings, dates, numbers), and provides an additional set of value types; see the xref:#built-in[sections] xref:#framework-defined[below].
+
+The xref:valuetypes:ROOT:about.adoc[] provides a set of optional value types that can also be added to your application.
+
+You can also define custom value types.
+This topic is also discussed in the xref:valuetypes:ROOT:about.adoc[].
+
+
+[#built-in]
+== Built-in
+
+Apache Isis can render and persist all of the JDK primitives and wrapper classes, and a number of other JDK classes that represent value types.
+
+In addition to primitives, the JDK Classes supported are:
+
+* the wrapper classes:
+
+** `java.lang.Boolean`, `java.lang.Character`, `java.lang.Double`, `java.lang.Float`, `java.lang.Long`, `java.lang.Integer`, `java.lang.Short`, `java.lang.Byte`
+
+* `java.lang.String`
+
+* numeric data types:
+
+** `java.math.BigDecimal`
+** `java.math.BigInteger`
+
+* dates in the `java.time` package:
+
+** `java.time.LocalTime`
+** `java.time.LocalDate`
+** `java.time.LocalDateTime`
+** `java.time.OffsetDateTime`
+** `java.time.OffsetTime`
+** `java.time.ZonedDateTime`
+
+* dates in the `java.sql` package:
+
+** `java.sql.Date`
+** `java.sql.Time`
+** `java.sql.Timestamp`
+
+* dates in the `java.util` package:
+
+** `java.util.Date`
+
+* images:
+
+** `java.awt.BufferedImage`
+
+* URLs
+
+** `java.net.URL` - for external URLs
+
+* identifiers
+
+** `java.util.UUID` q
+
+
+
+[#framework-defined]
+== Framework-defined
+
+The framework also defines a number of custom value types:
+
+* xref:refguide:applib:index/value/Blob.adoc[Blob] - eg to represent application/pdf
+* xref:refguide:applib:index/value/Clob.adoc[Clob]
+* xref:refguide:applib:index/value/Markup.adoc[Markup]
+* xref:refguide:applib:index/value/LocalResourcePath.adoc[LocalResourcePath]
+* xref:refguide:applib:index/value/Password.adoc[Password]
+
