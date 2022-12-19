@@ -1,0 +1,49 @@
+= Bookmark
+:Notice: Licensed to the Apache Software Foundation (ASF) under one or more contributor license agreements. See the NOTICE file distributed with this work for additional information regarding copyright ownership. The ASF licenses this file to you under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at. http://www.apache.org/licenses/LICENSE-2.0 . Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR  CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
+
+String representation of any persistable or re-creatable object managed by the framework.
+
+== API
+
+[source,java]
+.Bookmark.java
+----
+class Bookmark {
+  Bookmark forLogicalTypeNameAndIdentifier(final String logicalTypeName, final String identifier)
+  Bookmark forLogicalTypeAndIdentifier(final LogicalType logicalType, final String identifier)
+  Bookmark forOidDto(final OidDto oidDto)
+  Bookmark withHintId(final String hintId)
+  Optional<Bookmark> parse(String str)     // <.>
+  Optional<Bookmark> parseUrlEncoded(String urlEncodedStr)
+  OidDto toOidDto()
+  String stringify()
+  boolean equals(final Object other)
+  boolean equals(final Bookmark other)
+  int hashCode()
+  String toString()
+  String stringifyHonoringHintIfAny()     // <.>
+}
+----
+
+<.> xref:#parse__String[parse(String)]
++
+--
+Round-trip with _#stringify()_ representation.
+--
+<.> xref:#stringifyHonoringHintIfAny__[stringifyHonoringHintIfAny()]
++
+--
+Analogous to _#stringify()_ , but replaces the _identifier_ string with the _hintId_ if present and not empty.
+--
+
+== Members
+
+[#parse__String]
+=== parse(String)
+
+Round-trip with _#stringify()_ representation.
+
+[#stringifyHonoringHintIfAny__]
+=== stringifyHonoringHintIfAny()
+
+Analogous to _#stringify()_ , but replaces the _identifier_ string with the _hintId_ if present and not empty.
