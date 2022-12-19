@@ -1,0 +1,23 @@
+
+
+* Support
+
+** Contact
+
+*** xref:docs:support:slack-channel.adoc[Slack]
+*** xref:docs:support:mailing-list.adoc[Mailing Lists]
+*** link:https://issues.apache.org/jira/secure/RapidBoard.jspa?rapidView=87[ASF JIRA]
+*** link:http://stackoverflow.com/questions/tagged/causeway[Stack Overflow]
+
+** Releases
+
+*** xref:docs:ROOT:downloads/how-to.adoc[Downloads]
+*** xref:relnotes:ROOT:about.adoc[Release Notes]
+
+
+** Nightly Builds
+
+*** link:https://github.com/apache/causeway[Packages] (ASF hosted)
+*** link:https://github.com/apache-causeway-committers/causeway-nightly[Packages] (not ASF hosted)
+*** link:https://apache-causeway-committers.github.io/causeway-nightly[Website preview] (not ASF hosted)
+
