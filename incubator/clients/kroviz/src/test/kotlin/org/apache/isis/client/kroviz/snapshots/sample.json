@@ -1,0 +1,45 @@
+{
+  "id": "entities",
+  "memberType": "collection",
+  "links": [
+    {
+      "rel": "self",
+      "href": "http://localhost:8080/restful/domain-types/demo.JavaLangStrings/collections/entities",
+      "method": "GET",
+      "type": "application/json;profile=\\"
+      urn: org.restfulobjects
+      :
+      repr-types/collection-description
+      \
+      \
+      ""
+    },
+    {
+      "rel": "up",
+      "href": "http://localhost:8080/restful/domain-types/demo.JavaLangStrings",
+      "method": "GET",
+      "type": "application/json;profile=\\"
+      urn: org.restfulobjects
+      :
+      repr-types/domain-type
+      \
+      \
+      ""
+    },
+    {
+      "rel": "urn:org.restfulobjects:rels/element-type",
+      "href": "http://localhost:8080/restful/domain-types/demo.JavaLangStringEntity",
+      "method": "GET",
+      "type": "application/json;profile=\\"
+      urn: org.restfulobjects
+      :
+      repr-types/domain-type
+      \
+      \
+      ""
+    }
+  ],
+  "extensions": {
+    "friendlyName": "Entities"
+  }
+}
