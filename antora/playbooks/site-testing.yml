@@ -1,0 +1,73 @@
+site:
+  title: Apache Isis
+  url: https://isis.apache.org/
+  start_page: toc:ROOT:about.adoc
+
+content:
+  sources:
+
+# antora
+    - url: .
+      start_path: antora/components/toc # toc
+      branches: HEAD
+
+    - url: .
+      start_path: antora/components/testing # testing
+      branches: HEAD
+
+# core
+    - url: .
+      start_path: core/testsupport/unittestsupport/src/main/doc # testing
+      branches: HEAD
+
+# testing
+    - url: .
+      start_path: testing/fakedata/src/main/doc # testing
+      branches: HEAD
+    - url: .
+      start_path: testing/fixtures/src/main/doc # testing
+      branches: HEAD
+    - url: .
+      start_path: testing/h2console/src/main/doc # testing
+      branches: HEAD
+    - url: .
+      start_path: testing/hsqldbmgr/impl/src/main/doc # testing
+      branches: HEAD
+    - url: .
+      start_path: testing/integtestsupport/src/main/doc # testing
+      branches: HEAD
+    - url: .
+      start_path: testing/specsupport/src/main/doc # testing
+      branches: HEAD
+    - url: .
+      start_path: testing/unittestsupport/src/main/doc # testing
+      branches: HEAD
+
+
+
+ui:
+  bundle:
+    url: ../isis-antora/build/ui-bundle.zip
+#    url: https://github.com/apache/isis-antora/blob/master/build/ui-bundle.zip?raw=true
+    #url: ./antora/theme/ui-bundle.zip
+    snapshot: true
+  supplemental_files: antora/supplemental-ui
+
+asciidoc:
+  extensions:
+    - asciidoctor-plantuml
+    - ./antora/lib/lorem
+    - ./antora/lib/jira-issue
+    - ./antora/lib/powershell
+  attributes:
+    experimental: ""
+    idprefix: ""
+    idseparator: "-"
+    plantuml-server-url: "http://www.plantuml.com/plantuml"
+    isiscurr: "2.0.0-M2"
+    isisnext: "2.0.0-M3"
+    isisnextafter: "2.0.0-M4"
+    :isisdevafter: "2.0.0-M4-SNAPSHOT"
+
+output:
+  dir: antora/target/site

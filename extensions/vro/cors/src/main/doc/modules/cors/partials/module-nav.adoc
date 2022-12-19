@@ -1,0 +1,2 @@
+** xref:vw:vro:about.adoc[CORS]
+
