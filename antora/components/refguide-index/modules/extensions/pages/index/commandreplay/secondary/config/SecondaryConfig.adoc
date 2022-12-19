@@ -7,7 +7,7 @@
 .SecondaryConfig.java
 ----
 class SecondaryConfig {
-  SecondaryConfig(CausewayConfiguration causewayConfiguration)
+  SecondaryConfig(IsisConfiguration isisConfiguration)
   boolean isConfigured()
 }
 ----

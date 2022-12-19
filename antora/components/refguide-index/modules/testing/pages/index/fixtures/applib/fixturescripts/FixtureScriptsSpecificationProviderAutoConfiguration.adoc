@@ -9,19 +9,19 @@ Provides a fallback implementation of _FixtureScriptsSpecificationProvider_ if n
 .FixtureScriptsSpecificationProviderAutoConfiguration.java
 ----
 class FixtureScriptsSpecificationProviderAutoConfiguration {
-  FixtureScriptsSpecificationProvider fixtureScriptsSpecificationProvider(CausewayConfiguration causewayConfiguration)     // <.>
+  FixtureScriptsSpecificationProvider fixtureScriptsSpecificationProvider(IsisConfiguration isisConfiguration)     // <.>
 }
 ----
 
-<.> xref:#fixtureScriptsSpecificationProvider_CausewayConfiguration[fixtureScriptsSpecificationProvider(CausewayConfiguration)]
+<.> xref:#fixtureScriptsSpecificationProvider_IsisConfiguration[fixtureScriptsSpecificationProvider(IsisConfiguration)]
 +
 --
-Returns an implementation of _FixtureScriptsSpecificationProvider_ that uses configuration properties under `causeway.testing.fixtures.fixture-scripts-specification` .
+Returns an implementation of _FixtureScriptsSpecificationProvider_ that uses configuration properties under `isis.testing.fixtures.fixture-scripts-specification` .
 --
 
 == Members
 
-[#fixtureScriptsSpecificationProvider_CausewayConfiguration]
-=== fixtureScriptsSpecificationProvider(CausewayConfiguration)
+[#fixtureScriptsSpecificationProvider_IsisConfiguration]
+=== fixtureScriptsSpecificationProvider(IsisConfiguration)
 
-Returns an implementation of _FixtureScriptsSpecificationProvider_ that uses configuration properties under `causeway.testing.fixtures.fixture-scripts-specification` .
+Returns an implementation of _FixtureScriptsSpecificationProvider_ that uses configuration properties under `isis.testing.fixtures.fixture-scripts-specification` .
