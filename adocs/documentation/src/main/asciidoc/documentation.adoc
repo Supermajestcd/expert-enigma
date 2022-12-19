@@ -1,0 +1,137 @@
+[[documentation]]
+= Documentation
+:notice: licensed to the apache software foundation (asf) under one or more contributor license agreements. see the notice file distributed with this work for additional information regarding copyright ownership. the asf licenses this file to you under the apache license, version 2.0 (the "license"); you may not use this file except in compliance with the license. you may obtain a copy of the license at. http://www.apache.org/licenses/license-2.0 . unless required by applicable law or agreed to in writing, software distributed under the license is distributed on an "as is" basis, without warranties or  conditions of any kind, either express or implied. see the license for the specific language governing permissions and limitations under the license.
+:_basedir: ./
+:_imagesdir: images/
+:notoc:
+
+
+pass:[<div class="extended-quote-first"><p>]Perfection is finally attained not when there is no longer anything to add but when there is no longer anything to take away.
+pass:[</p></div>]
+
+pass:[<div class="extended-quote-attribution"><p>]-- Antoine de Saint-Exupery
+pass:[</p></div>]
+
+pass:[<br/>]
+
+
+
+
+[.documentation-page]
+--
+
+[cols="1a,1a,1a",frame="none", grid="none"]
+|===
+
+| *What is Apache Isis?*
+
+* *xref:pages/isis-in-pictures/isis-in-pictures.adoc#[What is Apache Isis?^] ... in pictures*
+* xref:pages/powered-by/powered-by.adoc#[Powered by Apache Isis^]
+* xref:pages/how-isis-works/how-isis-works.adoc#[How Apache Isis Works^] image:{_imagesdir}tv_show-25.png[width="25px" link="pages/how-isis-works/how-isis-works.html"]
+* xref:pages/common-use-cases/common-use-cases.adoc#[Common Use Cases^]
+
+
+|*Learning More*
+
+* xref:pages/screencasts/screencasts.adoc#[Screencasts^] image:{_imagesdir}tv_show-25.png[width="25px" link="./pages/screencasts/screencasts.html"]
+* xref:pages/tg/tg.adoc#[Tutorials^]
+//* link:http://www.javadoc.io/doc/org.apache.isis.core/isis-core-applib/1.14.0[Javadoc (for Applib)^] (not ASF)
+
+
+
+|*Resources:*
+
+* *xref:pages/cheat-sheet/cheat-sheet.adoc#[Cheat Sheet^]*
+* xref:pages/icons/icons.adoc#[Icons^]
+
+*3rd-party add-ons (not ASF)*
+
+* http://www.isisaddons.org[Isis addons^]
+* http://catalog.incode.org[Incode Catalog^]
+
+
+|===
+
+
+[cols="1a,1a,1a",frame="none", grid="none"]
+|===
+
+|*User Guides:*
+
+* *xref:guides/ugfun/ugfun.adoc#[Fundamentals^]*  image:{_imagesdir}PDF-50.png[width="20px" link="./guides/ugfun/ugfun.pdf"]
+* xref:guides/ugvw/ugvw.adoc#[Wicket Viewer^]  image:{_imagesdir}PDF-50.png[width="20px" link="./guides/ugvw/ugvw.pdf"]
+* xref:guides/ugvro/ugvro.adoc#[Restful Objects Viewer^]  image:{_imagesdir}PDF-50.png[width="20px" link="./guides/ugvro/ugvro.pdf"]
+* xref:guides/ugodn/ugodn.adoc#[DataNucleus Object Store^]  image:{_imagesdir}PDF-50.png[width="20px" link="./guides/ugvro/ugvro.pdf"]
+* xref:guides/ugsec/ugsec.adoc#[Security^]  image:{_imagesdir}PDF-50.png[width="20px" link="./guides/ugsec/ugsec.pdf"]
+* *xref:guides/ugtst/ugtst.adoc#[Testing^]*  image:{_imagesdir}PDF-50.png[width="20px" link="./guides/ugtst/ugtst.pdf"]
+* xref:guides/ugbtb/ugbtb.adoc#[Beyond the Basics^]  image:{_imagesdir}PDF-50.png[width="20px" link="./guides/ugbtb/ugbtb.pdf"]
+
+
+|*Reference Guides:*
+
+* *xref:guides/rgant/rgant.adoc#[Annotations^]*  image:{_imagesdir}PDF-50.png[width="20px" link="./guides/rgant/rgant.pdf"]
+* *xref:guides/rgsvc/rgsvc.adoc#[Domain Services^]*  image:{_imagesdir}PDF-50.png[width="20px" link="./guides/rgsvc/rgsvc.pdf"]
+* xref:guides/rgcfg/rgcfg.adoc#[Core Config'n Properties^]  image:{_imagesdir}PDF-50.png[width="20px" link="./guides/rgcfg/rgcfg.pdf"]
+* xref:guides/rgcms/rgcms.adoc#[Classes, Methods and Schema^]  image:{_imagesdir}PDF-50.png[width="20px" link="./guides/rgcms/rgcms.pdf"]
+* xref:guides/rgmvn/rgmvn.adoc#[Apache Isis Maven plugin^]  image:{_imagesdir}PDF-50.png[width="20px" link="./guides/rgmvn/rgmvn.pdf"]
+* xref:guides/rgfis/rgfis.adoc#[Framework Internal Services^]  image:{_imagesdir}PDF-50.png[width="20px" link="./guides/rgfis/rgfis.pdf"]
+
+
+
+|*"Supporting" Guides:*
+
+* *xref:guides/dg/dg.adoc#[Developers' Guide^]*  image:{_imagesdir}PDF-50.png[width="20px" link="./guides/dg/dg.pdf"]
+** Setting up xref:guides/dg/dg.adoc#_dg_ide_intellij[IntelliJ^] or xref:guides/dg/dg.html#_dg_ide_eclipse[Eclipse^]
+** xref:guides/dg/dg.adoc#_dg_contributing[Contributing patches^] (pull requests)
+** xref:guides/dg/dg.adoc#_dg_asciidoc-syntax[Asciidoc syntax^]
+
+* xref:guides/cgcom/cgcom.adoc#[Committers' Guide^]  image:{_imagesdir}PDF-50.png[width="20px" link="./guides/cgcom/cgcom.pdf"]
+** xref:guides/cgcom/cgcom.adoc#_cgcom_cutting-a-release[Cutting a release^]
+** xref:guides/cgcom/cgcom.adoc#_cgcom_verifying-releases[Verifying a release^]
+
+
+|===
+
+
+
+
+[cols="1a,1a,1a",frame="none", grid="none"]
+|===
+
+|*Releases:*
+
+* xref:release-notes/release-notes.adoc#[Release Notes^]
+* xref:migration-notes/migration-notes.adoc#[Migration Notes^]
+
+*Get involved!*
+
+* Our *link:https://issues.apache.org/jira/secure/RapidBoard.jspa?rapidView=87[Kanban board^]* maps out the JIRA issues we are looking to tackle in the next few releases
+
+
+
+|*Going Deeper:*
+
+* xref:pages/articles-and-presentations/articles-and-presentations.adoc#[Articles, Conferences, Podcasts^]
+* xref:pages/books/books.adoc#[Books^]
+* xref:guides/ugfun/resources/core-concepts/Pawson-Naked-Objects-thesis.pdf[Naked Objects PhD thesis^] (Pawson)
+//* link:./downloadable-presentations/downloadable-presentations.html[Downloadable Presentations]
+
+
+
+|*Example Apps (not ASF):*
+
+* http://github.com/estatio/estatio[Estatio^]
+* http://github.com/isisaddons/isis-app-todoapp[TodoApp^]
+* http://github.com/isisaddons/isis-app-kitchensink[Kitchensink^]
+* http://github.com/isisaddons/isis-app-neoapp[Neo4J Example^]
+* http://github.com/isisaddons/isis-app-quickstart[Quickstart^]
+
+tools (not ASF):
+
+* http://github.com/isisaddons/isis-app-simpledsl[Isis DSL Example^]
+
+|====
+
+
+--
+
