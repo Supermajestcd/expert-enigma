@@ -23,12 +23,11 @@ import javax.inject.Inject;
 import org.apache.wicket.Component;
 import org.apache.wicket.model.IModel;
 
-import org.apache.causeway.applib.annotation.PriorityPrecedence;
-import org.apache.causeway.core.metamodel.object.ManagedObject;
-import org.apache.causeway.viewer.commons.model.components.UiComponentType;
-import org.apache.causeway.viewer.wicket.model.models.UiObjectWkt;
-import org.apache.causeway.viewer.wicket.ui.ComponentFactory.ApplicationAdvice;
-import org.apache.causeway.viewer.wicket.ui.components.entity.EntityComponentFactoryAbstract;
+import org.apache.isis.applib.annotation.PriorityPrecedence;
+import org.apache.isis.core.metamodel.object.ManagedObject;
+import org.apache.isis.viewer.commons.model.components.UiComponentType;
+import org.apache.isis.viewer.wicket.model.models.EntityModel;
+import org.apache.isis.viewer.wicket.ui.components.entity.EntityComponentFactoryAbstract;
 
 import demoapp.dom.featured.customui.geocoding.GeoapifyClient;
 import demoapp.dom.featured.customui.vm.WhereInTheWorldVm;
@@ -48,7 +47,7 @@ public class WhereInTheWorldPanelFactory extends EntityComponentFactoryAbstract 
     }
 
     @Override
-    protected ApplicationAdvice doAppliesTo(final UiObjectWkt entityModel) {    // <.>
+    protected ApplicationAdvice doAppliesTo(EntityModel entityModel) {    // <.>
         final ManagedObject managedObject = entityModel.getObject();      // <.>
         final Object domainObject = managedObject.getPojo();              // <.>
         return ApplicationAdvice.appliesIf(
@@ -57,7 +56,7 @@ public class WhereInTheWorldPanelFactory extends EntityComponentFactoryAbstract 
 
     @Override
     public Component createComponent(final String id, final IModel<?> model) {
-        UiObjectWkt entityModel = (UiObjectWkt) model;                    // <.>
+        EntityModel entityModel = (EntityModel) model;                    // <.>
         return new WhereInTheWorldPanel(id, entityModel, geoapifyClient); // <.>
     }
 

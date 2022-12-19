@@ -23,15 +23,14 @@ import java.util.stream.Collectors;
 
 import javax.inject.Inject;
 
-import org.apache.causeway.applib.annotation.Action;
-import org.apache.causeway.applib.annotation.ActionLayout;
-import org.apache.causeway.applib.annotation.MemberSupport;
-import org.apache.causeway.applib.annotation.MinLength;
-import org.apache.causeway.applib.annotation.Optionality;
-import org.apache.causeway.applib.annotation.Parameter;
-import org.apache.causeway.applib.annotation.PromptStyle;
-import org.apache.causeway.applib.services.message.MessageService;
-import org.apache.causeway.commons.internal.base._Strings;
+import org.apache.isis.applib.annotation.Action;
+import org.apache.isis.applib.annotation.ActionLayout;
+import org.apache.isis.applib.annotation.MemberSupport;
+import org.apache.isis.applib.annotation.MinLength;
+import org.apache.isis.applib.annotation.Optionality;
+import org.apache.isis.applib.annotation.Parameter;
+import org.apache.isis.applib.annotation.PromptStyle;
+import org.apache.isis.applib.services.message.MessageService;
 
 import lombok.RequiredArgsConstructor;
 import lombok.Value;
@@ -77,14 +76,6 @@ public class DependentArgsActionDemo_useAutoComplete {
 
     // -- PARAM 1 (DemoItem)
 
-    @MemberSupport public DemoItem default1Act(final Parameters params) {
-        // fill in first that is possible based on the first param from the UI dialog
-        return params.parity()==null
-                ? null
-                : autoComplete1Act(params, "")
-                    .stream().findFirst().orElse(null);
-    }
-
     @MemberSupport public Collection<DemoItem> autoComplete1Act(
             final Parameters params,
             @MinLength(2) final String search) {
@@ -101,9 +92,7 @@ public class DependentArgsActionDemo_useAutoComplete {
         return holder.getItems()
                 .stream()
                 .filter(item->parity == item.getParity())
-                .filter(item->_Strings.isNullOrEmpty(search)
-                        ? true
-                        : item.getName().toLowerCase().contains(search.toLowerCase()))
+                .filter(item->item.getName().toLowerCase().contains(search.toLowerCase()))
                 .collect(Collectors.toList());
     }
 

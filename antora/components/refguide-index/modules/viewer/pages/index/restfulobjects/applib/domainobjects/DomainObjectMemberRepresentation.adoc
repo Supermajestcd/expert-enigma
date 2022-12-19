@@ -15,7 +15,7 @@ class DomainObjectMemberRepresentation {
   String getMemberType()     // <.>
   String getDisabledReason()     // <.>
   String getFormat()
-  String getXCausewayFormat()     // <.>
+  String getXIsisFormat()     // <.>
 }
 ----
 
@@ -29,10 +29,10 @@ Whether this is a `property` , `collection` or `action` .
 --
 The reason this member cannot be modified (if property or collection) or invoked (if action).
 --
-<.> xref:#getXCausewayFormat_[getXCausewayFormat()]
+<.> xref:#getXIsisFormat_[getXIsisFormat()]
 +
 --
-Causeway-specific extension; not part of the RO API;
+Isis-specific extension; not part of the RO API;
 --
 
 == Members
@@ -49,7 +49,7 @@ The reason this member cannot be modified (if property or collection) or invoked
 
 If null, then is not disabled.
 
-[#getXCausewayFormat_]
-=== getXCausewayFormat()
+[#getXIsisFormat_]
+=== getXIsisFormat()
 
-Causeway-specific extension; not part of the RO API;
+Isis-specific extension; not part of the RO API;

@@ -23,13 +23,13 @@ import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.image.Image;
 import org.apache.wicket.request.resource.ByteArrayResource;
 
-import org.apache.causeway.core.metamodel.commons.ScalarRepresentation;
-import org.apache.causeway.core.metamodel.object.ManagedObject;
-import org.apache.causeway.viewer.commons.model.components.UiComponentType;
-import org.apache.causeway.viewer.commons.model.hints.RenderingHint;
-import org.apache.causeway.viewer.wicket.model.hints.UiHintContainer;
-import org.apache.causeway.viewer.wicket.model.models.UiObjectWkt;
-import org.apache.causeway.viewer.wicket.ui.panels.PanelAbstract;
+import org.apache.isis.core.metamodel.commons.ScalarRepresentation;
+import org.apache.isis.core.metamodel.object.ManagedObject;
+import org.apache.isis.viewer.commons.model.components.UiComponentType;
+import org.apache.isis.viewer.commons.model.object.UiObject;
+import org.apache.isis.viewer.wicket.model.hints.UiHintContainer;
+import org.apache.isis.viewer.wicket.model.models.EntityModel;
+import org.apache.isis.viewer.wicket.ui.panels.PanelAbstract;
 
 import demoapp.dom.featured.customui.geocoding.GeoapifyClient;
 import demoapp.dom.featured.customui.vm.WhereInTheWorldVm;
@@ -38,7 +38,7 @@ import lombok.val;
 
 //tag::class[]
 public class WhereInTheWorldPanel
-extends PanelAbstract<ManagedObject, UiObjectWkt>  {
+extends PanelAbstract<ManagedObject, EntityModel>  {
 
     private static final long serialVersionUID = 1L;    // <.>
 
@@ -46,7 +46,7 @@ extends PanelAbstract<ManagedObject, UiObjectWkt>  {
 
     public WhereInTheWorldPanel(
             final String id,
-            final UiObjectWkt model,
+            final EntityModel model,
             final GeoapifyClient geoapifyClient) {
         super(id, model);
         this.geoapifyClient = geoapifyClient;
@@ -103,7 +103,7 @@ extends PanelAbstract<ManagedObject, UiObjectWkt>  {
         val scalarModel =
                 getModel().getPropertyModel(                                       // <.>
                     property, ScalarRepresentation.VIEWING,
-                    RenderingHint.REGULAR);
+                    UiObject.RenderingHint.REGULAR);
         return getComponentFactoryRegistry().createComponent(                      // <.>
                 propertyId, UiComponentType.SCALAR_NAME_AND_VALUE, scalarModel);
     }
