@@ -1,0 +1,121 @@
+{
+  "properties": [
+    {
+      "name": "isis.persistor.datanucleus.impl.datanucleus.ConnectionFactoryName"
+    },
+    {
+      "name": "isis.persistor.datanucleus.impl.datanucleus.ConnectionFactory2Name"
+    },
+    {
+      "name": "isis.persistor.datanucleus.impl.datanucleus.ConnectionPasswordDecrypter"
+    },
+    {
+      "name": "isis.persistor.datanucleus.impl.datanucleus.PersistenceUnitLoadClasses"
+    },
+    {
+      "name": "isis.persistor.datanucleus.impl.datanucleus.objectProvider.className"
+    },
+    {
+      "name": "isis.persistor.datanucleus.impl.datanucleus.schema.autoCreateAll"
+    },
+    {
+      "name": "isis.persistor.datanucleus.impl.datanucleus.schema.autoCreateDatabase"
+    },
+    {
+      "name": "isis.persistor.datanucleus.impl.datanucleus.schema.validateAll"
+    },
+    {
+      "name": "isis.persistor.datanucleus.impl.javax.jdo.option.ConnectionDriverName"
+    },
+    {
+      "name": "isis.persistor.datanucleus.impl.javax.jdo.option.ConnectionURL"
+    },
+    {
+      "name": "isis.persistor.datanucleus.impl.javax.jdo.option.ConnectionUserName"
+    },
+    {
+      "name": "isis.persistor.datanucleus.impl.javax.jdo.option.ConnectionPassword"
+    },
+    {
+      "name": "isis.persistor.datanucleus.impl.javax.jdo.PersistenceManagerFactoryClass"
+    },
+    {
+      "name": "isis.viewer.wicket.credit.1.url",
+      "type": "java.net.URL"
+    },
+    {
+      "name": "isis.viewer.wicket.credit.1.name",
+      "type": "java.lang.String"
+    },
+    {
+      "name": "isis.viewer.wicket.credit.1.image",
+      "type": "java.lang.String",
+      "description": "Path of image, relative to webapp root."
+    },
+    {
+      "name": "isis.viewer.wicket.credit.2.url",
+      "type": "java.net.URL"
+    },
+    {
+      "name": "isis.viewer.wicket.credit.2.name",
+      "type": "java.lang.String"
+    },
+    {
+      "name": "isis.viewer.wicket.credit.2.image",
+      "type": "java.lang.String",
+      "description": "Path of image, relative to webapp root."
+    },
+    {
+      "name": "isis.viewer.wicket.credit.3.url",
+      "type": "java.net.URL"
+    },
+    {
+      "name": "isis.viewer.wicket.credit.3.name",
+      "type": "java.lang.String"
+    },
+    {
+      "name": "isis.viewer.wicket.credit.3.image",
+      "type": "java.lang.String",
+      "description": "Path of image, relative to webapp root."
+    }
+  ],
+  "hints": [
+    {
+      "name": "isis.persistor.datanucleus.impl.datanucleus.ConnectionPasswordDecrypter",
+      "providers": [{
+        "name": "class-reference",
+        "parameters": {
+          "target": "org.datanucleus.store.connection.DecryptionProvider"
+        }
+      }]
+    },
+    {
+      "name": "isis.persistor.datanucleus.impl.javax.jdo.PersistenceManagerFactoryClass",
+      "providers": [{
+        "name": "class-reference",
+        "parameters": {
+          "target": "javax.jdo.PersistenceManagerFactory"
+        }
+      }]
+    },
+    {
+      "name": "isis.persistor.datanucleus.impl.datanucleus.objectProvider.className",
+      "providers": [{
+        "name": "class-reference",
+        "parameters": {
+          "target": "org.datanucleus.state.StateManagerImpl"
+        }
+      }]
+    },
+    {
+      "name": "isis.viewer.wicket.themes.provider",
+      "providers": [{
+        "name": "class-reference",
+        "parameters": {
+          "target": "org.apache.isis.viewer.wicket.ui.components.widgets.themepicker.IsisWicketThemeSupport"
+        }
+      }]
+    }
+  ]
+}
+

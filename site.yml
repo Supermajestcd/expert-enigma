@@ -1,0 +1,158 @@
+site:
+  title: Apache Isis
+  url: https://isis.apache.org/
+  start_page: toc:ROOT:about.adoc
+
+content:
+  sources:
+    - url: .
+      start_path: examples/apps/helloworld/_adoc
+      branches: HEAD
+    - url: .
+      start_path: examples/apps/simpleapp/_adoc
+      branches: HEAD
+
+    - url: .
+      branches: HEAD
+      start_path: antora/components/toc
+    - url: .
+      branches: HEAD
+      start_path: antora/components/mignotes
+    - url: .
+      branches: HEAD
+      start_path: antora/components/refguide
+    - url: .
+      branches: HEAD
+      start_path: antora/components/relnotes
+    - url: .
+      branches: HEAD
+      start_path: antora/components/archdesign
+
+    - url: .
+      start_path: antora/components/userguide
+      branches: HEAD
+    - url: .
+      branches: HEAD
+      start_path: examples/apps/demo/_adoc
+    - url: .
+      branches: HEAD
+      start_path: mavendeps/_adoc
+
+
+    - url: .
+      start_path: core/applib/_adoc
+      branches: HEAD
+    - url: .
+      start_path: core/config/_adoc
+      branches: HEAD
+    - url: .
+      start_path: core/schema/_adoc
+      branches: HEAD
+
+    - url: .
+      start_path: core/runtime-services/_adoc
+      branches: HEAD
+
+    - url: .
+      start_path: antora/components/testing
+      branches: HEAD
+    - url: .
+      start_path: core/testsupport/unittestsupport/_adoc
+      branches: HEAD
+    - url: .
+      start_path: core/testsupport/integtestsupport/_adoc
+      branches: HEAD
+    # to be resurrected somehow.
+    #- url: .
+    #  start_path: core/testsupport/mvnplugin/_adoc
+    #  branches: HEAD
+    - url: .
+      branches: HEAD
+      start_path: extensions/fixtures/_adoc
+    - url: .
+      branches: HEAD
+      start_path: extensions/specsupport/_adoc
+
+    - url: .
+      start_path: core/viewer-wicket/_adoc
+      branches: HEAD
+    - url: .
+      branches: HEAD
+      start_path: extensions/viewer-wicket-excel/_adoc
+    - url: .
+      branches: HEAD
+      start_path: extensions/asciidoc/_adoc
+    - url: .
+      branches: HEAD
+      start_path: extensions/markdown/_adoc
+
+    - url: .
+      start_path: core/viewer-restfulobjects/_adoc
+      branches: HEAD
+
+    - url: .
+      start_path: core/plugins/jdo/_adoc
+      branches: HEAD
+
+    - url: .
+      start_path: antora/components/security
+      branches: HEAD
+    - url: .
+      start_path: core/security/api/_adoc
+      branches: HEAD
+    - url: .
+      start_path: core/security/bypass/_adoc
+      branches: HEAD
+    - url: .
+      start_path: core/security/shiro/_adoc
+      branches: HEAD
+
+    - url: .
+      branches: HEAD
+      start_path: extensions/secman/_adoc
+    - url: .
+      branches: HEAD
+      start_path: extensions/secman/api/_adoc
+    - url: .
+      branches: HEAD
+      start_path: extensions/secman/encryption-jbcrypt/_adoc
+    - url: .
+      branches: HEAD
+      start_path: extensions/secman/model/_adoc
+    - url: .
+      branches: HEAD
+      start_path: extensions/secman/persistence-jdo/_adoc
+    - url: .
+      branches: HEAD
+      start_path: extensions/secman/realm-shiro/_adoc
+
+    - url: .
+      branches: HEAD
+      start_path: examples/smoketests/_adoc
+
+ui:
+  bundle:
+    url: ../isis-antora/build/ui-bundle.zip
+    #url: antora/theme/ui-bundle.zip
+    snapshot: true
+  supplemental_files: antora/supplemental-ui
+
+asciidoc:
+  extensions:
+    - asciidoctor-plantuml
+    - ./antora/lib/lorem
+    - ./antora/lib/jira-issue
+    - ./antora/lib/powershell
+  attributes:
+    experimental: ""
+    idprefix: ""
+    idseparator: "-"
+    plantuml-server-url: "http://www.plantuml.com/plantuml"
+    page-toc: ""
+    isiscurr: "2.0.0-M2"
+    isisnext: "2.0.0-M3"
+    isisnextafter: "2.0.0-M4"
+    :isisdevafter: "2.0.0-M4-SNAPSHOT"
+
+output:
+  dir: antora/target/site

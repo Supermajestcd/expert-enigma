@@ -1,0 +1,12 @@
+= Reference Guides
+include::_attributes.adoc[]
+
+The reference guides are:
+
+* xref:rg:ant:about.adoc[Annotations]
+* xref:rg:svc:about.adoc[Domain Services]
+* xref:rg:cms:about.adoc[Classes & Methods]
+* xref:rg:cfg:about.adoc[Configuration]
+* xref:rg:schema:about.adoc[Schemas]
+
+
