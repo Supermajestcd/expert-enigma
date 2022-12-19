@@ -1,0 +1,811 @@
+= Migration Notes
+
+//dummy edit
+
+Search also for: "TODO: v2: " in the .adoc documentation.
+
+== 2.0.0-M2 to 2.0.0-M3
+
+=== Server-Sent-Event (SSE) Support (ISIS-2102)
+
+Experimental feature to allow for submission of background-tasks, that themselfes may fire UI-events to update eg. a progress-bar.
+
+To make this work we introduce following components:
+
+- A SSE Servlet listening on '/sse' for client requests.
+- Client-Side Javascript that can subscribe 'EventStream's to the SSE Servlet
+- An EventStreamSource interface for any designated background task to implement.
+- An EventStreamService, that allows for such EventStreamSource objects to be submitted for execution on a thread-pool.
+- An EventStreamSource is associated with an EventStream on which it may fire update events.
+- These update events are propagated to the SSE Servlet, which informs its listenening clients with the update event's payload data.
+
+A first prototypical implementation of this mechanism also introduces a programming model extension, which for now only works for 'Markup' properties.
+
+==== The Subscribing ViewModel 
+
+[source,java]
+----
+@ViewModel
+class View {
+	@Property(observe = BackgroundTask.class) // <-- client-side subscription to events of this type
+	Markup markup; // <-- on ui-event, the markup component is client-side updated by the EventStreamSource.getPayload()
+}
+----
+
+==== The Background Task
+
+[source,java]
+----
+class BackgroundTask implements EventStreamSource {
+
+    int progress = 0;
+
+	@Override
+	public void run(EventStream eventStream) {
+	    // do something time consuming and eventually fire an update
+	    ...
+	    ++progress;
+	    eventStream.fire(this);
+	    ...
+	}
+
+	@Override
+	public Markup getPayload() {
+	    return new Markup("my current progress is " + progress);
+	}
+
+}
+----
+
+==== The Background Task Submitter
+
+[source,java]
+----
+@DomainService
+class Submitter {
+    @Inject EventStreamService eventStreamService;
+
+	@Action
+	public void startBackgroundTask() {
+	    
+		eventStreamService.submit(new BackgroundTask());
+				
+	}
+}
+----
+
+=== ServicesInjector/ServiceRegistry
+
+ServicesInjector was removed. New interface ServiceInjector and ServiceRegistry redefined.
+//TODO work in progress with ISIS-2033
+
+=== BuilderScripts simplified
+
+The number of required type-parameters for 'BuilderScripts' has been reduced:
+
+[source,java]
+----
+@Accessors(chain = true)
+public class SimpleObjectBuilder 
+extends BuilderScriptAbstract<SimpleObject> { // <= only 1 type param
+
+    @Getter
+    private SimpleObject object;
+
+	...
+}
+
+@AllArgsConstructor
+public enum SimpleObject_persona 
+implements PersonaWithBuilderScript<SimpleObjectBuilder> /* <= only 1 type param */ ... {
+
+    FOO("Foo"),
+    BAR("Bar"),
+	
+	...
+
+    public SimpleObjectBuilder builder() {
+        return new SimpleObjectBuilder().setName(name);
+    }
+
+    public static class PersistAll
+    extends PersonaEnumPersistAll<SimpleObject_persona, SimpleObject> /* <= only 2 type params */ {
+		...
+    }
+}
+----
+
+
+== 2.0.0-M1 to 2.0.0-M2
+
+=== AppConfig (ISIS-2039)
+
+`AppConfig` is a new interface that is located through a variety of mechanisms:
+
+* CDI if available, else
+* Java 7's ServiceLoader mechanism (`META-INF/services/org.apache.isis.config.AppConfig` file to be present), else
+* fallback to reading (peeking into) `isis.properties`.
+
+Its API is simply:
+
+[source,java]
+----
+@FunctionalInterface
+public interface AppConfig {
+
+    IsisConfiguration isisConfiguration();
+
+}
+----
+
+The expected idiom is for the application's `AppManifest` to also implement this, eg:
+
+[source,java]
+----
+@javax.ejb.Singleton                                                // <1>
+public class HelloWorldAppManifest extends AppManifestAbstract
+            implements AppConfig {                                  // <2>
+
+    ...
+
+    @Override
+    public IsisConfiguration isisConfiguration () {
+        return IsisConfiguration.buildFromAppManifest(this);
+    }
+}
+----
+<1> only required if the `AppConfig` is to be picked up using CDI
+
+So, we have the `AppManifest` instantiated by CDI etc, and then the `IsisConfiguration` is built in turn from the `AppManifest`.
+Once the `IsisConfiguration` is created, it is immutable.
+And, following the above idiom, the `IsisConfiguration` also makes the `AppManifest` available:
+
+[source,java]
+----
+public interface IsisConfiguration {
+    ...
+    AppManifest getAppManifest();
+    ...
+}
+----
+
+
+=== Table Tree Viewer (ISIS-898)
+
+also: ISIS-1943,ISIS-1944,ISIS-1947
+
+Note: Currently does not implement a Table Tree View but just a Tree View.
+
+public API is:
+
+* `TreeAdapter` (provides the parent/child relationship information between pojos to derive a tree-structure) 
+* `TreeNode` (with `LazyTreeNode` as the default implementation)
+* `TreePath` (represents a coordinate-system to navigate any tree-structure)
+
+[source,java]
+----
+public interface TreeAdapter<T> {
+
+    Optional<T> parentOf(T value); // parent tree-node (pojo) of given value tree-node
+    
+    int childCountOf(T value); // number of child tree-nodes of given value tree-node
+
+    Stream<T> childrenOf(T value); // stream of child tree-nodes of given value tree-node
+
+}
+
+// creating a tree starting at a given tree-node, where MyTreeAdapter implements TreeAdapter<T>
+
+T root = ... // the tree's root (a pojo)
+TreeNode<T> tree = TreeNode.lazy(root, MyTreeAdapter.class); // creates a tree-node with given 'root' as the tree's root
+
+// expand a certain tree-node by specifying it's coordinates (TreePath) within the tree-structure
+
+tree.expand(TreePath.of(0)); // expand the root node
+tree.expand(TreePath.of(0, 1)); // expand the second child of the root node
+----
+
+A full example is showcased in the https://github.com/andi-huber/isis-2-demo/tree/master/src/main/java/domainapp/dom/tree[isis-2-demo] ...
+
+Implementation of `TreeAdapter`
+
+[source,java]
+----
+public class FileSystemTreeAdapter implements TreeAdapter<FileNode> {
+
+	@Override
+	public Optional<FileNode> parentOf(FileNode value) {
+		if(value.getType()==FileNode.Type.FileSystemRoot) {
+			return Optional.empty();
+		}
+		val parentFolderIfAny = value.asFile().getParentFile();
+		if(parentFolderIfAny==null) {
+			return Optional.empty(); // unexpected code reach, but just in case
+		}
+		return Optional.ofNullable(parentFolderIfAny)
+				.map(FileNodeFactory::toFileNode);
+	}
+
+	@Override
+	public int childCountOf(FileNode value) {
+		return (int) streamChildFiles(value).count();
+	}
+
+	@Override
+	public Stream<FileNode> childrenOf(FileNode value) {
+		return streamChildFiles(value)
+				.map(FileNodeFactory::toFileNode);
+	}
+
+	// -- HELPER
+	private static Stream<File> streamChildFiles(FileNode value){
+		val file = value.asFile();
+		val childFiles = file.listFiles();
+		if(childFiles==null) {
+			return Stream.empty();
+		}
+		return Stream.of(childFiles)
+				.filter(f->!f.isHidden());
+	}
+}
+----
+
+where `FileNode` doesn't, actually, need to implement `TreeNode`, it's just a regular view model:
+
+[source,java]
+----
+@XmlRootElement(name="FileNode")
+@DomainObject(nature=Nature.VIEW_MODEL)
+@ToString
+public class FileNode {
+
+	public static enum Type {
+		FileSystemRoot,
+		Folder,
+		File
+	}
+
+	@Getter @Setter protected String path;
+	@Getter @Setter protected Type type;
+
+	public String title() {
+		if(path==null) {
+			return null;
+		}
+		val file = asFile();
+		return file.getName().length()!=0 ? file.getName() : file.toString();
+	}
+
+	public String iconName() {
+		return type!=null ? type.name() : "";
+	}
+
+	// -- BREADCRUMB SUPPORT
+
+	@PropertyLayout(navigable=Navigable.PARENT, hidden=Where.EVERYWHERE)
+	public FileNode getParent() {
+	    val parentFile = asFile().getParentFile();
+	    return parentFile!=null ? FileNodeFactory.toFileNode(parentFile) : null;
+	}
+
+	// -- INIT
+
+	void init(File file) {
+		this.path = file.getAbsolutePath();
+		if(file.isDirectory()) {
+			type = isRoot(file) ? Type.FileSystemRoot : Type.Folder;
+		} else {
+			type = Type.File;
+		}
+	}
+
+	// -- HELPER
+
+	File asFile() {
+		return new File(path);
+	}
+
+	private static boolean isRoot(File file) {
+		return file.getParent()==null;
+	}
+}
+----
+
+And finally the ViewModel that provides the tree for rendering:
+
+[source,java]
+----
+@ViewModel
+public class TreeDemo extends DemoStub {
+	
+	/**
+	 * @return the demo tree view model as a property  
+	 */
+	public TreeNode<FileNode> getFileSystemTree() {
+    		val root = FileNodeFactory.defaultRoot();
+    		val tree = TreeNode.lazy(root, FileSystemTreeAdapter.class);
+    		tree.expand(TreePath.of(0)); // expand the root node
+    		return tree;
+	}
+        
+    }
+	
+}
+----
+
+
+=== isis-core-wrapper removed (ISIS-1838/1839)
+
+
+=== guice removed from applib and core (ISIS-1892)
+
+
+=== web.xml now much simpler (ISIS-1895)
+
+NOTE: see 'Servlet Context' below
+
+
+=== @MemberGroupLayout was removed
+
+=== Axon Eventbus Plugin
+
+switching from axon 2.x to 3.x which involves that axon's *EventHandler* annotation has moved: org.axonframework.eventhandling.annotation.EventHandler -> org.axonframework.eventhandling.EventHandler
+
+=== API Changes
+
+- _IsisMatchers_ is no longer part of the 'core' API, but still available within test-scope.
+- _Ensure_ as part of the 'core' API now accepts Java Predicates instead of hamcrest Matchers
+- deployment types SERVER_EXPLORATION, UNIT_TESTING have been removed
+
+=== Environment
+
+Some ways of setting the DeploymentType (using web.xml or WebServer cmd-line flags -t or --type) have been removed. Instead running in PROTOTYPING (exemplified with Jetty) can be done in following ways:
+
+[source,java]
+----
+ export PROTOTYPING=true ; mvn jetty:run
+ mvn -DPROTOTYPING=true jetty:run
+ mvn -Disis.deploymentType=PROTOTYPING jetty:run
+----
+
+We also introduced a SPI to customize this behavior. This issue is tracked by https://issues.apache.org/jira/browse/ISIS-1991
+
+=== Servlet Context
+
+ * web.xml: no longer required to install listeners, filters and servlets; but is still required to configure the welcome page; _org.apache.isis.core.webapp.IsisWebAppContextListener_ acts as the single application entry-point to setup the dynamic part of the ServletContext.
+ ** ResourceCachingFilter is now configured via annotations (Servlet 3.0 spec), no longer needed to be declared in web.xml
+ ** ResourceServlet is now configured via annotations (Servlet 3.0 spec), no longer needed to be declared in web.xml
+ ** IsisTransactionFilterForRestfulObjects is now configured via annotations (Servlet 3.0 spec), no longer needed to be declared in web.xml
+ ** webjars Servlet was removed, no longer needed to be declared in web.xml
+ ** Shiro Environment, no longer needs to be declared in web.xml
+ ** Wicket Environment, no longer needs to be declared in web.xml
+ ** RestEasy Environment, no longer needs to be declared in web.xml
+ ** IsisSessionFilter is now part of the RestEasy WebModule, no longer needs to be declared in web.xml
+ ** LogOnExceptionLogger, no longer needs to be declared in web.xml
+ * web.xml apart from the new WebContextListener we introduce new web-specific (optional) config values, nothing else needs to configured here:
+ 
+[source,xml]
+----
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+	xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
+	id="WebApp_ID" version="3.1">
+	<display-name>My App</display-name>
+
+	<welcome-file-list>
+		<welcome-file>about/index.html</welcome-file>
+	</welcome-file-list>
+
+	<!-- unique bootstrapping entry-point for web-applications -->
+        <listener>
+		<listener-class>org.apache.isis.core.webapp.IsisWebAppContextListener</listener-class>
+	</listener>
+
+	<!-- optional for overriding default 'wicket' -->
+	<context-param>
+		<param-name>isis.viewer.wicket.basePath</param-name>
+		<param-value>my-wicket</param-value>
+	</context-param>
+
+	<!-- optional for overriding default 'org.apache.isis.viewer.wicket.viewer.IsisWicketApplication' -->
+	<context-param>
+		<param-name>isis.viewer.wicket.app</param-name>
+		<param-value>domainapp.webapp.MyDomainApplication</param-value>
+	</context-param>
+	
+	<!-- optional for overriding default 'restful' -->
+	<context-param>
+		<param-name>isis.viewer.restfulobjects.basePath</param-name>
+		<param-value>my-restful</param-value>
+	</context-param>
+
+</web-app>
+----
+
+=== Module Shiro
+
+module 'shiro' moved from `/core` to `/core/plugins` and its maven artifactId changed, to be in line with the other core-plugins:
+ 
+[source,xml]
+----
+<dependency>
+	<groupId>org.apache.isis.core</groupId>
+	<artifactId>isis-core-plugins-security-shiro</artifactId>
+</dependency>
+----
+
+=== ObjectAdapter 
+
+ObjectAdapter is no longer holding a reference to an ObjectSpecification for the element type of collections. ObjectAdapter#getElementSpecification() moved to ObjectSpecification#getElementSpecification().
+ 
+=== JAXB XmlAdapters (ISIS-1972)
+
+We do now provide JAXB XmlAdapters for Java built-in temporal types in 'applib': org.apache.isis.applib.adapters.JaxbAdapters
+ 
+=== Wicket-Viewer
+
+Instead of browser built-in tooltip rendering, the framework now provides tooltips using Javascript and CSS, currently with following stylesheet defaults:
+
+----
+.ui-tooltip {
+    max-width: 300px;
+    color: rgb(70, 69, 69);
+    background-color: WhiteSmoke;
+    text-align: center;
+    padding: 5px 10px;
+    border-radius: 4px;
+    font-size: 12px;
+    box-shadow: 0 0 7px black;
+ 
+    position: absolute;
+    z-index: 9999;
+}
+
+span.isis-component-with-tooltip, 
+label.isis-component-with-tooltip, 
+.isis-component-with-tooltip label, 
+strong.isis-component-with-tooltip  {
+   text-decoration: underline dashed;
+}
+
+.ui-helper-hidden-accessible { display:none; } /* accessibility support disabled */
+----
+
+=== REST Viewer
+
+The content negotiation parameter 'suppress' does now allow more control on which '$$..' properties one wants to suppress. New options are
+ 
+[source,java]
+----
+public static enum SuppressionType {
+    /** suppress '$$RO', RO Spec representation*/
+    RO,
+    
+    /** suppress '$$href', hyperlink to the representation*/
+    HREF,
+    
+    /** suppress '$$instanceId', instance id of the domain object*/
+    ID,
+
+    /** suppress '$$domainType', object spec of the domain object */
+    DOMAIN_TYPE,    
+
+    /** suppress '$$title', title of the domain object*/
+    TITLE,
+    
+    /** suppress all '$$...' entries*/
+    ALL
+}
+----
+
+where these are case-insensitive and may be combined to a comma-separated set.
+ Eg. to suppress $$title and $$href one could simply request
+----
+application/json;profile=urn:org.apache.isis/v1;suppress=title,href
+----
+We do not break the previous behavior with 'suppress=true' being equivalent to 'suppress=ro'
+
+=== new RestfulClient
+
+Adds a new JAX-RS 2.0 compliant RestfulClient to core-applib:
+
+Client-Side Setup:
+[source,xml]
+----
+<dependency>
+	<groupId>org.apache.isis.core</groupId>
+	<artifactId>isis-core-applib</artifactId>
+	<version>2.0.0-M2-SNAPSHOT</version>
+</dependency>
+<dependency>
+	<groupId>javax.ws.rs</groupId>
+	<artifactId>javax.ws.rs-api</artifactId>
+	<version>2.1.1</version>
+</dependency>
+<dependency>
+	<groupId>org.glassfish.jersey.core</groupId>
+	<artifactId>jersey-client</artifactId>
+	<version>2.25.1</version>
+</dependency>
+<dependency>
+	<groupId>org.eclipse.persistence</groupId>
+	<artifactId>org.eclipse.persistence.moxy</artifactId>
+	<version>2.6.0</version>
+</dependency>
+----
+
+Synchronous example with Basic-Auth:
+
+[source,java]
+----
+RestfulClientConfig clientConfig = new RestfulClientConfig();
+clientConfig.setRestfulBase("http://localhost:8080/helloworld/restful/");
+// setup basic-auth
+clientConfig.setUseBasicAuth(true);
+clientConfig.setRestfulAuthUser("sven");
+clientConfig.setRestfulAuthPassword("pass");
+
+RestfulClient client = RestfulClient.ofConfig(clientConfig);
+
+Builder request = client.request(
+				"services/myService/actions/lookupMyObjectById/invoke", 
+				SuppressionType.setOf(SuppressionType.RO));
+
+Entity<String> args = client.arguments()
+		.addActionParameter("id", "12345")
+		.build();
+
+Response response = request.post(args);
+
+ResponseDigest<MyObject> digest = client.digest(response, MyObject.class);
+
+if(digest.isSuccess()) {
+	System.out.println("result: "+ digest.get().get$$instanceId());
+} else {
+	digest.getFailureCause().printStackTrace();
+}
+----
+
+Asynchronous example with Basic-Auth:
+
+[source,java]
+----
+RestfulClientConfig clientConfig = new RestfulClientConfig();
+clientConfig.setRestfulBase("http://localhost:8080/helloworld/restful/");
+// setup basic-auth
+clientConfig.setUseBasicAuth(true);
+clientConfig.setRestfulAuthUser("sven");
+clientConfig.setRestfulAuthPassword("pass");
+
+RestfulClient client = RestfulClient.ofConfig(clientConfig);
+
+Builder request = client.request(
+                "services/myService/actions/lookupMyObjectById/invoke", 
+                SuppressionType.setOf(SuppressionType.RO));
+
+Entity<String> args = client.arguments()
+        .addActionParameter("id", "12345")
+        .build();
+
+Future<Response> asyncResponse = request
+        .async()
+        .post(args);
+
+CompletableFuture<ResponseDigest<MyObject>> digestFuture = 
+                client.digest(asyncResponse, MyObject.class);
+        
+ResponseDigest<MyObject> digest = digestFuture.get(); // blocking
+
+if(digest.isSuccess()) {
+    System.out.println("result: "+ digest.get().get$$instanceId());
+} else {
+    digest.getFailureCause().printStackTrace();
+}
+----
+
+=== Concurrent Computation
+
+Support for concurrent computation within an open session utilizing a ForkJoinPool
+
+[source,java]
+----
+Supplier<T> computation = ()->doSomeComputation(); 
+CompletableFuture<T> completableFuture = IsisContext.compute(computation);
+
+T result = completableFuture.get(); // blocking call
+----
+
+=== ConfigurationService
+
+ConfigurationService and its internal implementation(s) were removed, instead use IsisConfiguration, which can be retrieved either via injection or static method:
+
+[source,java]
+----
+@Inject IsisConfiguration configuration;
+// or
+IsisConfiguration configuration = IsisContext.getConfiguration();
+----
+
+=== Configuration Menu
+
+The Configuration Menu within the UI now uses its own (and completely separated) interface, that handles masking of sensitive values (eg. passwords):
+
+[source,java]
+----
+package org.apache.isis.applib.services.confview;
+
+public interface ConfigurationViewService {
+    /**
+     * Returns all properties, each as an instance of {@link ConfigurationProperty} (a view model).
+     * Mask sensitive values if required.
+     */
+    Set<ConfigurationProperty> allProperties();
+}
+----
+
+=== @PostConstuct
+
+_@PostConstuct_ methods declared with domain objects no longer get passed over the IsisConfiguration. For now only zero-arg initializers are supported. (We might re-add parameter support, this is work in progress)
+
+=== Wicket-Viewer
+
+==== custom theme providers (ISIS-2047)
+
+Customize the ThemeChooser by providing your own implementation of IsisWicketThemeSupport
+
+[source,java]
+----
+public interface IsisWicketThemeSupport {
+    ThemeProvider getThemeProvider();
+    List<String> getEnabledThemeNames();
+}
+----
+
+to be configured using
+----
+isis.viewer.wicket.themes.provider=org.my.IsisWicketThemeSupport
+----
+
+=== Removed o.a.i.WebServer (ISIS-2067)
+
+might need to reinstate, or long-term will have SpringBoot etc do the bootstrapping.
+
+
+== 1.x to 2.0.0-M1
+
+=== java.time support (ISIS-1636)
+
+The framework supports following temporal values from the Java Time API (and Joda):
+
+==== Date only
+
+* java.sql.Date
+* java.time.LocalDate (since 2.0.0-M1)
+* org.joda.time.LocalDate
+
+==== Date and Time
+
+* java.util.Date
+* java.sql.Timestamp
+* java.time.LocalDateTime (since 2.0.0-M1)
+* java.time.OffsetDateTime (since 2.0.0-M1)
+* org.joda.time.DateTime
+* org.joda.time.LocalDateTime
+
+==== View Model Example
+
+If used with JAXB View Models, you need to specify specific XmlAdapters as provided by org.apache.isis.applib.util.JaxbAdapters.*. See this JAXB Viewmodel example using lombok:
+
+[source,java]
+----
+@XmlRootElement(name = "Demo")
+@XmlType
+@XmlAccessorType(XmlAccessType.FIELD)
+@DomainObject(nature=Nature.VIEW_MODEL)
+public class TemporalDemo {
+
+    // -- DATE ONLY (LOCAL TIME)
+    
+    @XmlElement @XmlJavaTypeAdapter(SqlDateAdapter.class)
+    @Getter @Setter private java.sql.Date javaSqlDate;
+    
+    @XmlElement @XmlJavaTypeAdapter(LocalDateAdapter.class)
+    @Getter @Setter private LocalDate javaLocalDate;
+    
+    // -- DATE AND TIME (LOCAL TIME)
+    
+    @XmlElement @XmlJavaTypeAdapter(DateAdapter.class)
+    @Getter @Setter private Date javaUtilDate;
+    
+    @XmlElement @XmlJavaTypeAdapter(SqlTimestampAdapter.class)
+    @Getter @Setter private java.sql.Timestamp javaSqlTimestamp;
+        
+    @XmlElement @XmlJavaTypeAdapter(LocalDateTimeAdapter.class)
+    @Getter @Setter private LocalDateTime javaLocalDateTime;
+    
+    // -- DATE AND TIME (WITH TIMEZONE OFFSET)
+
+    @XmlElement @XmlJavaTypeAdapter(OffsetDateTimeAdapter.class)
+    @Getter @Setter private OffsetDateTime javaOffsetDateTime;
+    
+    // --
+    
+    public void initDefaults() {
+        
+        log.info("TemporalDemo::initDefaults");
+        
+        javaUtilDate = new Date();
+        javaSqlDate = new java.sql.Date(System.currentTimeMillis());
+        javaSqlTimestamp = new java.sql.Timestamp(System.currentTimeMillis());
+        
+        javaLocalDate = LocalDate.now();
+        javaLocalDateTime = LocalDateTime.now();
+        javaOffsetDateTime = OffsetDateTime.now();
+    }
+    
+}
+----
+
+=== web-docker (ISIS-1969)
+
+NOTE: TODO - To document, in particular how to use in the helloworld/simpleapp archetypes.
+
+NB: ISIS-1969: the Docker image isn't yet being released, pending https://issues.apache.org/jira/browse/INFRA-17518[INFRA-17518].
+
+=== Plugin architecture (ISIS-1753 and others)
+
+NOTE: TODO ...
+
+* describe the plugin architecture in general, use of ServiceLoader etc
+* describe in particular the event bus plugin architecture (ISIS-1753)
+* describe in particular the other plugins (objectstore, security, resteasy, bytecode enhancement, ...)
+
+=== Ticket (for ErrorReportingService) is now an interface, not a class (ISIS-1955)
+
+NOTE: TODO - ... and so any concrete implementations will need to be changed
+
+=== Override hsqldb for integtests (ISIS-1958)
+
+sample usage:
+
+[source,java]
+----
+public abstract class MyIntegTestAbstract extends IntegrationTestJupiter {
+
+  public MyIntegTestAbstract() {
+    super(new MyModule()
+      .withAdditionalModules( /* ... */)
+      // ...
+      .withConfigurationProperties(databaseConfigForTest())
+    );
+  }
+
+  private static Map<String, String> databaseConfigForTest() {
+    Map<String, String> map = new HashMap<>();
+
+    // for refernce see AppManifest.Util.withJavaxJdoRunInMemoryProperties(map)
+
+    map.put(AppManifest.Util.ISIS_PERSISTOR_DATANUCLEUS_IMPL + "javax.jdo.option.ConnectionURL", "jdbc:mariadb://127.0.0.1/demo");
+    map.put(AppManifest.Util.ISIS_PERSISTOR_DATANUCLEUS_IMPL + "javax.jdo.option.ConnectionDriverName", "org.mariadb.jdbc.MariaDbDataSource");
+    map.put(AppManifest.Util.ISIS_PERSISTOR_DATANUCLEUS_IMPL + "javax.jdo.option.ConnectionUserName", "sven");
+    map.put(AppManifest.Util.ISIS_PERSISTOR_DATANUCLEUS_IMPL + "javax.jdo.option.ConnectionPassword", "pass");
+
+    return map;
+  }
+  ...
+
+}
+----
+
+
+=== Reworked o.a.i.WebServer (ISIS-1067)
+
+Changed parameter flags:
+
+* `-m`, `--manifest`, `--appManifest`
+* `-d`, `--dev`, `--prototype`
+* `-p`, `--port`
+
+Not other flags supported.
+

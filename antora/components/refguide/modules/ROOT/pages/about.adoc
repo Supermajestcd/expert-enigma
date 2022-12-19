@@ -1,0 +1,12 @@
+= Reference Guides
+include::_attributes.adoc[]
+
+The reference guides cover:
+
+* xref:refguide:applib-ant:about.adoc[Annotations]
+* xref:refguide:applib-svc:about.adoc[Domain Services]
+* xref:refguide:applib-cm:about.adoc[Classes & Methods]
+* xref:refguide:config:about.adoc[Configuration]
+* xref:refguide:schema:about.adoc[Schemas]
+
+
