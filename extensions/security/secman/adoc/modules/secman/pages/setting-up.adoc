@@ -1,0 +1,302 @@
+= Setting up
+
+:Notice: Licensed to the Apache Software Foundation (ASF) under one or more contributor license agreements. See the NOTICE file distributed with this work for additional information regarding copyright ownership. The ASF licenses this file to you under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at. http://www.apache.org/licenses/LICENSE-2.0 . Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR  CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
+:page-partial:
+
+This section describes how to setup and configure SecMan for use in your Apache Isis application, for both authentication (`Authenticator` SPI) and authorization (`Authorizor` SPI).
+
+It is also possible to use SecMan in conjunction with the framework's xref:security:shiro:about.adoc[integration with Shiro], where Shiro takes primary responsibility for authentication, while still using Secman for authorization.
+This mode allows a separate authentication mechanism such as LDAP to be used.
+For more details, see xref:setting-up-with-shiro.adoc[setting up with Shiro].
+
+
+
+include::docs:mavendeps:partial$setup-and-configure-dependencyManagement.adoc[leveloffset=+1]
+
+In addition, add a section for secman's own BOM:
+
+[source,xml,subs="attributes+"]
+.pom.xml
+----
+<dependencyManagement>
+    <dependencies>
+        <dependency>
+            <groupId>org.apache.isis.extensions</groupId>
+            <artifactId>isis-extensions-secman</artifactId>
+            <scope>import</scope>
+            <type>pom</type>
+            <version>{page-isisrel}</version>
+        </dependency>
+    </dependencies>
+</dependencyManagement>
+----
+
+[#dependencies]
+== Dependencies
+
+In the webapp module of your application, add the following dependency:
+
+[source,xml]
+.pom.xml
+----
+<dependencies>
+        <dependency>
+            <groupId>org.apache.isis.extensions</groupId>
+            <artifactId>isis-extensions-secman-persistence-XXX</artifactId> <!--.-->
+        </dependency>
+        <dependency>
+            <groupId>org.apache.isis.extensions</groupId>
+            <artifactId>isis-extensions-secman-encryption-jbcrypt</artifactId> <!--.-->
+        </dependency>
+</dependencies>
+----
+<.> specify either `isis-extensions-secman-persistence-jpa` or `isis-extensions-secman-persistence-jdo`, as required
+<.> provides an implementation of `PasswordEncryptionService`
+
+
+[[_update-appmanifest]]
+== Update AppManifest
+
+
+In your application's `AppManifest` (top-level Spring `@Configuration` used to bootstrap the app), import the SecMan modules.
+You will also need to import the fixture module; SecMan uses fixture scripts to seed its entities:
+
+[source,java]
+.AppManifest.java
+----
+@Configuration
+@Import({
+        ...
+        IsisModuleExtSecmanPersistenceXxx.class,        // <.>
+        IsisModuleExtSecmanEncryptionJbcrypt.class,     // <.>
+
+        IsisModuleTestingFixturesApplib.class,          // <.>
+        ...
+})
+public class AppManifest {
+}
+----
+
+<.> specify either `IsisModuleExtSecmanPersistenceJdo` or `IsisModuleExtSecmanPersistenceJpa`, as required
+<.> use Jbcrypt to encrypt passwords
+<.> fixture script support
+
+
+[#configure-properties]
+== Configuration Properties
+
+Add the database schema used by the SecMan entities to the configuration file:
+
+[source,yaml]
+.application.yml
+----
+isis:
+  persistence:
+    schema:
+      auto-create-schemas: isisExtensionsSecman
+----
+
+Optionally, modify the configuration properties for Secman itself:
+
+[source,yaml]
+.application.yml
+----
+isis:
+  extensions:
+    secman:
+      seed:
+        admin:
+          user-name: "secman-admin"                     <.>
+          password: "pass"                              <1>
+          role-name: "isis-ext-secman-admin"            <.>
+          namespace-permissions:
+            sticky: ...                                 <.>
+            additional: ...                             <.>
+        regular-user:
+          role-name: "isis-ext-secman-user"             <.>
+      permissionsEvaluationPolicy: ALLOW_BEATS_VETO     <.>
+      user-registration:
+        initial-role-names: ...                         <.>
+----
+
+<.> indicates the security super-user and password
+<.> indicates the name of the role granted to this security super-user.
+This can be any name.
+<.> the "sticky" namespace permissions granted to the admin role.
+These cannot be removed (through the UI).
+<.> any additional namespace permissions to be granted to the admin role.
+These can be removed (through the UI).
+<.> indicates the name of the role that should be granted to regular users of the application.
+<.> if there are conflicted (allow vs veto) permissions at the same scope, then whether the allow wins or the veto wins
+<.> if self-user registration is enabled in the viewer, this defines the set of roles to be granted to said user.
++
+This is discussed in more detail <<user-registration-aka-sign-up,below>>.
+
+[#default-roles]
+== Default Roles
+
+With SecMan enabled, it will automatically seed a security super-user and a regular role.
+It also defines a number of other roles to provide access to specific features of the framework (or its extensions).
+These are summarised here:
+
+* Available in both production and prototype mode
+
+** Admin role (as defined in the configuration, see <<configure-properties,above>>)
++
+Admin permissions for Secman itself.
+This is the role granted to the security super-user, and whose exact name is configured using .
+This role should therefore be extremely tightly locked down.
+
+** Regular user role (as defined in the configuration, see <<configure-properties,above>>)
++
+Regular user permissions for Secman.
+This should be granted to all users (in particular, it includes the ability to logout!)
+
+** `IsisConfigurationRoleAndPermissions.ROLE_NAME`
++
+Access the configuration properties (from the tertiary menu))
+
+* Available only in prototype mode:
+
+** `IsisAppFeatureRoleAndPermissions.ROLE_NAME`
++
+Browse the application features + permissions (from the "Prototyping" menu).
+
+** `IsisPersistenceJdoMetaModelRoleAndPermissions.ROLE_NAME`
++
+Download the JDO metamodel (from the "Prototyping" menu).
+
+** `IsisExtH2ConsoleRoleAndPermissions.ROLE_NAME`
++
+Access the h2 console (from the "Prototyping" menu)
+
+** `IsisViewerRestfulObjectsSwaggerRoleAndPermissions.ROLE_NAME`
++
+Access the swagger UI (from the "Prototyping" menu)
+
+** `IsisSudoImpersonateRoleAndPermissions.ROLE_NAME`
++
+Impersonate other users (from the "Prototyping" menu, and mixins)
+
+The full list can be found by searching for subclasses of `AbstractRoleAndPermissionsFixtureScript`.
+
+
+== Creating Users
+
+Creating regular applications users in production use can be done manually by the security super-user, or can be done programmatically through xref:refguide:extensions:index/secman/applib/user/dom/ApplicationUserRepository.adoc[ApplicationUserRepository].
+This will return an xref:refguide:extensions:index/secman/applib/user/dom/ApplicationUser.adoc[ApplicationUser] which can then be granted roles, for example using `addRoleToUser()` API of xref:refguide:extensions:index/secman/applib/role/dom/ApplicationRoleRepository.adoc[ApplicationRoleRepository].
+
+
+== Fixture scripts to setup users and roles
+
+If prototyping with an in-memory database then you will most likely want to set up some fixture scripts to automatically set up application users.
+
+SecMan provides the `AbstractRoleAndPermissionsFixtureScript` and `AbstractUserAndRolesFixtureScript` convenience fixture scripts
+to inherit from.
+
+For example, these scripts can be used to set up access to the domain objects in the xref:docs:starters:helloworld.adoc[HelloWorld] starter app:
+
+* to set up a "user-rw" role with access to everything under the "hello" namespace:
++
+[source,java]
+.RoleAndPerms__UserRw.java
+----
+public class RoleAndPerms__UserRw extends AbstractRoleAndPermissionsFixtureScript {
+
+    public static final String ROLE_NAME = "user-rw";
+
+    public RoleAndPerms__UserRw() {
+        super(ROLE_NAME, "Read-write access to entire application");
+    }
+
+    @Override
+    protected void execute(ExecutionContext ec) {
+        newPermissions(
+                ApplicationPermissionRule.ALLOW,
+                ApplicationPermissionMode.CHANGING,
+                Can.of(ApplicationFeatureId.newNamespace("hello"))
+        );
+    }
+}
+----
+
+* to set up a "no-delete" role that vetoes the ability to delete objects:
++
+[source,java]
+.RoleAndPerms__UserRw.java
+----
+public class RoleAndPerms__NoDelete extends AbstractRoleAndPermissionsFixtureScript {
+
+    public static final String ROLE_NAME = "no-delete";
+
+    public RoleAndPerms__NoDelete() {
+        super(ROLE_NAME, "Veto access to deleting HelloWorld objects");
+    }
+
+    @Override
+    protected void execute(ExecutionContext ec) {
+        newPermissions(
+                ApplicationPermissionRule.VETO,
+                ApplicationPermissionMode.VIEWING,
+                Can.of(ApplicationFeatureId.newFeature(ApplicationFeatureSort.MEMBER, "hello.HelloWorldObject#delete"))
+        );
+    }
+}
+----
+
+* to set up a user "joe" with the "user-rw" and "no-delete" role:
++
+[source,java]
+.UserToRole__joe_UserRw_but_NoDelete.java
+----
+public class UserToRole__joe_UserRw_but_NoDelete
+        extends AbstractUserAndRolesFixtureScript {
+
+    public UserToRole__joe_UserRw_but_NoDelete_or_isis2619Prop() {
+        super(
+          "joe", "pass",                                               // <.>
+          "joe@italy.com",                                             // <.>
+          "/ITA",                                                      // <.>
+          AccountType.LOCAL,                                           // <.>
+          Can.of(
+            RoleAndPerms__UserRw.ROLE_NAME                             // <.>
+            , RoleAndPerms__NoDelete.ROLE_NAME                         // <5>
+            , SecmanConfiguration.DEFAULT_REGULAR_USER_ROLE_NAME       // <.>
+            , IsisExtH2ConsoleRoleAndPermissions.ROLE_NAME             // <.>
+            , IsisPersistenceJdoMetaModelRoleAndPermissions.ROLE_NAME  // <7>
+          ));
+    }
+}
+----
+<.> username and password
+<.> email address
+<.> application tenancy
+<.> local account (rather than delegated, see xref:setting-up-with-shiro.adoc[])
+<.> application-specific roles
+<.> regular user access (always required)
+<.> specific access to framework features, see <<default-roles,above>>
+
+
+
+
+[#user-registration-aka-sign-up]
+== User registration (aka Sign-up)
+
+Secman provides an implementation of the xref:refguide:applib:index/services/userreg/UserRegistrationService.adoc[UserRegistrationService] SPI.
+This means, if the viewer supports it (eg the Wicket viewer's xref:vw::features/user-registration.adoc[sign-up support]), then end-users can sign-up to create an account via email.
+The Secman implementation sets up the user with appropriate initial roles.
+
+The exact roles to setup are specified using configuration property:
+
+[source,yaml]
+.application.yaml
+----
+isis:
+  extensions:
+    secman:
+      user-registration:
+        initial-roles:
+          - "self-registered-user-role"
+          - "regular-user-role"
+----
+
