@@ -23,13 +23,13 @@ import java.util.stream.Collectors;
 
 import javax.inject.Inject;
 
-import org.apache.causeway.applib.annotation.Action;
-import org.apache.causeway.applib.annotation.ActionLayout;
-import org.apache.causeway.applib.annotation.MemberSupport;
-import org.apache.causeway.applib.annotation.Optionality;
-import org.apache.causeway.applib.annotation.Parameter;
-import org.apache.causeway.applib.annotation.PromptStyle;
-import org.apache.causeway.applib.annotation.SemanticsOf;
+import org.apache.isis.applib.annotation.Action;
+import org.apache.isis.applib.annotation.ActionLayout;
+import org.apache.isis.applib.annotation.MemberSupport;
+import org.apache.isis.applib.annotation.Optionality;
+import org.apache.isis.applib.annotation.Parameter;
+import org.apache.isis.applib.annotation.PromptStyle;
+import org.apache.isis.applib.annotation.SemanticsOf;
 
 import demoapp.dom.types.Samples;
 import lombok.RequiredArgsConstructor;
@@ -51,21 +51,21 @@ public class JavaLangEnumHolder_updateReadOnlyOptionalPropertyWithChoices {
 
     @MemberSupport public JavaLangEnumHolder act(
             @Parameter(optionality = Optionality.OPTIONAL)
-            final demoapp.dom._infra.samples.DemoEnum newValue) {
+            final demoapp.dom.types.javalang.enums.samples.DemoEnum newValue) {
         holder.setReadOnlyOptionalProperty(newValue);
         return holder;
     }
 
-    @MemberSupport public demoapp.dom._infra.samples.DemoEnum default0Act() {
+    @MemberSupport public demoapp.dom.types.javalang.enums.samples.DemoEnum default0Act() {
         return holder.getReadOnlyOptionalProperty();
     }
 
-    @MemberSupport public List<demoapp.dom._infra.samples.DemoEnum> choices0Act() {
+    @MemberSupport public List<demoapp.dom.types.javalang.enums.samples.DemoEnum> choices0Act() {
         return samples.stream()
                 .collect(Collectors.toList());
     }
 
     @Inject
-    Samples<demoapp.dom._infra.samples.DemoEnum> samples;
+    Samples<demoapp.dom.types.javalang.enums.samples.DemoEnum> samples;
 }
 //end::class[]
