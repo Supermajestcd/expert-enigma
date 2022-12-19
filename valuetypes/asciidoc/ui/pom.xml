@@ -15,31 +15,31 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<parent>
-		<groupId>org.apache.causeway.valuetypes</groupId>
-		<artifactId>causeway-valuetypes-asciidoc</artifactId>
+		<groupId>org.apache.isis.valuetypes</groupId>
+		<artifactId>isis-valuetypes-asciidoc</artifactId>
 		<version>2.0.0-SNAPSHOT</version>
 	</parent>
 
-	<artifactId>causeway-valuetypes-asciidoc-ui</artifactId>
-	<name>Apache Causeway Val - Asciidoctor (ui)</name>
+	<artifactId>isis-valuetypes-asciidoc-ui</artifactId>
+	<name>Apache Isis Val - Asciidoctor (ui)</name>
 	<packaging>pom</packaging>
 
 	<properties>
-		<jar-plugin.automaticModuleName>org.apache.causeway.valuetypes.asciidoc.ui</jar-plugin.automaticModuleName>
-		<git-plugin.propertiesDir>org/apache/causeway/valuetypes/asciidoc/ui</git-plugin.propertiesDir>
+		<jar-plugin.automaticModuleName>org.apache.isis.valuetypes.asciidoc.ui</jar-plugin.automaticModuleName>
+		<git-plugin.propertiesDir>org/apache/isis/valuetypes/asciidoc/ui</git-plugin.propertiesDir>
 		<enforcer.skip>true</enforcer.skip>
 	</properties>
 
 	<dependencies>
 	
 		<dependency>
-			<groupId>org.apache.causeway.valuetypes</groupId>
-			<artifactId>causeway-valuetypes-asciidoc-applib</artifactId>
+			<groupId>org.apache.isis.valuetypes</groupId>
+			<artifactId>isis-valuetypes-asciidoc-applib</artifactId>
 		</dependency>
 
 		<dependency>
-			<groupId>org.apache.causeway.core</groupId>
-			<artifactId>causeway-core-metamodel</artifactId>
+			<groupId>org.apache.isis.core</groupId>
+			<artifactId>isis-core-metamodel</artifactId>
 		</dependency>
 
 		<!-- provides a ASCII-DOC parser -->
@@ -78,7 +78,7 @@
 		<dependency>
 			<groupId>com.github.jnr</groupId>
 			<artifactId>jnr-posix</artifactId>
-			<version>3.1.16</version>
+			<version>3.1.15</version>
 			<exclusions>
 				<!-- convergence issues -->
 				<exclusion>
@@ -94,7 +94,7 @@
 		<dependency>
 			<groupId>com.github.jnr</groupId>
 			<artifactId>jnr-enxio</artifactId>
-			<version>0.32.14</version>
+			<version>0.32.13</version>
 			<exclusions>
 				<!-- convergence issues -->
 				<exclusion>
@@ -110,12 +110,12 @@
 		<dependency>
 			<groupId>com.github.jnr</groupId>
 			<artifactId>jnr-constants</artifactId>
-			<version>0.10.4</version>
+			<version>0.10.3</version>
 		</dependency>
 		<dependency>
 			<groupId>com.github.jnr</groupId>
 			<artifactId>jnr-ffi</artifactId>
-			<version>2.2.13</version>
+			<version>2.2.12</version>
 		</dependency>
 		<!-- END OF ASCII-DOC -->
 

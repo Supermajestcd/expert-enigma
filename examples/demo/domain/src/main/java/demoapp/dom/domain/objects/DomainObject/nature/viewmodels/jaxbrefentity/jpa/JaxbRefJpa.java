@@ -28,14 +28,15 @@ import javax.persistence.Table;
 
 import org.springframework.context.annotation.Profile;
 
-import org.apache.causeway.applib.annotation.Bounding;
-import org.apache.causeway.applib.annotation.DomainObject;
-import org.apache.causeway.persistence.jpa.applib.integration.CausewayEntityListener;
+import org.apache.isis.applib.annotation.Bounding;
+import org.apache.isis.applib.annotation.DomainObject;
+import org.apache.isis.persistence.jpa.applib.integration.IsisEntityListener;
 
-import demoapp.dom.domain.objects.DomainObject.nature.viewmodels.jaxbrefentity.JaxbRefEntity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import demoapp.dom.domain.objects.DomainObject.nature.viewmodels.jaxbrefentity.JaxbRefEntity;
 
 @Profile("demo-jpa")
 //tag::class[]
@@ -44,7 +45,7 @@ import lombok.Setter;
     schema = "demo",
     name = "JaxbRefJpa"
 )
-@EntityListeners(CausewayEntityListener.class)
+@EntityListeners(IsisEntityListener.class)
 @Named("demo.JaxbRefEntity")
 @DomainObject(
         bounding = Bounding.BOUNDED)

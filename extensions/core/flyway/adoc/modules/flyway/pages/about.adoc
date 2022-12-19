@@ -2,48 +2,19 @@
 
 :Notice: Licensed to the Apache Software Foundation (ASF) under one or more contributor license agreements. See the NOTICE file distributed with this work for additional information regarding copyright ownership. The ASF licenses this file to you under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at. http://www.apache.org/licenses/LICENSE-2.0 . Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR  CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
 
-The _Flyway_ extension module provides a very thin layer to use Spring Boot's integration with https://flywaydb.org[Flyway]
+This module provides a very thin layer to use Spring Boot's integration with https://flywaydb.org[Flyway]
 
-== Setup
+== Configuration
 
-=== Dependency Management
-
-Add a section for _Flyway_'s own BOM:
-
-[source,xml,subs="attributes+"]
-.pom.xml
-----
-<dependencyManagement>
-    <dependencies>
-        <dependency>
-            <groupId>org.apache.causeway.extensions</groupId>
-            <artifactId>causeway-extensions-flyway</artifactId>
-            <scope>import</scope>
-            <type>pom</type>
-            <version>{page-causewayrel}</version>
-        </dependency>
-    </dependencies>
-</dependencyManagement>
-----
-
-[#dependencies]
-=== Dependencies
-
-In the webapp module of your application, add the following dependency:
+Add the following dependency:
 
 [source,xml]
-.pom.xml
 ----
-<dependencies>
-    <dependency>
-        <groupId>org.apache.causeway.extensions</groupId>
-        <artifactId>causeway-extensions-flyway-impl</artifactId>
-    </dependency>
-</dependencies>
+<dependency>
+    <groupId>org.apache.isis.extensions</groupId>
+    <artifactId>isis-extensions-flyway-impl</artifactId>
+</dependency>
 ----
-
-[[_update-appmanifest]]
-=== Update AppManifest
 
 Also add the following module to your `AppManifest`:
 
@@ -52,15 +23,12 @@ Also add the following module to your `AppManifest`:
 @Configuration
 @Import({
     ...
-    CausewayModuleExtFlywayImpl.class,
+    IsisModuleExtFlywayImpl.class,
     ...
 })
 public static class AppManifest {
 }
 ----
-
-[#configure-properties]
-=== Configuration Properties
 
 Configure Flyway connection parameters:
 
@@ -72,12 +40,12 @@ spring.flyway.default-schema=SIMPLE             // <.>
 spring.flyway.schemas=SIMPLE                    // <.>
 spring.flyway.create-schemas=true               // <.>
 
-causeway.persistence.schema.auto-create-schemas=    // <.>
+isis.persistence.schema.auto-create-schemas=    // <.>
 ----
 <.> the default schema managed by Flyway (containing the `schema_version` table); see link:https://flywaydb.org/documentation/configuration/parameters/defaultSchema[flyway.defaultSchema] config property (Flyway docs) for more info
 <.> all of the schemas managed by Flyway; see link:https://flywaydb.org/documentation/configuration/parameters/schemas[flyway.schemas] config property (Flyway docs) for more info
 <.> whether Flyway should automatically create schemas ; see link:https://flywaydb.org/documentation/configuration/parameters/createSchemas[flyway.createSchemas] for more info
-<.> instruct Apache Causeway to _not_ attempt to create schemas
+<.> instruct Apache Isis to _not_ attempt to create schemas
 
 The ORM should also be configured to _not_ automatically create tables:
 
@@ -112,6 +80,6 @@ The xref:docs:starters:simpleapp.adoc[simpleapp starter app] also provides an ex
 
 
 
-== See also
+== Reference
 
 * https://docs.spring.io/spring-boot/docs/current/reference/html/howto.html#howto-execute-flyway-database-migrations-on-startup[Spring Boot docs] for Flyway integration
