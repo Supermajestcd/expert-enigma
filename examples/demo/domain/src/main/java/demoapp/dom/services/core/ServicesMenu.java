@@ -21,13 +21,16 @@ package demoapp.dom.services.core;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-import org.apache.causeway.applib.annotation.Action;
-import org.apache.causeway.applib.annotation.ActionLayout;
-import org.apache.causeway.applib.annotation.DomainService;
-import org.apache.causeway.applib.annotation.NatureOfService;
-import org.apache.causeway.applib.annotation.PriorityPrecedence;
-import org.apache.causeway.applib.annotation.SemanticsOf;
-import org.apache.causeway.applib.services.factory.FactoryService;
+import org.apache.isis.applib.annotation.Action;
+import org.apache.isis.applib.annotation.ActionLayout;
+import org.apache.isis.applib.annotation.DomainService;
+import org.apache.isis.applib.annotation.NatureOfService;
+import org.apache.isis.applib.annotation.PriorityPrecedence;
+import org.apache.isis.applib.annotation.SemanticsOf;
+import org.apache.isis.applib.services.factory.FactoryService;
+
+import lombok.RequiredArgsConstructor;
+import lombok.val;
 
 import demoapp.dom._infra.values.ValueHolderRepository;
 import demoapp.dom.services.core.errorreportingservice.ErrorReportingServiceDemoVm;
@@ -36,8 +39,6 @@ import demoapp.dom.services.core.messageservice.MessageServiceDemoVm;
 import demoapp.dom.services.core.wrapperFactory.WrapperFactoryEntity;
 import demoapp.dom.services.core.xmlSnapshotService.XmlSnapshotParentVm;
 import demoapp.dom.services.core.xmlSnapshotService.peer.XmlSnapshotPeerVm;
-import lombok.RequiredArgsConstructor;
-import lombok.val;
 
 @Named("demo.ServicesMenu")
 @DomainService(

@@ -20,11 +20,12 @@ package demoapp.dom.domain.properties.Property.projecting;
 
 import java.util.List;
 
-import org.apache.causeway.applib.annotation.Action;
-import org.apache.causeway.applib.annotation.SemanticsOf;
+import org.apache.isis.applib.annotation.Action;
+import org.apache.isis.applib.annotation.SemanticsOf;
+
+import lombok.RequiredArgsConstructor;
 
 import demoapp.dom.domain.properties.Property.projecting.child.PropertyProjectingChildVm;
-import lombok.RequiredArgsConstructor;
 
 @Action(
     semantics = SemanticsOf.SAFE

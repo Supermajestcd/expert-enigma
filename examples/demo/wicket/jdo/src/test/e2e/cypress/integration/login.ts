@@ -21,11 +21,11 @@ describe('login to demo application', () => {
 
     it('login', () => {
         cy.visit('/wicket/');
-        cy.get('.causeway-username')
+        cy.get('.isis-username')
             .type('sven')
             // @ts-ignore
             .tab();
-        cy.get('.causeway-password')
+        cy.get('.isis-password')
             .type('pass')
             .type('{enter}');
 

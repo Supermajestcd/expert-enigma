@@ -13,16 +13,16 @@ If the domain object's JAXB annotations reference only a single XSD schema then 
 .Dto_downloadXsd.java
 ----
 class Dto_downloadXsd {
-  Object act(String fileName, CausewaySchemas causewaySchemas)     // <.>
+  Object act(String fileName, IsisSchemas isisSchemas)     // <.>
   String default0Act()     // <.>
-  CausewaySchemas default1Act()     // <.>
+  IsisSchemas default1Act()     // <.>
 }
 ----
 
-<.> xref:#act_String_CausewaySchemas[act(String, CausewaySchemas)]
+<.> xref:#act_String_IsisSchemas[act(String, IsisSchemas)]
 +
 --
-The xref:refguide:applib:index/services/jaxb/CausewaySchemas.adoc[CausewaySchemas] parameter can be used to optionally ignore the common Apache Causeway schemas; useful if there is only one other XSD schema referenced by the DTO.
+The xref:refguide:applib:index/services/jaxb/IsisSchemas.adoc[IsisSchemas] parameter can be used to optionally ignore the common Apache Isis schemas; useful if there is only one other XSD schema referenced by the DTO.
 --
 <.> xref:#default0Act_[default0Act()]
 +
@@ -32,15 +32,15 @@ Defaults to the fully qualified class name of the domain object.
 <.> xref:#default1Act_[default1Act()]
 +
 --
-Defaults to _CausewaySchemas#IGNORE_
+Defaults to _IsisSchemas#IGNORE_
 --
 
 == Members
 
-[#act_String_CausewaySchemas]
-=== act(String, CausewaySchemas)
+[#act_String_IsisSchemas]
+=== act(String, IsisSchemas)
 
-The xref:refguide:applib:index/services/jaxb/CausewaySchemas.adoc[CausewaySchemas] parameter can be used to optionally ignore the common Apache Causeway schemas; useful if there is only one other XSD schema referenced by the DTO.
+The xref:refguide:applib:index/services/jaxb/IsisSchemas.adoc[IsisSchemas] parameter can be used to optionally ignore the common Apache Isis schemas; useful if there is only one other XSD schema referenced by the DTO.
 
 [#default0Act_]
 === default0Act()
@@ -50,4 +50,4 @@ Defaults to the fully qualified class name of the domain object.
 [#default1Act_]
 === default1Act()
 
-Defaults to _CausewaySchemas#IGNORE_
+Defaults to _IsisSchemas#IGNORE_
