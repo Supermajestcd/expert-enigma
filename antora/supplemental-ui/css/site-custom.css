@@ -1,0 +1,37 @@
+.content .hljs-meta {
+    color: olivedrab;
+    font-weight: 500;
+}
+
+.content .hljs-keyword,
+.content .hljs-selector-tag,
+.content .hljs-subst {
+    color: darkblue;
+    font-weight: 500;
+}
+
+div.paragraph code {
+    color: darkmagenta;
+}
+
+.doc div.ulist a code,
+.doc div.paragraph a code {
+    color: cornflowerblue;
+}
+
+.content .ulist {
+    margin-top: 0.2rem;
+}
+
+.content h2 {
+    margin-bottom: 9px;
+}
+
+.content > .ulist ul {
+    padding-left: 1rem;
+}
+
+.content .ulist .ulist ul {
+    padding-left: 1rem;
+}
+

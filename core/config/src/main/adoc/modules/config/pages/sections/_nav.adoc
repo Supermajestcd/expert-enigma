@@ -1,0 +1,4 @@
+** xref:refguide:config:sections/isis.persistence.jdo-datanucleus.impl.adoc[DataNucleus Configuration]
+** xref:refguide:config:sections/isis.value-types.adoc[Value types]
+** xref:refguide:config:sections/resteasy.adoc[RestEasy Configuration]
+** xref:refguide:config:sections/Other.adoc[Other]
