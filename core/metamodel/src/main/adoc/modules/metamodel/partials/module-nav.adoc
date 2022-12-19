@@ -1,0 +1,4 @@
+
+* xref:core:metamodel:about.adoc[MetaModel]
+** xref:core:metamodel:class-diagram.adoc[]
+** xref:core:metamodel:events.adoc[]
