@@ -1,0 +1,341 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Licensed to the Apache Software Foundation (ASF) under one or more contributor
+	license agreements. See the NOTICE file distributed with this work for additional
+	information regarding copyright ownership. The ASF licenses this file to
+	you under the Apache License, Version 2.0 (the "License"); you may not use
+	this file except in compliance with the License. You may obtain a copy of
+	the License at http://www.apache.org/licenses/LICENSE-2.0 Unless required
+	by applicable law or agreed to in writing, software distributed under the
+	License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS
+	OF ANY KIND, either express or implied. See the License for the specific
+	language governing permissions and limitations under the License. -->
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<groupId>org.apache.isis</groupId>
+		<artifactId>isis-parent</artifactId>
+		<version>2.0.0-SNAPSHOT</version>
+		<relativePath>../isis-parent/pom.xml</relativePath>
+	</parent>
+
+	<groupId>org.apache.isis.tooling</groupId>
+	<artifactId>isis-tooling</artifactId>
+
+	<name>Apache Isis - Tooling</name>
+	<description>
+        Libraries and tools not depending on the _Apache Isis Core_ ecosystem,
+        eg. code mining, automated documentation.
+        (Targeted for JVM 11+)
+    </description>
+
+	<packaging>pom</packaging>
+
+	<properties>
+
+		<maven.compiler.release>11</maven.compiler.release>
+		<maven.compiler.source>11</maven.compiler.source>
+		<maven.compiler.target>11</maven.compiler.target>
+
+		<jar-plugin.automaticModuleName>org.apache.isis.tooling</jar-plugin.automaticModuleName>
+		<git-plugin.propertiesDir>org/apache/isis/tooling</git-plugin.propertiesDir>
+
+		<asciidoctorj.version>2.5.0</asciidoctorj.version>
+		<gradle-tooling.version>7.0</gradle-tooling.version>
+		<maven-model-builder.version>3.8.1</maven-model-builder.version>
+		<picocli.version>4.6.1</picocli.version>
+		<jsoup.version>1.13.1</jsoup.version>
+		<structurizr.version>1.6.2</structurizr.version>
+
+	</properties>
+
+	<repositories>
+		<repository>
+			<id>gradle-repo</id>
+			<url>https://repo.gradle.org/gradle/libs-releases-local/</url>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</repository>
+	</repositories>
+
+	<build>
+		<resources>
+			<resource>
+				<filtering>true</filtering>
+				<directory>src/main/resources</directory>
+				<includes>
+					<include>**</include>
+				</includes>
+			</resource>
+			<resource>
+				<filtering>false</filtering>
+				<directory>src/main/java</directory>
+				<includes>
+					<include>**</include>
+				</includes>
+				<excludes>
+					<exclude>**/*.java</exclude>
+				</excludes>
+			</resource>
+		</resources>
+
+
+		<plugins>
+			<plugin>
+				<groupId>org.apache.rat</groupId>
+				<artifactId>apache-rat-plugin</artifactId>
+
+				<!-- APACHE ISIS customisation 4/7: start -->
+				<configuration>
+					<addDefaultLicenseMatchers>true</addDefaultLicenseMatchers>
+					<excludeSubProjects>true</excludeSubProjects>
+					<excludes>
+						<exclude>**/target/**</exclude>
+						<exclude>**/target-ide/**</exclude>
+
+						<exclude>**/node_modules/**</exclude>
+						<exclude>**/node/npm</exclude>
+						<exclude>**/node/npm.cmd</exclude>
+
+						<exclude>**/*.project</exclude>
+						<exclude>**/.classpath</exclude>
+						<exclude>**/.settings/**</exclude>
+						<exclude>**/*.launch</exclude>
+
+						<exclude>**/*.iml</exclude>
+						<exclude>**/webpack.generated.js</exclude>
+
+						<exclude>**/*.pdn</exclude>
+						<exclude>**/*.svg</exclude>
+						<exclude>**/*.rtf</exclude>
+						<exclude>**/*.json</exclude>
+						<exclude>**/*.min.js</exclude>
+						<exclude>**/*.puml</exclude>
+
+						<exclude>**/module-nav.adoc</exclude>
+						<exclude>**/component-nav.adoc</exclude>
+
+						<exclude>**/MANIFEST.MF</exclude>
+						<exclude>**/*.ucd</exclude>
+						<exclude>**/*.ucls</exclude>
+
+						<exclude>**/datanucleus.log</exclude>
+						<exclude>**/gradle/wrapper/gradle-wrapper.properties</exclude>
+						<exclude>**/gradlew</exclude>
+						<exclude>**/gradlew.bat</exclude>
+
+						<exclude>**/intellij/launch/*.xml</exclude>
+
+						<exclude>**/org/apache/isis/tooling/adocmodel/test/attributed-table.adoc</exclude>
+						<exclude>**/org/apache/isis/tooling/adocmodel/test/simple-table.adoc</exclude>
+
+						<exclude>**/META-INF/services/**</exclude>
+					</excludes>
+					<licenses>
+						<license
+							implementation="org.apache.rat.analysis.license.SimplePatternBasedLicense">
+							<licenseFamilyCategory>AL2  </licenseFamilyCategory>
+							<licenseFamilyName>Apache License 2.0</licenseFamilyName>
+							<notes />
+							<patterns>
+								<pattern>Licensed to the Apache Software Foundation (ASF) under
+									one</pattern>
+							</patterns>
+						</license>
+					</licenses>
+					<licenseFamilies>
+						<licenseFamily
+							implementation="org.apache.rat.license.SimpleLicenseFamily">
+							<familyName>Apache License 2.0</familyName>
+						</licenseFamily>
+					</licenseFamilies>
+				</configuration>
+			</plugin>
+		</plugins>
+
+	</build>
+
+	<dependencyManagement>
+		<dependencies>
+
+			<!-- INTERNAL -->
+
+			<dependency>
+				<groupId>org.apache.isis.commons</groupId>
+				<artifactId>isis-commons</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>org.apache.isis.tooling</groupId>
+				<artifactId>isis-tooling-c4modeling</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>org.apache.isis.tooling</groupId>
+				<artifactId>isis-tooling-model4adoc</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>org.apache.isis.tooling</groupId>
+				<artifactId>isis-tooling-projectmodel</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>org.apache.isis.tooling</groupId>
+				<artifactId>isis-tooling-javamodel</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>org.apache.isis.tooling</groupId>
+				<artifactId>isis-tooling-java2adoc</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+
+			<!-- EXTERNAL -->
+
+			<dependency>
+				<groupId>org.asciidoctor</groupId>
+				<artifactId>asciidoctorj</artifactId>
+				<version>${asciidoctorj.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>org.gradle</groupId>
+				<artifactId>gradle-tooling-api</artifactId>
+				<version>${gradle-tooling.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>org.apache.maven</groupId>
+				<artifactId>maven-model-builder</artifactId>
+				<version>${maven-model-builder.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>info.picocli</groupId>
+				<artifactId>picocli</artifactId>
+				<version>${picocli.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>org.jsoup</groupId>
+				<artifactId>jsoup</artifactId>
+				<version>${jsoup.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>org.projectlombok</groupId>
+				<artifactId>lombok</artifactId>
+				<version>${lombok.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>com.structurizr</groupId>
+				<artifactId>structurizr-core</artifactId>
+				<version>${structurizr.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>com.structurizr</groupId>
+				<artifactId>structurizr-plantuml</artifactId>
+				<version>${structurizr.version}</version>
+			</dependency>
+
+		</dependencies>
+	</dependencyManagement>
+
+	<dependencies>
+
+		<!-- LOMBOK -->
+
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<scope>provided</scope>
+		</dependency>
+
+		<!-- fixes Module lombok does not read a module that exports org.mapstruct.ap.spi -->
+		<dependency>
+			<groupId>org.mapstruct</groupId>
+			<artifactId>mapstruct-processor</artifactId>
+			<version>1.4.2.Final</version>
+		</dependency>
+
+		<!-- @Nullable -->
+
+		<dependency>
+			<groupId>com.google.code.findbugs</groupId>
+			<artifactId>annotations</artifactId>
+			<version>3.0.1u2</version>
+		</dependency>
+
+		<!-- LOGGING -->
+
+		<!-- Add Log4j2 Dependency, as a replacement for Spring's default 'logback'.
+			This requires for the 'spring-boot-starter' to exclude the default logging
+			artifact 'org.springframework.boot:spring-boot-starter-logging' see https://www.callicoder.com/spring-boot-log4j-2-example/ -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-log4j2</artifactId>
+			<exclusions>
+				<exclusion>
+					<!-- convergence issues from spring-boot-starter-log4j2 -->
+					<groupId>org.slf4j</groupId>
+					<artifactId>slf4j-api</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+		</dependency>
+
+		<!-- TESTING -->
+
+		<dependency>
+			<groupId>org.junit.jupiter</groupId>
+			<artifactId>junit-jupiter-api</artifactId>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.junit.jupiter</groupId>
+			<artifactId>junit-jupiter-engine</artifactId>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.junit.vintage</groupId>
+			<artifactId>junit-vintage-engine</artifactId>
+			<scope>test</scope>
+		</dependency>
+
+	</dependencies>
+
+	<modules>
+		<module>c4modeling</module>
+		<module>model4adoc</module>
+		<module>javamodel</module>
+		<module>projectmodel</module>
+		<module>java2adoc</module>
+
+		<!-- depends on all the others -->
+		<module>cli</module>
+	</modules>
+
+	<profiles>
+	</profiles>
+</project>
+
+
