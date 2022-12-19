@@ -16,8 +16,8 @@
 #  under the License.
 
 site:
-  title: Apache Causeway
-  url: https://causeway.apache.org/
+  title: Apache Isis
+  url: https://isis.apache.org/
   start_page: docs:ROOT:about.adoc
 
 content:
@@ -55,6 +55,9 @@ content:
     - url: .
       start_path: extensions/core/flyway/adoc # userguide
       branches: HEAD
+    - url: .
+      start_path: extensions/core/quartz/adoc # userguide
+      branches: HEAD
 
     - url: .
       start_path: extensions/security/audittrail/adoc # security
@@ -82,6 +85,9 @@ content:
       start_path: extensions/vw/fullcalendar/adoc # vw
       branches: HEAD
     - url: .
+      start_path: extensions/vw/gmap3/adoc # vw
+      branches: HEAD
+    - url: .
       start_path: extensions/vw/pdfjs/adoc # vw
       branches: HEAD
     - url: .
@@ -102,7 +108,7 @@ content:
 
 ui:
   bundle:
-    url: ../causeway-antora/build/ui-bundle.zip
+    url: ../isis-antora/build/ui-bundle.zip
 #    url: https://github.com/apache/isis-antora/blob/master/build/ui-bundle.zip?raw=true
     #url: ./antora/theme/ui-bundle.zip
     snapshot: true
@@ -124,8 +130,8 @@ asciidoc:
     kroki-default-options: interactive # only available for SVG
     kroki-fetch-diagram: true
     kroki-server-url: https://kroki.io # (default)
-    page-causewayprev: "2.0.0-M9"
-    page-causewayrel: "2.0.0-RC1"
+    page-isisprev: "2.0.0-M7"
+    page-isisrel: "2.0.0-M8"
 
 output:
   dir: antora/target/site

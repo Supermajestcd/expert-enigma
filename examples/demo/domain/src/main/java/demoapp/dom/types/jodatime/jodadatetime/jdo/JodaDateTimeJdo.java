@@ -27,16 +27,17 @@ import javax.jdo.annotations.PersistenceCapable;
 
 import org.springframework.context.annotation.Profile;
 
-import org.apache.causeway.applib.annotation.DomainObject;
-import org.apache.causeway.applib.annotation.Editing;
-import org.apache.causeway.applib.annotation.Optionality;
-import org.apache.causeway.applib.annotation.Property;
-import org.apache.causeway.applib.annotation.PropertyLayout;
-import org.apache.causeway.applib.annotation.Title;
+import org.apache.isis.applib.annotation.DomainObject;
+import org.apache.isis.applib.annotation.Editing;
+import org.apache.isis.applib.annotation.Optionality;
+import org.apache.isis.applib.annotation.Property;
+import org.apache.isis.applib.annotation.PropertyLayout;
+import org.apache.isis.applib.annotation.Title;
 
-import demoapp.dom.types.jodatime.jodadatetime.persistence.JodaDateTimeEntity;
 import lombok.Getter;
 import lombok.Setter;
+
+import demoapp.dom.types.jodatime.jodadatetime.persistence.JodaDateTimeEntity;
 
 @Profile("demo-jdo")
 //tag::class[]
