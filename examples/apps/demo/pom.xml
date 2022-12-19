@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Licensed to the Apache Software Foundation (ASF) under one or more contributor 
+	license agreements. See the NOTICE file distributed with this work for additional 
+	information regarding copyright ownership. The ASF licenses this file to 
+	you under the Apache License, Version 2.0 (the "License"); you may not use 
+	this file except in compliance with the License. You may obtain a copy of 
+	the License at http://www.apache.org/licenses/LICENSE-2.0 Unless required 
+	by applicable law or agreed to in writing, software distributed under the 
+	License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS 
+	OF ANY KIND, either express or implied. See the License for the specific 
+	language governing permissions and limitations under the License. -->
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<groupId>org.apache.isis.examples</groupId>
+		<artifactId>isis-examples</artifactId>
+		<version>${revision}</version>
+		<relativePath>../../pom.xml</relativePath>
+	</parent>
+
+	<groupId>org.apache.isis.examples.apps</groupId>
+	<artifactId>demo</artifactId>
+
+	<name>Apache Isis App - Demo</name>
+
+	<packaging>${packaging.type}</packaging>
+
+	<properties>
+
+		<maven-war-plugin.warName>${project.artifactId}</maven-war-plugin.warName>
+
+		<docker-plugin.imageName>apacheisis/isis-2-demo</docker-plugin.imageName>
+		<docker-plugin.imageTag>${flavor}</docker-plugin.imageTag>
+		<docker-plugin.resource.include>${maven-war-plugin.warName}.war</docker-plugin.resource.include>
+		<docker-plugin.serverId>docker-hub</docker-plugin.serverId>
+		<docker-plugin.registryUrl>https://index.docker.io/v1/</docker-plugin.registryUrl>
+
+	</properties>
+
+	<dependencies>
+
+		<!-- ISIS WEB-APP BUNDLE -->
+
+		<dependency>
+			<groupId>org.apache.isis.mavendeps</groupId>
+			<artifactId>isis-mavendeps-webapp</artifactId>
+			<type>pom</type>
+		</dependency>
+
+		<!-- ISIS CORE PLUGINS -->
+
+		<dependency>
+			<groupId>org.apache.isis.core</groupId>
+			<artifactId>isis-plugins-security-shiro</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.isis.core</groupId>
+			<artifactId>isis-plugins-codegen-bytebuddy</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.isis.core</groupId>
+			<artifactId>isis-plugins-jdo-datanucleus-5</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.isis.core</groupId>
+			<artifactId>isis-plugins-jaxrs-resteasy-4</artifactId>
+		</dependency>
+
+		<!-- ISIS EXTENSIONS -->
+
+		<dependency>
+			<groupId>org.apache.isis.extensions</groupId>
+			<artifactId>isis-extensions-viewer-wicket-excel</artifactId>
+			<version>${isis.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.isis.extensions</groupId>
+			<artifactId>isis-extensions-asciidoc</artifactId>
+			<version>${isis.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.isis.extensions</groupId>
+			<artifactId>isis-extensions-secman-model</artifactId>
+			<version>${isis.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.isis.extensions</groupId>
+			<artifactId>isis-extensions-secman-encryption-jbcrypt</artifactId>
+			<version>${isis.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.isis.extensions</groupId>
+			<artifactId>isis-extensions-secman-persistence-jdo</artifactId>
+			<version>${isis.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.isis.extensions</groupId>
+			<artifactId>isis-extensions-secman-realm-shiro</artifactId>
+			<version>${isis.version}</version>
+		</dependency>
+
+		<!-- OTHER DEPENDENCIES -->
+
+		<dependency>
+			<groupId>org.hsqldb</groupId>
+			<artifactId>hsqldb</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>com.h2database</groupId>
+			<artifactId>h2</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<scope>provided</scope>
+		</dependency>
+
+	</dependencies>
+
+	<profiles>
+
+		<!-- running: mvn spring-boot:run -->
+		<profile>
+			<id>package-as-jar</id>
+			<activation>
+				<property>
+					<name>!package-as-war</name>
+				</property>
+			</activation>
+			<properties>
+				<packaging.type>jar</packaging.type>
+			</properties>
+
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.springframework.boot</groupId>
+						<artifactId>spring-boot-maven-plugin</artifactId>
+						<version>2.1.6.RELEASE</version>
+						<executions>
+							<execution>
+								<goals>
+									<goal>repackage</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+
+		<!-- for each docker image flavor we provide a profile that corresponds 
+			to its specific docker-file -->
+
+		<profile>
+			<id>flavor-tomcat</id>
+			<activation>
+				<property>
+					<name>flavor</name>
+					<value>tomcat</value>
+				</property>
+			</activation>
+			<properties>
+				<packaging.type>war</packaging.type>
+				<package-as-war>true</package-as-war>
+			</properties>
+			<dependencies>
+				<!-- add flavor specific here -->
+			</dependencies>
+		</profile>
+
+		<profile>
+			<id>flavor-payara</id>
+			<activation>
+				<property>
+					<name>flavor</name>
+					<value>payara</value>
+				</property>
+			</activation>
+			<properties>
+				<packaging.type>war</packaging.type>
+				<package-as-war>true</package-as-war>
+			</properties>
+			<dependencies>
+				<!-- add flavor specific here -->
+			</dependencies>
+		</profile>
+
+	</profiles>
+
+	<build>
+		<plugins>
+
+			<plugin>
+				<groupId>com.github.odavid.maven.plugins</groupId>
+				<artifactId>mixin-maven-plugin</artifactId>
+				<version>0.1-alpha-40</version>
+				<extensions>true</extensions>
+				<configuration>
+					<mixins>
+						<mixin>
+							<groupId>org.apache.isis.mavendeps</groupId>
+							<artifactId>isis-mavendeps-mixin-standard</artifactId>
+						</mixin>
+						<mixin>
+							<groupId>org.apache.isis.mavendeps</groupId>
+							<artifactId>isis-mavendeps-mixin-datanucleus-enhance</artifactId>
+						</mixin>
+						<mixin>
+							<groupId>org.apache.isis.mavendeps</groupId>
+							<artifactId>isis-mavendeps-mixin-surefire</artifactId>
+						</mixin>
+						<mixin>
+							<groupId>org.apache.isis.mavendeps</groupId>
+							<artifactId>isis-mavendeps-mixin-docker</artifactId>
+						</mixin>
+					</mixins>
+				</configuration>
+			</plugin>
+
+		</plugins>
+	</build>
+
+</project>
