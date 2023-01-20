@@ -42,7 +42,7 @@
 		<gradle-tooling.version>7.1.1</gradle-tooling.version>
 		<maven-model-builder.version>3.8.6</maven-model-builder.version>
 		<picocli.version>4.7.0</picocli.version>
-		<structurizr.version>1.16.1</structurizr.version>
+		<structurizr.version>1.16.2</structurizr.version>
 		<structurizr-plantuml.version>1.6.3</structurizr-plantuml.version>
 
 	</properties>
@@ -134,11 +134,10 @@
 						<exclude>**/META-INF/services/**</exclude>
 					</excludes>
 					<licenses>
-						<license
-							implementation="org.apache.rat.analysis.license.SimplePatternBasedLicense">
+						<license implementation="org.apache.rat.analysis.license.SimplePatternBasedLicense">
 							<licenseFamilyCategory>AL2  </licenseFamilyCategory>
 							<licenseFamilyName>Apache License 2.0</licenseFamilyName>
-							<notes />
+							<notes/>
 							<patterns>
 								<pattern>Licensed to the Apache Software Foundation (ASF) under
 									one</pattern>
@@ -146,8 +145,7 @@
 						</license>
 					</licenses>
 					<licenseFamilies>
-						<licenseFamily
-							implementation="org.apache.rat.license.SimpleLicenseFamily">
+						<licenseFamily implementation="org.apache.rat.license.SimpleLicenseFamily">
 							<familyName>Apache License 2.0</familyName>
 						</licenseFamily>
 					</licenseFamilies>
