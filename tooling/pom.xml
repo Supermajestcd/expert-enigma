@@ -134,11 +134,10 @@
 						<exclude>**/META-INF/services/**</exclude>
 					</excludes>
 					<licenses>
-						<license
-							implementation="org.apache.rat.analysis.license.SimplePatternBasedLicense">
+						<license implementation="org.apache.rat.analysis.license.SimplePatternBasedLicense">
 							<licenseFamilyCategory>AL2  </licenseFamilyCategory>
 							<licenseFamilyName>Apache License 2.0</licenseFamilyName>
-							<notes />
+							<notes/>
 							<patterns>
 								<pattern>Licensed to the Apache Software Foundation (ASF) under
 									one</pattern>
@@ -146,8 +145,7 @@
 						</license>
 					</licenses>
 					<licenseFamilies>
-						<licenseFamily
-							implementation="org.apache.rat.license.SimpleLicenseFamily">
+						<licenseFamily implementation="org.apache.rat.license.SimpleLicenseFamily">
 							<familyName>Apache License 2.0</familyName>
 						</licenseFamily>
 					</licenseFamilies>
@@ -272,7 +270,7 @@
         <dependency>
 		    <groupId>org.checkerframework</groupId>
 		    <artifactId>checker-qual</artifactId>
-		    <version>3.27.0</version>
+		    <version>3.28.0</version>
 		</dependency>
 
 		<!-- LOGGING -->
