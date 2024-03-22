@@ -175,7 +175,7 @@ It is therefore a copy of org.apache:apache, with customisations clearly identif
         <shiro.version>1.10.1</shiro.version>
         <simpleslackapi.version>1.4.0</simpleslackapi.version>
         <slf4j-api.version>2.0.5</slf4j-api.version> <!-- also provided by spring-boot-starter-logging, needed to solve convergence issues -->
-        <spring-boot.version>2.7.6</spring-boot.version>
+        <spring-boot.version>3.1.10</spring-boot.version>
         <summernote.version>0.8.20</summernote.version>
         <surefire-plugin.argLine>-Xmx384m</surefire-plugin.argLine>
         <swagger-core.version>2.2.7</swagger-core.version>
@@ -657,81 +657,71 @@ It is therefore a copy of org.apache:apache, with customisations clearly identif
                             <exclude>**/META-INF/services/**</exclude>
                         </excludes>
                         <licenses>
-                            <license
-                                    implementation="org.apache.rat.analysis.license.SimplePatternBasedLicense">
+                            <license implementation="org.apache.rat.analysis.license.SimplePatternBasedLicense">
                                 <licenseFamilyCategory>AL2  </licenseFamilyCategory>
                                 <licenseFamilyName>Apache License 2.0</licenseFamilyName>
-                                <notes />
+                                <notes/>
                                 <patterns>
                                     <pattern>Licensed to the Apache Software Foundation (ASF) under
                                         one</pattern>
                                 </patterns>
                             </license>
-                            <license
-                                    implementation="org.apache.rat.analysis.license.SimplePatternBasedLicense">
+                            <license implementation="org.apache.rat.analysis.license.SimplePatternBasedLicense">
                                 <licenseFamilyCategory>BSD3</licenseFamilyCategory>
                                 <licenseFamilyName>BSD 3-Clause</licenseFamilyName>
                                 <patterns>
                                     <pattern>BSD-3-Clause license</pattern>
                                 </patterns>
                             </license>
-                            <license
-                                    implementation="org.apache.rat.analysis.license.SimplePatternBasedLicense">
+                            <license implementation="org.apache.rat.analysis.license.SimplePatternBasedLicense">
                                 <licenseFamilyCategory>MIT</licenseFamilyCategory>
                                 <licenseFamilyName>MIT Licensed</licenseFamilyName>
-                                <notes />
+                                <notes/>
                                 <patterns>
                                     <pattern>The MIT License (MIT)</pattern>
                                     <pattern>Dual licensed under the MIT</pattern>
                                     <pattern>http://prismjs.com/download.html</pattern>
                                 </patterns>
                             </license>
-                            <license
-                                    implementation="org.apache.rat.analysis.license.SimplePatternBasedLicense">
+                            <license implementation="org.apache.rat.analysis.license.SimplePatternBasedLicense">
                                 <licenseFamilyCategory>CC3</licenseFamilyCategory>
                                 <licenseFamilyName>Creative Commons 3.0</licenseFamilyName>
-                                <notes />
+                                <notes/>
                                 <patterns>
                                     <pattern>ASCII text placed in the public domain by Moby Lexical Tools, 1992.</pattern>
                                 </patterns>
                             </license>
-                            <license
-                                    implementation="org.apache.rat.analysis.license.SimplePatternBasedLicense">
+                            <license implementation="org.apache.rat.analysis.license.SimplePatternBasedLicense">
                                 <licenseFamilyCategory>JMOCK</licenseFamilyCategory>
                                 <licenseFamilyName>JMock</licenseFamilyName>
-                                <notes />
+                                <notes/>
                                 <patterns>
                                     <pattern>Copyright (c) 2000-2007, jMock.org</pattern>
                                 </patterns>
                             </license>
-                            <license
-                                    implementation="org.apache.rat.analysis.license.SimplePatternBasedLicense">
+                            <license implementation="org.apache.rat.analysis.license.SimplePatternBasedLicense">
                                 <licenseFamilyCategory>JMOCK</licenseFamilyCategory>
                                 <licenseFamilyName>JMock</licenseFamilyName>
-                                <notes />
+                                <notes/>
                                 <patterns>
                                     <pattern>Copyright (c) 2000-2007, jMock.org</pattern>
                                 </patterns>
                             </license>
                         </licenses>
                         <licenseFamilies>
-                            <licenseFamily
-                                    implementation="org.apache.rat.license.SimpleLicenseFamily">
+                            <licenseFamily implementation="org.apache.rat.license.SimpleLicenseFamily">
                                 <familyName>Apache License 2.0</familyName>
                             </licenseFamily>
                             <licenseFamily implementation="org.apache.rat.license.SimpleLicenseFamily">
                                 <familyName>BSD 3-Clause</familyName>
                             </licenseFamily>
-                            <licenseFamily
-                                    implementation="org.apache.rat.license.SimpleLicenseFamily">
+                            <licenseFamily implementation="org.apache.rat.license.SimpleLicenseFamily">
                                 <familyName>MIT</familyName>
                             </licenseFamily>
-                            <licenseFamily
-                                    implementation="org.apache.rat.license.SimpleLicenseFamily">
+                            <licenseFamily implementation="org.apache.rat.license.SimpleLicenseFamily">
                                 <familyName>JMock</familyName>
                             </licenseFamily>
-                            <licenseFamily
-                                    implementation="org.apache.rat.license.SimpleLicenseFamily">
+                            <licenseFamily implementation="org.apache.rat.license.SimpleLicenseFamily">
                                 <familyName>XHTML</familyName>
                             </licenseFamily>
                         </licenseFamilies>
@@ -883,7 +873,7 @@ It is therefore a copy of org.apache:apache, with customisations clearly identif
                         <!-- seemingly not compatible with use of 2.0.0-SNAPSHOT placeholders
                             <requirePluginVersions> <message>All plugin versions must be defined!</message>
                             <banLatest>true</banLatest> <banRelease>true</banRelease> </requirePluginVersions> -->
-                        <DependencyConvergence />
+                        <DependencyConvergence/>
                     </rules>
                 </configuration>
                 <executions>
