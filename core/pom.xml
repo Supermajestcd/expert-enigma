@@ -138,7 +138,7 @@
 			<dependency>
 				<groupId>org.apache.causeway.core</groupId>
 				<artifactId>causeway-applib</artifactId>
-				<version>2.0.0-SNAPSHOT</version>
+				<version>2.0.0</version>
 				<type>jar</type>
 				<scope>compile</scope>
 			</dependency>
@@ -278,7 +278,7 @@
 			<dependency>
 				<groupId>org.apache.causeway.persistence</groupId>
 				<artifactId>causeway-persistence-jdo-applib</artifactId>
-				<version>2.0.0-SNAPSHOT</version>
+				<version>3.0.0</version>
 			</dependency>
 			<dependency>
 				<groupId>org.apache.causeway.persistence</groupId>
