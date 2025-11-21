@@ -138,7 +138,7 @@
 			<dependency>
 				<groupId>org.apache.causeway.core</groupId>
 				<artifactId>causeway-applib</artifactId>
-				<version>2.0.0-SNAPSHOT</version>
+				<version>3.5.0</version>
 				<type>jar</type>
 				<scope>compile</scope>
 			</dependency>
@@ -152,7 +152,7 @@
 			<dependency>
 				<groupId>org.apache.causeway.core</groupId>
 				<artifactId>causeway-core-config</artifactId>
-				<version>2.0.0-SNAPSHOT</version>
+				<version>3.5.0</version>
 				<type>jar</type>
 				<scope>compile</scope>
 			</dependency>
@@ -188,7 +188,7 @@
 			<dependency>
 				<groupId>org.apache.causeway.core</groupId>
 				<artifactId>causeway-core-runtimeservices</artifactId>
-				<version>2.0.0-SNAPSHOT</version>
+				<version>3.5.0</version>
 			</dependency>
 			<dependency>
 				<groupId>org.apache.causeway.core</groupId>
