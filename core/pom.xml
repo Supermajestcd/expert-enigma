@@ -133,12 +133,12 @@
 			<dependency>
 				<groupId>org.apache.causeway.commons</groupId>
 				<artifactId>causeway-commons</artifactId>
-				<version>2.0.0-SNAPSHOT</version>
+				<version>3.5.0</version>
 			</dependency>
 			<dependency>
 				<groupId>org.apache.causeway.core</groupId>
 				<artifactId>causeway-applib</artifactId>
-				<version>2.0.0-SNAPSHOT</version>
+				<version>3.5.0</version>
 				<type>jar</type>
 				<scope>compile</scope>
 			</dependency>
@@ -152,7 +152,7 @@
 			<dependency>
 				<groupId>org.apache.causeway.core</groupId>
 				<artifactId>causeway-core-config</artifactId>
-				<version>2.0.0-SNAPSHOT</version>
+				<version>3.5.0</version>
 				<type>jar</type>
 				<scope>compile</scope>
 			</dependency>
@@ -278,12 +278,12 @@
 			<dependency>
 				<groupId>org.apache.causeway.persistence</groupId>
 				<artifactId>causeway-persistence-jdo-applib</artifactId>
-				<version>2.0.0-SNAPSHOT</version>
+				<version>3.5.0</version>
 			</dependency>
 			<dependency>
 				<groupId>org.apache.causeway.persistence</groupId>
 				<artifactId>causeway-persistence-jdo-provider</artifactId>
-				<version>2.0.0-SNAPSHOT</version>
+				<version>3.5.0</version>
 			</dependency>
 			<dependency>
 				<groupId>org.apache.causeway.persistence</groupId>
