@@ -166,7 +166,7 @@
 			<dependency>
 				<groupId>org.apache.causeway.core</groupId>
 				<artifactId>causeway-core-interaction</artifactId>
-				<version>2.0.0-SNAPSHOT</version>
+				<version>3.5.0</version>
 			</dependency>
 			<dependency>
 				<groupId>org.apache.causeway.core</groupId>
@@ -176,7 +176,7 @@
 			<dependency>
 				<groupId>org.apache.causeway.core</groupId>
 				<artifactId>causeway-core-metamodel</artifactId>
-				<version>2.0.0-SNAPSHOT</version>
+				<version>3.5.0</version>
 				<type>jar</type>
 				<scope>compile</scope>
 			</dependency>
@@ -193,7 +193,7 @@
 			<dependency>
 				<groupId>org.apache.causeway.core</groupId>
 				<artifactId>causeway-core-transaction</artifactId>
-				<version>2.0.0-SNAPSHOT</version>
+				<version>3.5.0</version>
 			</dependency>
 			<dependency>
 				<groupId>org.apache.causeway.core</groupId>
